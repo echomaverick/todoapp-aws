@@ -219,3 +219,15 @@ functions:
       - http:
           path: /tasks/{id}
           method: DELETE
+  getTasksForUserByUsername:
+    handler: tasks/getTasksForUserByUsername.getTasksForUserByUsername
+    events:
+      - http:
+          path: /user/{username}/tasks
+          method: GET
+  taskCompleted:
+    handler: tasks/taskCompleted.taskCompleted
+    events:
+      - http:
+          path: /tasks/{id}/completed
+          method: PUT
