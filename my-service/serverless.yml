@@ -189,3 +189,33 @@ functions:
       - http:
           path: /auth/check-token
           method: GET
+  getAllTasks:
+    handler: tasks/getAllTasks.getAllTasks
+    events:
+      - http:
+          path: /tasks
+          method: GET
+  getTaskById:
+    handler: tasks/getTaskById.getTaskById
+    events:
+      - http:
+          path: /tasks/{id}
+          method: GET
+  createTask:
+    handler: tasks/createTask.createTask
+    events:
+      - http:
+          path: /tasks
+          method: POST
+  updateTask:
+    handler: tasks/updateTask.updateTask
+    events:
+      - http:
+          path: /tasks/{id}
+          method: PUT
+  deleteTask:
+    handler: tasks/deleteTask.deleteTask
+    events:
+      - http:
+          path: /tasks/{id}
+          method: DELETE

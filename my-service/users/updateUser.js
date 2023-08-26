@@ -72,7 +72,6 @@ module.exports.updateUser = async (event) => {
     }
 
     const existingUsername = await User.findOne({ username });
-    // Check if the username already exists and belongs to a different user
     if (existingUsername && existingUsername._id.toString() !== userId) {
       return {
         statusCode: 404,

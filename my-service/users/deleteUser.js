@@ -34,7 +34,7 @@ module.exports.deleteUser = async (event) => {
     console.log(error);
     return {
       statusCode: 500,
-      body: JSON.stringify({ message: "An error occurred" }),
+      body: JSON.stringify({ message: "An error occurred while deleting the user" }),
     };
   }
 };
