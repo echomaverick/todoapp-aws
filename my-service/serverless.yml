@@ -165,3 +165,27 @@ functions:
       - http:
           path: /users/{id}
           method: PUT
+  deleteUser:
+    handler: users/deleteUser.deleteUser
+    events:
+      - http:
+          path: /users/{id}
+          method: DELETE
+  loginUser:
+    handler: users/loginUser.loginUser
+    events:
+      - http:
+          path: /auth/login
+          method: POST
+  refreshToken:
+    handler: users/refreshToken.refreshToken
+    events:
+      - http:
+          path: /auth/refresh-token
+          method: POST
+  checkToken:
+    handler: users/checkToken.checkToken
+    events:
+      - http:
+          path: /auth/check-token
+          method: GET

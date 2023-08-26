@@ -92,7 +92,7 @@ module.exports.createUser = async (event) => {
     });
     const savedUser = await newUser.save();
 
-    const token = jwt.sign({ userId: savedUser._id }, "8de6645ac47b4a3a99cc1a16b778fbd42c0626bd21b3fd8398120584f59854aa2e1eafc94e64c6274cdbd057372ed7f93ba904b194974f0a8f14d0835c4fd0bd", { expiresIn: "1h" });
+    const token = jwt.sign({ userId: savedUser._id }, "20157d0fac56d307ed14b3b85f03f0cd9368c79ad832b662c431c02749a3641a137f9eb724e922df84553a09cc42fd6ad9330e19b899ded87cf9348aec16eb41", { expiresIn: "1h" });
     return {
       statusCode: 200,
       body: JSON.stringify({ user: savedUser, token: `Bearer ${token}` }),
