@@ -79,8 +79,14 @@ module.exports.createTask = async (event) => {
       { $push: { tasks: newTask._id } }
     );
 
+    const responseHeaders = {
+      "Access-Control-Allow-Origin": "*",  // Allow requests from any origin
+      "Access-Control-Allow-Credentials": true,
+    };
+
     return {
       statusCode: 200,
+      headers: responseHeaders,
       body: JSON.stringify(newTask),
     };
   } catch (error) {
