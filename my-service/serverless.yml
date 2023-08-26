@@ -231,3 +231,45 @@ functions:
       - http:
           path: /tasks/{id}/completed
           method: PUT
+  getAllProjects:
+    handler: projects/getAllProjects.getAllProjects
+    events:
+      - http:
+          path: /projects
+          method: GET
+  getProjectById:
+    handler: projects/getProjectById.getProjectById
+    events:
+      - http:
+          path: /projects/{id}
+          method: GET
+  updateProject:
+    handler: projects/updateProject.updateProject
+    events:
+      - http:
+          path: /projects/{id}
+          method: PUT
+  createProject:
+    handler: projects/createProject.createProject
+    events:
+      - http:
+          path: /projects
+          method: POST
+  deleteProject:
+    handler: projects/deleteProject.deleteProject
+    events:
+      - http:
+          path: /projects/{id}
+          method: DELETE
+  getProjectsForUserByUsername:
+    handler: projects/getProjectsForUserByUsername.getProjectsForUserByUsername
+    events:
+      - http:
+          path: /user/{username}/projects
+          method: GET
+  projectCompleted:
+    handler: projects/projectCompleted.projectCompleted
+    events:
+      - http:
+          path: /projects/{id}/completed
+          method: PUT

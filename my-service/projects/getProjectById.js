@@ -4,29 +4,30 @@ const Tasks = require("../models/taskModel");
 const Projects = require("../models/projectModel");
 const Role = require("../models/roleModel");
 
-module.exports.getTaskById = async (event) => {
+module.exports.getProjectById = async (event) => {
   try {
     const id = event.pathParameters.id;
     await connectDB();
-    const task = await Tasks.findById(id)
-      .populate("assignedTo", "name surname username email")
-      .populate("projects", "name description");
-    if (!task) {
+    const project = await Projects.findById(id)
+      .populate("users", "name surname username email")
+      .populate("tasks", "title description");
+    if (!project) {
       return {
         statusCode: 404,
-        body: JSON.stringify({ message: "Task not found" }),
+        body: JSON.stringify({ message: "Project not found" }),
       };
     }
+
     return {
       statusCode: 200,
-      body: JSON.stringify(task),
+      body: JSON.stringify(project),
     };
   } catch (error) {
     console.log(error);
     return {
       statusCode: 500,
       body: JSON.stringify({
-        message: "An error occurred while retreiving the task",
+        message: "An error occurred while retreiving the project",
       }),
     };
   }

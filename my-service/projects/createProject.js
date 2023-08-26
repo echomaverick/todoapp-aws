@@ -4,17 +4,17 @@ const Tasks = require("../models/taskModel");
 const Projects = require("../models/projectModel");
 const Role = require("../models/roleModel");
 
-module.exports.createTask = async (event) => {
+module.exports.createProject = async (event) => {
   try {
     await connectDB();
     const data = JSON.parse(event.body);
-    const { title, description, assignedTo, projects, dueDate } = data;
+    const { name, description, users, tasks, dueDate } = data;
 
-    if (!title || !description || !assignedTo) {
+    if (!name || !description || !users) {
       return {
         statusCode: 404,
         body: JSON.stringify({
-          message: "Title, description and assignedTo are required fields",
+          message: "Name, description, users are required fields",
         }),
       };
     }
@@ -23,18 +23,18 @@ module.exports.createTask = async (event) => {
       return {
         statusCode: 404,
         body: JSON.stringify({
-          message: "The date of the task should not be in the past",
+          message: "The date of the project should not be on the past",
         }),
       };
     }
 
-    const titleRegex = /^[A-Za-z\s]+$/;
-    if (!titleRegex.test(title)) {
+    const nameRegex = /^[A-Za-z\s]+$/;
+    if (!nameRegex.test(name)) {
       return {
         statusCode: 404,
         body: JSON.stringify({
           message:
-            "Invalid title format! Title should only contain letters and spaces",
+            "Invalid name format! Name should only contain letters and spaces",
         }),
       };
     }
@@ -50,45 +50,45 @@ module.exports.createTask = async (event) => {
       };
     }
 
-    const existingUser = await User.findById(assignedTo);
+    const existingUser = await User.findById(users);
     if (!existingUser) {
       return {
         statusCode: 404,
         body: JSON.stringify({
-          message: "Invalid user ID! User does not exists.",
+          message: "Invalid user ID! User does not exists",
         }),
       };
     }
 
-    const newTask = new Tasks({
-      title,
+    const newProject = new Projects({
+      name,
       description,
-      assignedTo,
-      projects,
-      duDate: new Date(dueDate),
+      users,
+      tasks,
+      dueDate: new Date(dueDate),
     });
-    await newTask.save();
+    await newProject.save();
 
     await User.updateMany(
-      { _id: { $in: assignedTo } },
-      { $push: { tasks: newTask._id } }
+      { _id: { $in: users } },
+      { $push: { projects: newProject._id } }
     );
 
-    await Projects.updateMany(
-      { _id: { $in: projects } },
-      { $push: { tasks: newTask._id } }
+    await Tasks.updateMany(
+      { _id: { $in: tasks } },
+      { $push: { tasks: newProject._id } }
     );
 
     return {
       statusCode: 200,
-      body: JSON.stringify(newTask),
+      body: JSON.stringify(newProject),
     };
   } catch (error) {
     console.log(error);
     return {
       statusCode: 500,
       body: JSON.stringify({
-        message: "An error occurred while creating the task",
+        message: "An error occurred while creating the project",
       }),
     };
   }
