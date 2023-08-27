@@ -141,7 +141,7 @@ const Login = () => {
 
     try {
       const response = await axios.post(
-        "https://yr6pccmc2d.execute-api.us-west-2.amazonaws.com/dev/api/users/login",
+        "https://0a6quki7nk.execute-api.us-west-2.amazonaws.com/dev/auth/login",
         {
           username,
           password,

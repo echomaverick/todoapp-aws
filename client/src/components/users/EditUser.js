@@ -30,7 +30,7 @@ const EditUser = () => {
 
     try {
       const token = localStorage.getItem("accessToken");
-      const apiUrl = `https://yr6pccmc2d.execute-api.us-west-2.amazonaws.com/dev/api/users/${id}`;
+      const apiUrl = `https://0a6quki7nk.execute-api.us-west-2.amazonaws.com/dev/users/${id}`;
       await axios.put(apiUrl, user, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -49,7 +49,7 @@ const EditUser = () => {
   const loadUser = async () => {
     try {
       const result = await axios.get(
-        `https://yr6pccmc2d.execute-api.us-west-2.amazonaws.com/dev/api/users/${id}`
+        `https://0a6quki7nk.execute-api.us-west-2.amazonaws.com/dev/users/${id}`
       );
       const { role, ...userData } = result.data;
       setUser({ ...userData, role });

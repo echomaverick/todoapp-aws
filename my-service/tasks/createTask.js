@@ -9,10 +9,17 @@ module.exports.createTask = async (event) => {
     await connectDB();
     const data = JSON.parse(event.body);
     const { title, description, assignedTo, projects, dueDate } = data;
+    console.log("Event body",event.body);
 
     if (!title || !description || !assignedTo) {
       return {
         statusCode: 404,
+        headers: {
+          "Access-Control-Allow-Origin": "http://my-service-todoapp-bucket.s3-website-us-west-2.amazonaws.com",
+          "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
+          "Access-Control-Allow-Headers": "Content-Type",
+          "Access-Control-Allow-Credentials": true,
+        },
         body: JSON.stringify({
           message: "Title, description and assignedTo are required fields",
         }),
@@ -22,6 +29,12 @@ module.exports.createTask = async (event) => {
     if (!dueDate || new Date(dueDate) < new Date()) {
       return {
         statusCode: 404,
+        headers: {
+          "Access-Control-Allow-Origin": "http://my-service-todoapp-bucket.s3-website-us-west-2.amazonaws.com",
+          "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
+          "Access-Control-Allow-Headers": "Content-Type",
+          "Access-Control-Allow-Credentials": true,
+        },
         body: JSON.stringify({
           message: "The date of the task should not be in the past",
         }),
@@ -32,6 +45,12 @@ module.exports.createTask = async (event) => {
     if (!titleRegex.test(title)) {
       return {
         statusCode: 404,
+        headers: {
+          "Access-Control-Allow-Origin": "http://my-service-todoapp-bucket.s3-website-us-west-2.amazonaws.com",
+          "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
+          "Access-Control-Allow-Headers": "Content-Type",
+          "Access-Control-Allow-Credentials": true,
+        },
         body: JSON.stringify({
           message:
             "Invalid title format! Title should only contain letters and spaces",
@@ -43,6 +62,12 @@ module.exports.createTask = async (event) => {
     if (!descriptionRegex.test(description)) {
       return {
         statusCode: 404,
+        headers: {
+          "Access-Control-Allow-Origin": "http://my-service-todoapp-bucket.s3-website-us-west-2.amazonaws.com",
+          "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
+          "Access-Control-Allow-Headers": "Content-Type",
+          "Access-Control-Allow-Credentials": true,
+        },
         body: JSON.stringify({
           message:
             "Invalid description format! Description should only contain letter and spaces",
@@ -54,6 +79,12 @@ module.exports.createTask = async (event) => {
     if (!existingUser) {
       return {
         statusCode: 404,
+        headers: {
+          "Access-Control-Allow-Origin": "http://my-service-todoapp-bucket.s3-website-us-west-2.amazonaws.com",
+          "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
+          "Access-Control-Allow-Headers": "Content-Type",
+          "Access-Control-Allow-Credentials": true,
+        },
         body: JSON.stringify({
           message: "Invalid user ID! User does not exists.",
         }),
@@ -79,20 +110,26 @@ module.exports.createTask = async (event) => {
       { $push: { tasks: newTask._id } }
     );
 
-    const responseHeaders = {
-      "Access-Control-Allow-Origin": "*",  // Allow requests from any origin
-      "Access-Control-Allow-Credentials": true,
-    };
-
     return {
       statusCode: 200,
-      headers: responseHeaders,
+      headers: {
+        "Access-Control-Allow-Origin": "http://my-service-todoapp-bucket.s3-website-us-west-2.amazonaws.com",
+        "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
+        "Access-Control-Allow-Headers": "Content-Type",
+        "Access-Control-Allow-Credentials": true,
+      },
       body: JSON.stringify(newTask),
     };
   } catch (error) {
     console.log(error);
     return {
       statusCode: 500,
+      headers: {
+          "Access-Control-Allow-Origin": "http://my-service-todoapp-bucket.s3-website-us-west-2.amazonaws.com",
+          "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
+          "Access-Control-Allow-Headers": "Content-Type",
+          "Access-Control-Allow-Credentials": true,
+        },
       body: JSON.stringify({
         message: "An error occurred while creating the task",
       }),

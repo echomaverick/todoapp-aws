@@ -15,6 +15,12 @@ module.exports.loginUser = async (event) => {
     if (!username || !password) {
       return {
         statusCode: 404,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
+          "Access-Control-Allow-Headers": "Content-Type, Authorization",
+          "Access-Control-Allow-Credentials": true,
+        },
         body: JSON.stringify({ message: "USername and password are required" }),
       };
     }
@@ -23,6 +29,12 @@ module.exports.loginUser = async (event) => {
     if (!user) {
       return {
         statusCode: 404,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
+          "Access-Control-Allow-Headers": "Content-Type, Authorization",
+          "Access-Control-Allow-Credentials": true,
+        },
         body: JSON.stringify({ error: "Invalid username" }),
       };
     }
@@ -31,6 +43,12 @@ module.exports.loginUser = async (event) => {
     if (!isPasswordValid) {
       return {
         statusCode: 404,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
+          "Access-Control-Allow-Headers": "Content-Type, Authorization",
+          "Access-Control-Allow-Credentials": true,
+        },
         body: JSON.stringify({ error: "Invalid password" }),
       };
     }
@@ -56,9 +74,11 @@ module.exports.loginUser = async (event) => {
     return {
       statusCode: 200,
       headers: {
-        "Set-Cookie": `refreshToken=${refreshToken}; HttpOnly; Max-Age=${
-          30 * 24 * 60 * 60 * 1000
-        }`,
+        "Set-Cookie": `refreshToken=${refreshToken}; HttpOnly; Max-Age=${30 * 24 * 60 * 60 * 1000}`,
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization",
+        "Access-Control-Allow-Credentials": true,
       },
       body: JSON.stringify({ token }),
     };
@@ -66,6 +86,12 @@ module.exports.loginUser = async (event) => {
     console.log(error);
     return {
       statusCode: 500,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization",
+        "Access-Control-Allow-Credentials": true,
+      },
       body: JSON.stringify({ error: "An error occurred" }),
     };
   }

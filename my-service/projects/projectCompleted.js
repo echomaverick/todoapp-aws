@@ -10,6 +10,12 @@ module.exports.projectCompleted = async (event) => {
     if (!mongoose.Types.ObjectId.isValid(projectId)) {
       return {
         statusCode: 404,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
+          "Access-Control-Allow-Headers": "Content-Type, Authorization",
+          "Access-Control-Allow-Credentials": true,
+        },
         body: JSON.stringify({ error: "Invalid project ID" }),
       };
     }
@@ -18,6 +24,12 @@ module.exports.projectCompleted = async (event) => {
     if (!project) {
       return {
         statusCode: 404,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
+          "Access-Control-Allow-Headers": "Content-Type, Authorization",
+          "Access-Control-Allow-Credentials": true,
+        },
         body: JSON.stringify({ error: "Project not found" }),
       };
     }
@@ -29,12 +41,24 @@ module.exports.projectCompleted = async (event) => {
 
     return {
       statusCode: 200,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization",
+        "Access-Control-Allow-Credentials": true,
+      },
       body: JSON.stringify(updatedProject),
     };
   } catch (error) {
     console.log(error);
     return {
       statusCode: 500,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization",
+        "Access-Control-Allow-Credentials": true,
+      },
       body: JSON.stringify({ error: "Failed to mark project as completed" }),
     };
   }

@@ -22,10 +22,10 @@ const AddProject = () => {
   const fetchAvailableData = async () => {
     try {
       const usersResponse = await axios.get(
-        "https://yr6pccmc2d.execute-api.us-west-2.amazonaws.com/dev/api/users"
+        "https://0a6quki7nk.execute-api.us-west-2.amazonaws.com/dev/users"
       );
       const tasksResponse = await axios.get(
-        "https://yr6pccmc2d.execute-api.us-west-2.amazonaws.com/dev/api/tasks"
+        "https://0a6quki7nk.execute-api.us-west-2.amazonaws.com/dev/tasks"
       );
 
       setAvailableUsers(usersResponse.data);
@@ -82,7 +82,7 @@ const AddProject = () => {
 
     try {
       const response = await axios.post(
-        "https://yr6pccmc2d.execute-api.us-west-2.amazonaws.com/dev/api/projects",
+        "https://0a6quki7nk.execute-api.us-west-2.amazonaws.com/dev/projects",
         projectData
       );
       console.log("Project added successfully:", response.data);

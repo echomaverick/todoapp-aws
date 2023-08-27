@@ -14,6 +14,12 @@ module.exports.getTasksForUserByUsername = async (event) => {
     if (!user) {
       return {
         statusCode: 404,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
+          "Access-Control-Allow-Headers": "Content-Type, Authorization",
+          "Access-Control-Allow-Credentials": true,
+        },
         body: JSON.stringify({ error: 'User not found' }),
       };
     }
@@ -23,12 +29,24 @@ module.exports.getTasksForUserByUsername = async (event) => {
       .populate('projects', 'name description');
     return {
       statusCode: 200,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization",
+        "Access-Control-Allow-Credentials": true,
+      },
       body: JSON.stringify(tasks),
     };
   } catch (error) {
     console.log(error);
     return {
       statusCode: 500,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization",
+        "Access-Control-Allow-Credentials": true,
+      },
       body: JSON.stringify({ error: 'An error occurred' }),
     };
   }

@@ -10,7 +10,7 @@ module.exports.createUser = async (event) => {
   try {
     await connectDB();
     const data = JSON.parse(event.body);
-    
+
     const { name, surname, username, email, password, role } = data;
     if (!name || !surname || !username || !email || !password || !role) {
       return {
@@ -49,7 +49,8 @@ module.exports.createUser = async (event) => {
       };
     }
 
-    const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
+    const passwordRegex =
+      /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
     if (!passwordRegex.test(password)) {
       return {
         statusCode: 404,
@@ -92,15 +93,31 @@ module.exports.createUser = async (event) => {
     });
     const savedUser = await newUser.save();
 
-    const token = jwt.sign({ userId: savedUser._id }, "20157d0fac56d307ed14b3b85f03f0cd9368c79ad832b662c431c02749a3641a137f9eb724e922df84553a09cc42fd6ad9330e19b899ded87cf9348aec16eb41", { expiresIn: "1h" });
+    const token = jwt.sign(
+      { userId: savedUser._id },
+      "20157d0fac56d307ed14b3b85f03f0cd9368c79ad832b662c431c02749a3641a137f9eb724e922df84553a09cc42fd6ad9330e19b899ded87cf9348aec16eb41",
+      { expiresIn: "1h" }
+    );
     return {
       statusCode: 200,
+      headers: {
+        "Access-Control-Allow-Origin": "http://my-service-todoapp-bucket.s3-website-us-west-2.amazonaws.com",
+        "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization",
+        "Access-Control-Allow-Credentials": true,
+      },
       body: JSON.stringify({ user: savedUser, token: `Bearer ${token}` }),
     };
-} catch (error) {
+  } catch (error) {
     console.log("An error happened", error);
     return {
       statusCode: 500,
+      headers: {
+        "Access-Control-Allow-Origin": "http://my-service-todoapp-bucket.s3-website-us-west-2.amazonaws.com",
+        "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization",
+        "Access-Control-Allow-Credentials": true,
+      },
       body: JSON.stringify({ message: "An error occurred." }),
     };
   }

@@ -25,6 +25,12 @@ module.exports.updateUser = async (event) => {
     ) {
       return {
         statusCode: 404,
+        headers: {
+        "Access-Control-Allow-Origin": "http://my-service-todoapp-bucket.s3-website-us-west-2.amazonaws.com",
+        "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization",
+        "Access-Control-Allow-Credentials": true,
+      },
         body: JSON.stringify({ message: "All fields are required" }),
       };
     }
@@ -33,6 +39,12 @@ module.exports.updateUser = async (event) => {
     if (!nameRegex.test(name)) {
       return {
         statusCode: 404,
+        headers: {
+        "Access-Control-Allow-Origin": "http://my-service-todoapp-bucket.s3-website-us-west-2.amazonaws.com",
+        "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization",
+        "Access-Control-Allow-Credentials": true,
+      },
         body: JSON.stringify({
           error:
             "Invalid name format! Name should only contain letters and spaces.",
@@ -44,6 +56,12 @@ module.exports.updateUser = async (event) => {
     if (!surnameRegex.test(name)) {
       return {
         statusCode: 404,
+        headers: {
+        "Access-Control-Allow-Origin": "http://my-service-todoapp-bucket.s3-website-us-west-2.amazonaws.com",
+        "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization",
+        "Access-Control-Allow-Credentials": true,
+      },
         body: JSON.stringify({
           error:
             "Invalid surname format! Surname should only contain letters and spaces.",
@@ -55,6 +73,12 @@ module.exports.updateUser = async (event) => {
     if (!emailRegex.test(email)) {
       return {
         statusCode: 404,
+        headers: {
+        "Access-Control-Allow-Origin": "http://my-service-todoapp-bucket.s3-website-us-west-2.amazonaws.com",
+        "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization",
+        "Access-Control-Allow-Credentials": true,
+      },
         body: JSON.stringify({ error: "Invalid email format!" }),
       };
     }
@@ -64,6 +88,12 @@ module.exports.updateUser = async (event) => {
     if (!passwordRegex.test(password)) {
       return {
         statusCode: 404,
+        headers: {
+        "Access-Control-Allow-Origin": "http://my-service-todoapp-bucket.s3-website-us-west-2.amazonaws.com",
+        "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization",
+        "Access-Control-Allow-Credentials": true,
+      },
         body: JSON.stringify({
           message:
             "Invalid password format! Password must be at least 8 characters long and should contain at least one number, one letter and one symbol.",
@@ -75,6 +105,12 @@ module.exports.updateUser = async (event) => {
     if (existingUsername && existingUsername._id.toString() !== userId) {
       return {
         statusCode: 404,
+        headers: {
+        "Access-Control-Allow-Origin": "http://my-service-todoapp-bucket.s3-website-us-west-2.amazonaws.com",
+        "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization",
+        "Access-Control-Allow-Credentials": true,
+      },
         body: JSON.stringify({
           message: "Username already exists! Try a different one.",
         }),
@@ -85,6 +121,12 @@ module.exports.updateUser = async (event) => {
     if (existingEmail) {
       return {
         statusCode: 404,
+        headers: {
+        "Access-Control-Allow-Origin": "http://my-service-todoapp-bucket.s3-website-us-west-2.amazonaws.com",
+        "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization",
+        "Access-Control-Allow-Credentials": true,
+      },
         body: JSON.stringify({
           message:
             "Email already exists! Try a different one or try to login to your account.",
@@ -96,6 +138,12 @@ module.exports.updateUser = async (event) => {
     if (!existingRole) {
       return {
         statusCode: 404,
+        headers: {
+        "Access-Control-Allow-Origin": "http://my-service-todoapp-bucket.s3-website-us-west-2.amazonaws.com",
+        "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization",
+        "Access-Control-Allow-Credentials": true,
+      },
         body: JSON.stringify({
           message: "Invalid role ID! Role does not exists.",
         }),
@@ -106,6 +154,12 @@ module.exports.updateUser = async (event) => {
     if (existingTasks.length !== tasks.length) {
       return {
         statusCode: 404,
+        headers: {
+        "Access-Control-Allow-Origin": "http://my-service-todoapp-bucket.s3-website-us-west-2.amazonaws.com",
+        "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization",
+        "Access-Control-Allow-Credentials": true,
+      },
         body: JSON.stringify({
           message: "Invalid task ID! Task does not exists",
         }),
@@ -132,6 +186,12 @@ module.exports.updateUser = async (event) => {
     if (!updatedUser) {
       return {
         statusCode: 404,
+        headers: {
+        "Access-Control-Allow-Origin": "http://my-service-todoapp-bucket.s3-website-us-west-2.amazonaws.com",
+        "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization",
+        "Access-Control-Allow-Credentials": true,
+      },
         body: JSON.stringify({ message: "User not found" }),
       };
     }
@@ -144,6 +204,10 @@ module.exports.updateUser = async (event) => {
     console.log(error);
     return {
       statusCode: 500,
+      headers: {
+        "Access-Control-Allow-Origin": "http://my-service-todoapp-bucket.s3-website-us-west-2.amazonaws.com",
+        "Access-Control-Allow-Credentials": true,
+      },
       body: JSON.stringify({ message: "An error occurred." }),
     };
   }

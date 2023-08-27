@@ -24,10 +24,10 @@ const AddUserProject = () => {
   const fetchAvailableData = async () => {
     try {
       const usersResponse = await axios.get(
-        "https://yr6pccmc2d.execute-api.us-west-2.amazonaws.com/dev/api/users"
+        "https://0a6quki7nk.execute-api.us-west-2.amazonaws.com/dev/users"
       );
       const tasksResponse = await axios.get(
-        "https://yr6pccmc2d.execute-api.us-west-2.amazonaws.com/dev/api/tasks"
+        "https://0a6quki7nk.execute-api.us-west-2.amazonaws.com/dev/tasks"
       );
 
       setAvailableUsers(usersResponse.data);
@@ -93,7 +93,7 @@ const AddUserProject = () => {
 
     try {
       const response = await axios.post(
-        "https://yr6pccmc2d.execute-api.us-west-2.amazonaws.com/dev/api/projects",
+        "https://0a6quki7nk.execute-api.us-west-2.amazonaws.com/dev/rprojects",
         projectData
       );
       const addedProject = response.data;
@@ -101,7 +101,7 @@ const AddUserProject = () => {
       const taskDetails = await Promise.all(
         addedProject.tasks.map(async (taskId) => {
           const taskResponse = await axios.get(
-            `https://yr6pccmc2d.execute-api.us-west-2.amazonaws.com/dev/api/tasks/${taskId}`
+            `https://0a6quki7nk.execute-api.us-west-2.amazonaws.com/dev/tasks/${taskId}`
           );
           return taskResponse.data;
         })
@@ -110,22 +110,22 @@ const AddUserProject = () => {
       const userDetails = await Promise.all(
         addedProject.users.map(async (userId) => {
           const userResponse = await axios.get(
-            `https://yr6pccmc2d.execute-api.us-west-2.amazonaws.com/dev/api/users/${userId}`
+            `https://0a6quki7nk.execute-api.us-west-2.amazonaws.com/dev/users/${userId}`
           );
           return userResponse.data;
         })
       );
-      await axios.post(
-        "https://yr6pccmc2d.execute-api.us-west-2.amazonaws.com/dev/api/emails/send-project-email",
-        {
-          email: selectedUsers[0].email,
-          name: addedProject.name,
-          description: addedProject.description,
-          tasks: taskDetails,
-          users: userDetails,
-          dueDate: dueDate,
-        }
-      );
+      // await axios.post(
+      //   "https://yr6pccmc2d.execute-api.us-west-2.amazonaws.com/dev/api/emails/send-project-email",
+      //   {
+      //     email: selectedUsers[0].email,
+      //     name: addedProject.name,
+      //     description: addedProject.description,
+      //     tasks: taskDetails,
+      //     users: userDetails,
+      //     dueDate: dueDate,
+      //   }
+      // );
 
       console.log("Project added successfully:", response.data);
       setLoading(false);

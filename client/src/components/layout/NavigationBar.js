@@ -18,7 +18,7 @@ const NavigationBar = () => {
 
   const handleUpdateProfile = async () => {
     try {
-      const apiUrl = `https://yr6pccmc2d.execute-api.us-west-2.amazonaws.com/dev/api/users/${user._id}`;
+      const apiUrl = `https://0a6quki7nk.execute-api.us-west-2.amazonaws.com/dev/users/${user._id}`;
       const response = await axios.get(apiUrl, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -44,7 +44,7 @@ const NavigationBar = () => {
     const fetchUserData = async () => {
       if (user) {
         try {
-          const apiUrl = `https://yr6pccmc2d.execute-api.us-west-2.amazonaws.com/dev/api/users/${user._id}`;
+          const apiUrl = `https://0a6quki7nk.execute-api.us-west-2.amazonaws.com/dev/users/${user._id}`;
           const response = await axios.get(apiUrl);
           if (response.status === 200) {
             setLoading(false);
@@ -63,7 +63,7 @@ const NavigationBar = () => {
       if (user) {
         try {
           const response = await axios.get(
-            `https://yr6pccmc2d.execute-api.us-west-2.amazonaws.com/dev/api/tasks/user/${user.username}`
+            `https://0a6quki7nk.execute-api.us-west-2.amazonaws.com/dev/user/${user.username}/tasks`
           );
           setUserTasks(response.data);
         } catch (error) {
@@ -76,7 +76,7 @@ const NavigationBar = () => {
       if (user) {
         try {
           const response = await axios.get(
-            `https://yr6pccmc2d.execute-api.us-west-2.amazonaws.com/dev/api/projects/user/${user.username}`
+            `https://0a6quki7nk.execute-api.us-west-2.amazonaws.com/dev/user/${user.username}/projects`
           );
           setUserProjects(response.data);
         } catch (error) {
@@ -119,12 +119,12 @@ const NavigationBar = () => {
                 title={`Welcome, ${user.username}`}
                 id="user-dropdown"
               >
-                <NavDropdown.Item as={Link} to={`/tasks/user/${user.username}`}>
+                <NavDropdown.Item as={Link} to={`/user/${user.username}/tasks`}>
                   Tasks
                 </NavDropdown.Item>
                 <NavDropdown.Item
                   as={Link}
-                  to={`/projects/user/${user.username}`}
+                  to={`/user/${user.username}/projects`}
                 >
                   Projects
                 </NavDropdown.Item>

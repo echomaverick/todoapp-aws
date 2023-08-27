@@ -273,3 +273,9 @@ functions:
       - http:
           path: /projects/{id}/completed
           method: PUT
+  getAllRoles:
+    handler: roles/getAllRoles.getAllRoles
+    events:
+      - http:
+          path: /roles
+          method: GET

@@ -4,35 +4,10 @@ const Tasks = require("../models/taskModel");
 const Projects = require("../models/projectModel");
 const Role = require("../models/roleModel");
 
-module.exports.deleteProject = async (event) => {
+module.exports.getAllRoles = async (event) => {
   try {
     await connectDB();
-    const projectId = event.pathParameters.id;
-    const deletedProject = await Projects.findByIdAndRemove(projectId);
-
-    if (!deletedProject) {
-      return {
-        statusCode: 404,
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
-          "Access-Control-Allow-Headers": "Content-Type, Authorization",
-          "Access-Control-Allow-Credentials": true,
-        },
-        body: JSON.stringify({ message: "Project not found" }),
-      };
-    }
-
-    await User.updateMany(
-      { projects: projectId },
-      { $pull: { projects: projectId } }
-    );
-
-    await Tasks.updateMany(
-      { projects: projectId },
-      { $pull: { projects: projectId } }
-    );
-
+    const roles = await Role.find({}).populate("users");
     return {
       statusCode: 200,
       headers: {
@@ -41,7 +16,7 @@ module.exports.deleteProject = async (event) => {
         "Access-Control-Allow-Headers": "Content-Type, Authorization",
         "Access-Control-Allow-Credentials": true,
       },
-      body: JSON.stringify({ message: "Project deleted successfully" }),
+      body: JSON.stringify(roles),
     };
   } catch (error) {
     console.log(error);
@@ -54,7 +29,7 @@ module.exports.deleteProject = async (event) => {
         "Access-Control-Allow-Credentials": true,
       },
       body: JSON.stringify({
-        message: "An error occurred while deleting the project",
+        message: "An error occurred while retreiving the roles from the server",
       }),
     };
   }

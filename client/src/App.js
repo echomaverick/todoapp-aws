@@ -221,39 +221,39 @@ function App() {
                 {user ? (
                   <>
                     {/* task routes */}
-                    <Route exact path="/usertask/add" component={AddUserTask} />
+                    <Route exact path="/tasks" component={AddUserTask} />
                     <Route
                       exact
-                      path="/tasks/user/:username"
+                      path="/user/:username/tasks"
                       component={UserTasks}
                     />
                     <Route exact path="/tasks/:id" component={Task} />
-                    <Route exact path="/tasks" component={AllTasks} />
-                    <Route exact path="/task/add" component={AddTask} />
-                    <Route exact path="/tasks/edit/:id" component={EditTask} />
+                    {/* <Route exact path="/tasks" component={AllTasks} /> */}
+                    {/* <Route exact path="/tasks" component={AddTask} /> */}
+                    <Route exact path="/tasks/:id" component={EditTask} />
 
                     {/* project routes*/}
                     <Route
                       exact
-                      path="/userproject/add"
+                      path="/projects"
                       component={AddUserProject}
                     />
                     <Route
                       exact
-                      path="/projects/user/:username"
+                      path="/user/:username/projects"
                       component={UserProject}
                     />
                     <Route exact path="/projects/:id" component={Projects} />
-                    <Route exact path="/projects" component={AllProjects} />
+                    {/* <Route exact path="/projects" component={AllProjects} /> */}
                     <Route
                       exact
-                      path="/projects/edit/:id"
+                      path="/projects/:id"
                       component={EditProject}
                     />
-                    <Route exact path="/project/add" component={AddProject} />
+                    {/* <Route exact path="/projects" component={AddProject} /> */}
 
                     {/*user routes */}
-                    <Route exact path="/profile" component={User} />
+                    <Route exact path="/users/:id" component={User} />
                     {/* Admin-only routes */}
                     <AdminRoute
                       exact
@@ -264,7 +264,7 @@ function App() {
                     <AdminRoute exact path="/alltasks" component={AllTasks} />
 
                     <Route exact path="/user/add" component={AddUser} />
-                    <Route exact path="/users/edit/:id" component={EditUser} />
+                    <Route exact path="/users/:id" component={EditUser} />
                     <Route exact path="/users/:id" component={User} />
 
                     <Route

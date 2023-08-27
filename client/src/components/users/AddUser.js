@@ -407,7 +407,7 @@ const AddUser = () => {
       };
 
       const response = await axios.post(
-        "https://yr6pccmc2d.execute-api.us-west-2.amazonaws.com/dev/api/users/register",
+        "https://0a6quki7nk.execute-api.us-west-2.amazonaws.com/dev/users",
         userData
       );
       console.log("User added successfully:", response.data);

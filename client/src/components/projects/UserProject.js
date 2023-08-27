@@ -108,7 +108,7 @@ const UserProject = ({ match }) => {
     const fetchUserProjects = async () => {
       try {
         const response = await axios.get(
-          `https://yr6pccmc2d.execute-api.us-west-2.amazonaws.com/dev/api/projects/user/${username}`
+          `https://0a6quki7nk.execute-api.us-west-2.amazonaws.com/dev/user/${username}/projects`
         );
         setProjects(response.data);
         setLoading(false);
@@ -123,7 +123,7 @@ const UserProject = ({ match }) => {
   const oneDeleteProject = async (projectId) => {
     try {
       const response = await axios.delete(
-        `https://yr6pccmc2d.execute-api.us-west-2.amazonaws.com/dev/api/projects/${projectId}`
+        `https://0a6quki7nk.execute-api.us-west-2.amazonaws.com/dev/projects/${projectId}`
       );
       console.log("Delete response:", response.data); // Log the response
       setProjects((prevProjects) =>
@@ -137,7 +137,7 @@ const UserProject = ({ match }) => {
   const markProjectAsCompleted = async (projectId) => {
     try {
       await axios.put(
-        `https://yr6pccmc2d.execute-api.us-west-2.amazonaws.com/dev/api/projects/${[
+        `https://0a6quki7nk.execute-api.us-west-2.amazonaws.com/dev/projects/${[
           projectId,
         ]}/completed`,
         {
@@ -160,7 +160,7 @@ const UserProject = ({ match }) => {
     <div className="container">
       <div className="d-flex justify-content-between align-items-center mb-3">
         <h2 className="mb-0">Projects for {username}</h2>
-        <Link className="btn btn-success" to="/userproject/add">
+        <Link className="btn btn-success" to="/projects">
           Add Project
         </Link>
       </div>

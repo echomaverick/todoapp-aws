@@ -36,7 +36,7 @@ const User = () => {
       console.log("Fetching user data...");
       console.log(id);
       const res = await axios.get(
-        `https://yr6pccmc2d.execute-api.us-west-2.amazonaws.com/dev/api/users/${id}`
+        `https://0a6quki7nk.execute-api.us-west-2.amazonaws.com/dev/users/${id}`
       );
 
       if (res.status === 200) {
@@ -47,7 +47,7 @@ const User = () => {
           try {
             console.log("Fetching role data...");
             const roleRes = await axios.get(
-              `https://yr6pccmc2d.execute-api.us-west-2.amazonaws.com/dev/api/roles/${res.data.role["$oid"]}`
+              `https://0a6quki7nk.execute-api.us-west-2.amazonaws.com/dev/roles/${res.data.role["$_id"]}`
             );
             console.log("Role data:", roleRes.data);
             setUser((prevState) => ({ ...prevState, role: roleRes.data.name }));
@@ -121,7 +121,7 @@ const User = () => {
                   {user.tasks.length > 0 ? (
                     <ul className="list-group list-group-flush">
                       {user.tasks.map((task) => (
-                        <li key={task["$oid"]} className="list-group-item">
+                        <li key={task["$_id"]} className="list-group-item">
                           <p>
                             <strong>Task title: </strong> {task.title}
                           </p>
@@ -146,7 +146,7 @@ const User = () => {
                   {user.projects.length > 0 ? (
                     <ul className="list-group list-group-flush">
                       {user.projects.map((project) => (
-                        <li key={project["$oid"]} className="list-group-item">
+                        <li key={project["$_id"]} className="list-group-item">
                           <p>
                             <strong>Project name: </strong> {project.name}
                           </p>

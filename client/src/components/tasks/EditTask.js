@@ -32,10 +32,10 @@ const EditTask = () => {
     try {
       const [tasksResponse, usersResponse] = await Promise.all([
         axios.get(
-          "https://yr6pccmc2d.execute-api.us-west-2.amazonaws.com/dev/api/tasks"
+          "https://0a6quki7nk.execute-api.us-west-2.amazonaws.com/dev/tasks"
         ),
         axios.get(
-          "https://yr6pccmc2d.execute-api.us-west-2.amazonaws.com/dev/api/users"
+          "https://0a6quki7nk.execute-api.us-west-2.amazonaws.com/dev/users"
         ),
       ]);
       setTasks(tasksResponse.data);
@@ -98,7 +98,7 @@ const EditTask = () => {
 
     try {
       await axios.put(
-        `https://yr6pccmc2d.execute-api.us-west-2.amazonaws.com/dev/api/tasks/${id}`,
+        `https://0a6quki7nk.execute-api.us-west-2.amazonaws.com/dev/tasks/${id}`,
         {
           ...task,
           assignedTo: task.assignedTo,
@@ -124,7 +124,7 @@ const EditTask = () => {
 
     try {
       const result = await axios.get(
-        `https://yr6pccmc2d.execute-api.us-west-2.amazonaws.com/dev/api/tasks/${id}`
+        `https://0a6quki7nk.execute-api.us-west-2.amazonaws.com/dev/tasks/${id}`
       );
       if (!result.data) {
         setNotFound(true);
@@ -150,7 +150,7 @@ const EditTask = () => {
   const loadProjects = async () => {
     try {
       const response = await axios.get(
-        "https://yr6pccmc2d.execute-api.us-west-2.amazonaws.com/dev/api/projects"
+        "https://0a6quki7nk.execute-api.us-west-2.amazonaws.com/dev/projects"
       );
       setProjects(response.data);
     } catch (error) {

@@ -105,7 +105,7 @@ const AllProjects = () => {
     try {
       setLoading(true);
       const response = await axios.get(
-        "https://yr6pccmc2d.execute-api.us-west-2.amazonaws.com/dev/api/projects"
+        "https://0a6quki7nk.execute-api.us-west-2.amazonaws.com/dev/projects"
       );
       setProjects(response.data);
       setLoading(false);
@@ -118,7 +118,7 @@ const AllProjects = () => {
   const deleteProject = async (project) => {
     try {
       await axios.delete(
-        `https://yr6pccmc2d.execute-api.us-west-2.amazonaws.com/dev/api/projects/${project._id}`
+        `https://0a6quki7nk.execute-api.us-west-2.amazonaws.com/dev/projects${project._id}`
       );
       console.log(project);
       loadProjects();

@@ -35,10 +35,10 @@ const EditProject = () => {
     try {
       const [usersResponse, tasksResponse] = await Promise.all([
         axios.get(
-          "https://yr6pccmc2d.execute-api.us-west-2.amazonaws.com/dev/api/users"
+          "https://0a6quki7nk.execute-api.us-west-2.amazonaws.com/dev/users"
         ),
         axios.get(
-          "https://yr6pccmc2d.execute-api.us-west-2.amazonaws.com/dev/api/tasks"
+          "https://0a6quki7nk.execute-api.us-west-2.amazonaws.com/dev/tasks"
         ),
       ]);
       setUsers(usersResponse.data);
@@ -102,7 +102,7 @@ const EditProject = () => {
 
     try {
       await axios.put(
-        `https://yr6pccmc2d.execute-api.us-west-2.amazonaws.com/dev/api/projects/${id}`,
+        `https://0a6quki7nk.execute-api.us-west-2.amazonaws.com/dev/projects/${id}`,
         {
           ...project,
           users: project.users,
@@ -128,7 +128,7 @@ const EditProject = () => {
 
     try {
       const result = await axios.get(
-        `https://yr6pccmc2d.execute-api.us-west-2.amazonaws.com/dev/api/projects/${id}`
+        `https://0a6quki7nk.execute-api.us-west-2.amazonaws.com/dev/projects/${id}`
       );
       if (!result.data) {
         setNotFound(true);

@@ -19,7 +19,7 @@ const AddUserTask = () => {
   const fetchAvailableData = async () => {
     try {
       const usersResponse = await axios.get(
-        "https://yr6pccmc2d.execute-api.us-west-2.amazonaws.com/dev/api/users"
+        "https://0a6quki7nk.execute-api.us-west-2.amazonaws.com/dev/users"
       );
       setAvailableUsers(usersResponse.data);
     } catch (error) {
@@ -27,21 +27,82 @@ const AddUserTask = () => {
     }
   };
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+
+  //   const taskNameRegex = /^[A-Za-z\s]+$/;
+  //   const taskDescriptionRegex = /^[A-Za-z\s]+$/;
+
+  //   const newErrors = {};
+
+  //   if (!taskNameRegex.test(title)) {
+  //     newErrors.title = "Task title should only contain letters and spaces.";
+  //   } else if (title.trim() !== "" && title[0] !== title[0].toUpperCase()) {
+  //     newErrors.title = "Task title should start with an uppercase letter.";
+  //   }
+
+  //   if (!taskDescriptionRegex.test(description)) {
+  //     newErrors.description =
+  //       "Task description should only contain letters and spaces.";
+  //   } else if (
+  //     description.trim() !== "" &&
+  //     description[0] !== description[0].toUpperCase()
+  //   ) {
+  //     newErrors.description =
+  //       "Task description should start with an uppercase letter.";
+  //   }
+
+  //   const currentDate = new Date();
+  //   const selectedDueDate = new Date(dueDate);
+  //   if (selectedDueDate < currentDate) {
+  //     newErrors.dueDate = "Due date cannot be in the past!";
+  //   }
+
+  //   if (selectedUsers.length === 0) {
+  //     newErrors.users = "Please select at least one user.";
+  //   }
+
+  //   setErrors(newErrors);
+
+  //   if (Object.keys(newErrors).length > 0) {
+  //     return;
+  //   }
+
+  //   setLoading(true);
+
+  //   try {
+  //     const tasksResponse = await axios.post(
+  //       "https://0a6quki7nk.execute-api.us-west-2.amazonaws.com/dev/tasks",
+  //       {
+  //         title,
+  //         description,
+  //         assignedTo: selectedUsers,
+  //         dueDate,
+  //       }
+  //     );
+  //     setLoading(false);
+  //     history.push("/");
+  //   } catch (error) {
+  //     setLoading(false);
+  //     console.error("Error adding task:", error);
+  //   }
+  // };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const taskNameRegex = /^[A-Za-z\s]+$/;
-    const taskDescriptionRegex = /^[A-Za-z\s]+$/;
+    const titleRegex = /^[A-Za-z\s]+$/;
+    const descriptionRegex = /^[A-Za-z\s]+$/;
 
     const newErrors = {};
 
-    if (!taskNameRegex.test(title)) {
+    if (!titleRegex.test(title)) {
       newErrors.title = "Task title should only contain letters and spaces.";
     } else if (title.trim() !== "" && title[0] !== title[0].toUpperCase()) {
       newErrors.title = "Task title should start with an uppercase letter.";
     }
 
-    if (!taskDescriptionRegex.test(description)) {
+    if (!descriptionRegex.test(description)) {
       newErrors.description =
         "Task description should only contain letters and spaces.";
     } else if (
@@ -72,7 +133,7 @@ const AddUserTask = () => {
 
     try {
       const tasksResponse = await axios.post(
-        "https://yr6pccmc2d.execute-api.us-west-2.amazonaws.com/dev/api/tasks",
+        "https://0a6quki7nk.execute-api.us-west-2.amazonaws.com/dev/tasks",
         {
           title,
           description,
@@ -80,27 +141,7 @@ const AddUserTask = () => {
           dueDate,
         }
       );
-
-      const addedTask = tasksResponse.data;
-
-      for (const userId of selectedUsers) {
-        const selectedUser = availableUsers.find((user) => user._id === userId);
-
-        if (selectedUser) {
-          const userEmail = selectedUser.email;
-
-          await axios.post(
-            "https://yr6pccmc2d.execute-api.us-west-2.amazonaws.com/dev/api/emails/send-task-email",
-            {
-              email: userEmail,
-              title: addedTask.title,
-              description: addedTask.description,
-              dueDate: addedTask.dueDate,
-            }
-          );
-        }
-      }
-
+      console.log("Task Response:", tasksResponse); // Log the tasksResponse
       setLoading(false);
       history.push("/");
     } catch (error) {

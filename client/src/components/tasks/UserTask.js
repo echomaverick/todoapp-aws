@@ -106,7 +106,7 @@ const UserTasks = ({ match }) => {
     const fetchUserTasks = async () => {
       try {
         const response = await axios.get(
-          `https://yr6pccmc2d.execute-api.us-west-2.amazonaws.com/dev/api/tasks/user/${username}`
+          `https://0a6quki7nk.execute-api.us-west-2.amazonaws.com/dev/user/${username}/tasks`
         );
         setTasks(response.data);
         setLoading(false);
@@ -122,7 +122,7 @@ const UserTasks = ({ match }) => {
   const onDeleteTask = async (taskId) => {
     try {
       await axios.delete(
-        `https://yr6pccmc2d.execute-api.us-west-2.amazonaws.com/dev/api/tasks/${taskId}`
+        `https://0a6quki7nk.execute-api.us-west-2.amazonaws.com/dev/tasks/${taskId}`
       );
       setTasks((prevTasks) => prevTasks.filter((task) => task._id !== taskId));
     } catch (error) {
@@ -133,7 +133,7 @@ const UserTasks = ({ match }) => {
   const markTaskAsCompleted = async (taskId) => {
     try {
       await axios.put(
-        `https://yr6pccmc2d.execute-api.us-west-2.amazonaws.com/dev/api/tasks/${taskId}/completed`,
+        `https://0a6quki7nk.execute-api.us-west-2.amazonaws.com/dev/tasks/${taskId}/completed`,
         {
           completed: true,
           dueDate: new Date(),
@@ -154,7 +154,7 @@ const UserTasks = ({ match }) => {
     <div className="container">
       <div className="d-flex justify-content-between align-items-center mb-3">
         <h2 className="mb-0">Tasks for {username}</h2>
-        <Link className="btn btn-success" to="/usertask/add">
+        <Link className="btn btn-success" to="/tasks">
           Add Task
         </Link>
       </div>

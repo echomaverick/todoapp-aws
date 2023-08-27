@@ -25,7 +25,7 @@ const Projects = () => {
   const loadProjects = async () => {
     try {
       const res = await axios.get(
-        "https://yr6pccmc2d.execute-api.us-west-2.amazonaws.com/dev/api/projects"
+        "https://0a6quki7nk.execute-api.us-west-2.amazonaws.com/dev/projects"
       );
       setProjects(res.data);
       setLoading(false);
@@ -56,7 +56,7 @@ const Projects = () => {
           </Link> */}
           {selectedProject && (
             <Link
-              to={`/projects/user/${selectedProject.users[0].username}`}
+              to={`/user/${selectedProject.users[0].username}/projects`}
               className="btn btn-primary mb-4"
             >
               <FontAwesomeIcon icon={faArrowLeft} className="me-2" /> Go back to

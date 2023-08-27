@@ -16,6 +16,12 @@ module.exports.updateProject = async (event) => {
     if (!mongoose.Types.ObjectId.isValid(projectId)) {
       return {
         statusCode: 404,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
+          "Access-Control-Allow-Headers": "Content-Type, Authorization",
+          "Access-Control-Allow-Credentials": true,
+        },
         body: JSON.stringify({ error: "Invalid project ID" }),
       };
     }
@@ -24,6 +30,12 @@ module.exports.updateProject = async (event) => {
     if (!project) {
       return {
         statusCode: 404,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
+          "Access-Control-Allow-Headers": "Content-Type, Authorization",
+          "Access-Control-Allow-Credentials": true,
+        },
         body: JSON.stringify({ error: "Project ID does not exists" }),
       };
     }
@@ -31,6 +43,12 @@ module.exports.updateProject = async (event) => {
     if (!name || !description || !users || !tasks) {
       return {
         statusCode: 404,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
+          "Access-Control-Allow-Headers": "Content-Type, Authorization",
+          "Access-Control-Allow-Credentials": true,
+        },
         body: JSON.stringify({
           error: "All field are required (name, description, users, projects)",
         }),
@@ -40,7 +58,13 @@ module.exports.updateProject = async (event) => {
     const nameRegex = /^[A-Za-z\s]+$/;
     if (!nameRegex.test(name)) {
       return {
-        statusCode: 400,
+        statusCode: 404,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
+          "Access-Control-Allow-Headers": "Content-Type, Authorization",
+          "Access-Control-Allow-Credentials": true,
+        },
         body: JSON.stringify({
           error:
             "Invalid name format! Name should only contain alphanumeric characters and spaces.",
@@ -51,7 +75,13 @@ module.exports.updateProject = async (event) => {
     const descriptionRegex = /^[A-Za-z\s]+$/;
     if (!descriptionRegex.test(description)) {
       return {
-        statusCode: 400,
+        statusCode: 404,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
+          "Access-Control-Allow-Headers": "Content-Type, Authorization",
+          "Access-Control-Allow-Credentials": true,
+        },
         body: JSON.stringify({
           error:
             "Invalid description format! Description should only contain alphanumeric characters and spaces.",
@@ -64,7 +94,13 @@ module.exports.updateProject = async (event) => {
       !users.every((usersId) => mongoose.Types.ObjectId.isValid(usersId))
     ) {
       return {
-        statusCode: 400,
+        statusCode: 404,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
+          "Access-Control-Allow-Headers": "Content-Type, Authorization",
+          "Access-Control-Allow-Credentials": true,
+        },
         body: JSON.stringify({
           error:
             "Invalid 'users' field. It should be an array of valid ObjectId.",
@@ -86,12 +122,24 @@ module.exports.updateProject = async (event) => {
 
     return {
       statusCode: 200,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization",
+        "Access-Control-Allow-Credentials": true,
+      },
       body: JSON.stringify(updatedProject),
     };
   } catch (error) {
     console.log(error);
     return {
       statusCode: 500,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization",
+        "Access-Control-Allow-Credentials": true,
+      },
       body: JSON.stringify({
         message: "An error occurred while updating the project",
       }),

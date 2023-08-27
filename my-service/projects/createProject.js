@@ -13,6 +13,12 @@ module.exports.createProject = async (event) => {
     if (!name || !description || !users) {
       return {
         statusCode: 404,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
+          "Access-Control-Allow-Headers": "Content-Type, Authorization",
+          "Access-Control-Allow-Credentials": true,
+        },
         body: JSON.stringify({
           message: "Name, description, users are required fields",
         }),
@@ -22,6 +28,12 @@ module.exports.createProject = async (event) => {
     if (!dueDate || new Date(dueDate) < new Date()) {
       return {
         statusCode: 404,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
+          "Access-Control-Allow-Headers": "Content-Type, Authorization",
+          "Access-Control-Allow-Credentials": true,
+        },
         body: JSON.stringify({
           message: "The date of the project should not be on the past",
         }),
@@ -32,6 +44,12 @@ module.exports.createProject = async (event) => {
     if (!nameRegex.test(name)) {
       return {
         statusCode: 404,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
+          "Access-Control-Allow-Headers": "Content-Type, Authorization",
+          "Access-Control-Allow-Credentials": true,
+        },
         body: JSON.stringify({
           message:
             "Invalid name format! Name should only contain letters and spaces",
@@ -43,6 +61,12 @@ module.exports.createProject = async (event) => {
     if (!descriptionRegex.test(description)) {
       return {
         statusCode: 404,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
+          "Access-Control-Allow-Headers": "Content-Type, Authorization",
+          "Access-Control-Allow-Credentials": true,
+        },
         body: JSON.stringify({
           message:
             "Invalid description format! Description should only contain letter and spaces",
@@ -54,6 +78,12 @@ module.exports.createProject = async (event) => {
     if (!existingUser) {
       return {
         statusCode: 404,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
+          "Access-Control-Allow-Headers": "Content-Type, Authorization",
+          "Access-Control-Allow-Credentials": true,
+        },
         body: JSON.stringify({
           message: "Invalid user ID! User does not exists",
         }),
@@ -81,12 +111,24 @@ module.exports.createProject = async (event) => {
 
     return {
       statusCode: 200,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization",
+        "Access-Control-Allow-Credentials": true,
+      },
       body: JSON.stringify(newProject),
     };
   } catch (error) {
     console.log(error);
     return {
       statusCode: 500,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization",
+        "Access-Control-Allow-Credentials": true,
+      },
       body: JSON.stringify({
         message: "An error occurred while creating the project",
       }),
