@@ -63,7 +63,7 @@ const AddUserProject = () => {
     }
 
     const currentDate = new Date();
-    const selectedDueDate = new Date(dueDate.replace(/-/g, "/")); // Convert to valid format
+    const selectedDueDate = new Date(dueDate.replace(/-/g, "/"));
     if (selectedDueDate < currentDate) {
       newErrors.dueDate = "Due date cannot be in the past!";
     }
@@ -93,40 +93,10 @@ const AddUserProject = () => {
 
     try {
       const response = await axios.post(
-        "https://0a6quki7nk.execute-api.us-west-2.amazonaws.com/dev/rprojects",
+        "https://0a6quki7nk.execute-api.us-west-2.amazonaws.com/dev/projects",
         projectData
       );
-      const addedProject = response.data;
-
-      const taskDetails = await Promise.all(
-        addedProject.tasks.map(async (taskId) => {
-          const taskResponse = await axios.get(
-            `https://0a6quki7nk.execute-api.us-west-2.amazonaws.com/dev/tasks/${taskId}`
-          );
-          return taskResponse.data;
-        })
-      );
-
-      const userDetails = await Promise.all(
-        addedProject.users.map(async (userId) => {
-          const userResponse = await axios.get(
-            `https://0a6quki7nk.execute-api.us-west-2.amazonaws.com/dev/users/${userId}`
-          );
-          return userResponse.data;
-        })
-      );
-      // await axios.post(
-      //   "https://yr6pccmc2d.execute-api.us-west-2.amazonaws.com/dev/api/emails/send-project-email",
-      //   {
-      //     email: selectedUsers[0].email,
-      //     name: addedProject.name,
-      //     description: addedProject.description,
-      //     tasks: taskDetails,
-      //     users: userDetails,
-      //     dueDate: dueDate,
-      //   }
-      // );
-
+      
       console.log("Project added successfully:", response.data);
       setLoading(false);
       history.push("/");
@@ -159,7 +129,7 @@ const AddUserProject = () => {
 
   const handleTaskToggle = (taskId) => {
     setSelectedTasks((prevSelectedTasks) =>
-      prevSelectedTasks.includes(taskId)
+      prevSelectedTasks.some((task) => task._id === taskId)
         ? prevSelectedTasks.filter((task) => task._id !== taskId)
         : [
             ...prevSelectedTasks,
@@ -167,6 +137,7 @@ const AddUserProject = () => {
           ]
     );
   };
+  
 
   const handleDropdownToggle = () => {
     setIsDropdownOpen((prevState) => !prevState);

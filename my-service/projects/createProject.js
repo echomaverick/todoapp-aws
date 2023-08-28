@@ -7,8 +7,8 @@ const Role = require("../models/roleModel");
 module.exports.createProject = async (event) => {
   try {
     await connectDB();
-    const data = JSON.parse(event.body);
-    const { name, description, users, tasks, dueDate } = data;
+    const data = event.body;
+    const { name, description, users, tasks, dueDate } = JSON.parse(data);
 
     if (!name || !description || !users) {
       return {
