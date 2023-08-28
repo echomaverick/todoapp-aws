@@ -230,7 +230,7 @@ function App() {
                     <Route exact path="/tasks/:id" component={Task} />
                     {/* <Route exact path="/tasks" component={AllTasks} /> */}
                     {/* <Route exact path="/tasks" component={AddTask} /> */}
-                    <Route exact path="/tasks/:id" component={EditTask} />
+                    <Route exact path="/tasks/edit/:id" component={EditTask} />
 
                     {/* project routes*/}
                     <Route
@@ -247,7 +247,7 @@ function App() {
                     {/* <Route exact path="/projects" component={AllProjects} /> */}
                     <Route
                       exact
-                      path="/projects/:id"
+                      path="/projects/edit/:id"
                       component={EditProject}
                     />
                     {/* <Route exact path="/projects" component={AddProject} /> */}
@@ -264,8 +264,7 @@ function App() {
                     <AdminRoute exact path="/alltasks" component={AllTasks} />
 
                     <Route exact path="/user/add" component={AddUser} />
-                    <Route exact path="/users/:id" component={EditUser} />
-                    <Route exact path="/users/:id" component={User} />
+                    <Route exact path="/users/edit/:id" component={EditUser} />
 
                     <Route
                       path="/confirm/:email"

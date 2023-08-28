@@ -163,7 +163,7 @@ functions:
     handler: users/updateUser.updateUser
     events:
       - http:
-          path: /users/{id}
+          path: /users/edit/{id}
           method: PUT
   deleteUser:
     handler: users/deleteUser.deleteUser
@@ -211,7 +211,7 @@ functions:
     handler: tasks/updateTask.updateTask
     events:
       - http:
-          path: /tasks/{id}
+          path: /tasks/edit/{id}
           method: PUT
   deleteTask:
     handler: tasks/deleteTask.deleteTask
@@ -247,7 +247,7 @@ functions:
     handler: projects/updateProject.updateProject
     events:
       - http:
-          path: /projects/{id}
+          path: /projects/edit/{id}
           method: PUT
   createProject:
     handler: projects/createProject.createProject

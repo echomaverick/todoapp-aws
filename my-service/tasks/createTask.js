@@ -7,15 +7,18 @@ const Role = require("../models/roleModel");
 module.exports.createTask = async (event) => {
   try {
     await connectDB();
+    // let removeByteOrderMark = (a) => (a[0] === "\ufeff" ? a.slice(1) : a);
+    // const data = JSON.parse(removeByteOrderMark(event.body));
     const data = JSON.parse(event.body);
     const { title, description, assignedTo, projects, dueDate } = data;
-    console.log("Event body",event.body);
+    console.log("Event body", event.body);
 
     if (!title || !description || !assignedTo) {
       return {
         statusCode: 404,
         headers: {
-          "Access-Control-Allow-Origin": "http://my-service-todoapp-bucket.s3-website-us-west-2.amazonaws.com",
+          "Access-Control-Allow-Origin":
+            "http://my-service-todoapp-bucket.s3-website-us-west-2.amazonaws.com",
           "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
           "Access-Control-Allow-Headers": "Content-Type",
           "Access-Control-Allow-Credentials": true,
@@ -30,7 +33,8 @@ module.exports.createTask = async (event) => {
       return {
         statusCode: 404,
         headers: {
-          "Access-Control-Allow-Origin": "http://my-service-todoapp-bucket.s3-website-us-west-2.amazonaws.com",
+          "Access-Control-Allow-Origin":
+            "http://my-service-todoapp-bucket.s3-website-us-west-2.amazonaws.com",
           "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
           "Access-Control-Allow-Headers": "Content-Type",
           "Access-Control-Allow-Credentials": true,
@@ -46,7 +50,8 @@ module.exports.createTask = async (event) => {
       return {
         statusCode: 404,
         headers: {
-          "Access-Control-Allow-Origin": "http://my-service-todoapp-bucket.s3-website-us-west-2.amazonaws.com",
+          "Access-Control-Allow-Origin":
+            "http://my-service-todoapp-bucket.s3-website-us-west-2.amazonaws.com",
           "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
           "Access-Control-Allow-Headers": "Content-Type",
           "Access-Control-Allow-Credentials": true,
@@ -63,7 +68,8 @@ module.exports.createTask = async (event) => {
       return {
         statusCode: 404,
         headers: {
-          "Access-Control-Allow-Origin": "http://my-service-todoapp-bucket.s3-website-us-west-2.amazonaws.com",
+          "Access-Control-Allow-Origin":
+            "http://my-service-todoapp-bucket.s3-website-us-west-2.amazonaws.com",
           "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
           "Access-Control-Allow-Headers": "Content-Type",
           "Access-Control-Allow-Credentials": true,
@@ -80,7 +86,8 @@ module.exports.createTask = async (event) => {
       return {
         statusCode: 404,
         headers: {
-          "Access-Control-Allow-Origin": "http://my-service-todoapp-bucket.s3-website-us-west-2.amazonaws.com",
+          "Access-Control-Allow-Origin":
+            "http://my-service-todoapp-bucket.s3-website-us-west-2.amazonaws.com",
           "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
           "Access-Control-Allow-Headers": "Content-Type",
           "Access-Control-Allow-Credentials": true,
@@ -113,7 +120,8 @@ module.exports.createTask = async (event) => {
     return {
       statusCode: 200,
       headers: {
-        "Access-Control-Allow-Origin": "http://my-service-todoapp-bucket.s3-website-us-west-2.amazonaws.com",
+        "Access-Control-Allow-Origin":
+          "http://my-service-todoapp-bucket.s3-website-us-west-2.amazonaws.com",
         "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
         "Access-Control-Allow-Headers": "Content-Type",
         "Access-Control-Allow-Credentials": true,
@@ -125,11 +133,12 @@ module.exports.createTask = async (event) => {
     return {
       statusCode: 500,
       headers: {
-          "Access-Control-Allow-Origin": "http://my-service-todoapp-bucket.s3-website-us-west-2.amazonaws.com",
-          "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
-          "Access-Control-Allow-Headers": "Content-Type",
-          "Access-Control-Allow-Credentials": true,
-        },
+        "Access-Control-Allow-Origin":
+          "http://my-service-todoapp-bucket.s3-website-us-west-2.amazonaws.com",
+        "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
+        "Access-Control-Allow-Headers": "Content-Type",
+        "Access-Control-Allow-Credentials": true,
+      },
       body: JSON.stringify({
         message: "An error occurred while creating the task",
       }),

@@ -98,7 +98,7 @@ const EditTask = () => {
 
     try {
       await axios.put(
-        `https://0a6quki7nk.execute-api.us-west-2.amazonaws.com/dev/tasks/${id}`,
+        `https://0a6quki7nk.execute-api.us-west-2.amazonaws.com/dev/tasks/edit/${id}`,
         {
           ...task,
           assignedTo: task.assignedTo,
