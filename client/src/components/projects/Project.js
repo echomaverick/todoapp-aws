@@ -25,7 +25,7 @@ const Projects = () => {
   const loadProjects = async () => {
     try {
       const res = await axios.get(
-        "https://0a6quki7nk.execute-api.us-west-2.amazonaws.com/dev/projects"
+        "https://3bivlllof3.execute-api.us-west-2.amazonaws.com/dev/projects"
       );
       setProjects(res.data);
       setLoading(false);

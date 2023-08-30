@@ -5,20 +5,19 @@ const Projects = require("../models/projectModel");
 const Role = require("../models/roleModel");
 
 module.exports.createProject = async (event) => {
+  console.log("Lambda function invoked");
+
   try {
     await connectDB();
+    console.log("Connected to the database");
+
     const data = event.body;
     const { name, description, users, tasks, dueDate } = JSON.parse(data);
+    console.log("Event body", event.body);
 
     if (!name || !description || !users) {
       return {
-        statusCode: 404,
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
-          "Access-Control-Allow-Headers": "Content-Type, Authorization",
-          "Access-Control-Allow-Credentials": true,
-        },
+        statusCode: 400,
         body: JSON.stringify({
           message: "Name, description, users are required fields",
         }),
@@ -26,14 +25,9 @@ module.exports.createProject = async (event) => {
     }
 
     if (!dueDate || new Date(dueDate) < new Date()) {
+      console.log("Invalid due date");
       return {
-        statusCode: 404,
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
-          "Access-Control-Allow-Headers": "Content-Type, Authorization",
-          "Access-Control-Allow-Credentials": true,
-        },
+        statusCode: 400,
         body: JSON.stringify({
           message: "The date of the project should not be on the past",
         }),
@@ -42,14 +36,9 @@ module.exports.createProject = async (event) => {
 
     const nameRegex = /^[A-Za-z\s]+$/;
     if (!nameRegex.test(name)) {
+      console.log("Invalid name format");
       return {
-        statusCode: 404,
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
-          "Access-Control-Allow-Headers": "Content-Type, Authorization",
-          "Access-Control-Allow-Credentials": true,
-        },
+        statusCode: 400,
         body: JSON.stringify({
           message:
             "Invalid name format! Name should only contain letters and spaces",
@@ -59,14 +48,9 @@ module.exports.createProject = async (event) => {
 
     const descriptionRegex = /^[A-Za-z\s]+$/;
     if (!descriptionRegex.test(description)) {
+      console.log("Invalid description format");
       return {
-        statusCode: 404,
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
-          "Access-Control-Allow-Headers": "Content-Type, Authorization",
-          "Access-Control-Allow-Credentials": true,
-        },
+        statusCode: 400,
         body: JSON.stringify({
           message:
             "Invalid description format! Description should only contain letter and spaces",
@@ -76,14 +60,9 @@ module.exports.createProject = async (event) => {
 
     const existingUser = await User.findById(users);
     if (!existingUser) {
+      console.log("Invalid user ID");
       return {
         statusCode: 404,
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
-          "Access-Control-Allow-Headers": "Content-Type, Authorization",
-          "Access-Control-Allow-Credentials": true,
-        },
         body: JSON.stringify({
           message: "Invalid user ID! User does not exists",
         }),
@@ -109,6 +88,8 @@ module.exports.createProject = async (event) => {
       { $push: { tasks: newProject._id } }
     );
 
+    console.log("Project created successfully");
+
     return {
       statusCode: 200,
       headers: {
@@ -120,15 +101,9 @@ module.exports.createProject = async (event) => {
       body: JSON.stringify(newProject),
     };
   } catch (error) {
-    console.log(error);
+    console.log("An error occurred while creating the project", error);
     return {
       statusCode: 500,
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
-        "Access-Control-Allow-Headers": "Content-Type, Authorization",
-        "Access-Control-Allow-Credentials": true,
-      },
       body: JSON.stringify({
         message: "An error occurred while creating the project",
       }),

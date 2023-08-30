@@ -21,7 +21,7 @@ const Signup = () => {
     const fetchData = async () => {
       try {
         const usersResponse = await axios.get(
-          "https://0a6quki7nk.execute-api.us-west-2.amazonaws.com/dev/users"
+          "https://3bivlllof3.execute-api.us-west-2.amazonaws.com/dev/users"
         );
         const users = usersResponse.data;
         setExistingEmails(users.map((user) => user.email.toLowerCase()));
@@ -97,7 +97,7 @@ const Signup = () => {
 
     try {
       const roleResponse = await axios.get(
-        "https://0a6quki7nk.execute-api.us-west-2.amazonaws.com/dev/roles"
+        "https://3bivlllof3.execute-api.us-west-2.amazonaws.com/dev/roles"
       );
       const existingRoles = roleResponse.data;
       const adminRole = existingRoles.find(
@@ -126,7 +126,7 @@ const Signup = () => {
       };
 
       const response = await axios.post(
-        "https://0a6quki7nk.execute-api.us-west-2.amazonaws.com/dev/users",
+        "https://3bivlllof3.execute-api.us-west-2.amazonaws.com/dev/users",
         userData
       );
       console.log("User added successfully:", response.data);

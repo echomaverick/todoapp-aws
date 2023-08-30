@@ -20,7 +20,7 @@
 //     const fetchData = async () => {
 //       try {
 //         const usersResponse = await axios.get(
-//           "https://yr6pccmc2d.execute-api.us-west-2.amazonaws.com/dev/api/users"
+//           "https://3bivlllof3.execute-api.us-west-2.amazonaws.com/dev/api/users"
 //         );
 //         const users = usersResponse.data;
 //         setExistingEmails(users.map((user) => user.email.toLowerCase()));
@@ -80,7 +80,7 @@
 //     setFormSubmitting(true);
 
 //     try {
-//       const roleResponse = await axios.get("https://yr6pccmc2d.execute-api.us-west-2.amazonaws.com/dev/api/roles");
+//       const roleResponse = await axios.get("https://3bivlllof3.execute-api.us-west-2.amazonaws.com/dev/api/roles");
 //       const existingRoles = roleResponse.data;
 //       const adminRole = existingRoles.find(
 //         (role) => role.name.toLowerCase() === "user"
@@ -108,7 +108,7 @@
 //       };
 
 //       const response = await axios.post(
-//         "https://yr6pccmc2d.execute-api.us-west-2.amazonaws.com/dev/api/users/register",
+//         "https://3bivlllof3.execute-api.us-west-2.amazonaws.com/dev/api/users/register",
 //         userData
 //       );
 //       console.log("User added successfully:", response.data);
@@ -303,7 +303,7 @@ const AddUser = () => {
     const fetchData = async () => {
       try {
         const usersResponse = await axios.get(
-          "https://yr6pccmc2d.execute-api.us-west-2.amazonaws.com/dev/api/users"
+          "https://3bivlllof3.execute-api.us-west-2.amazonaws.com/dev/api/users"
         );
         const users = usersResponse.data;
         setExistingEmails(users.map((user) => user.email.toLowerCase()));
@@ -378,7 +378,7 @@ const AddUser = () => {
 
     try {
       const roleResponse = await axios.get(
-        "https://yr6pccmc2d.execute-api.us-west-2.amazonaws.com/dev/api/roles"
+        "https://3bivlllof3.execute-api.us-west-2.amazonaws.com/dev/api/roles"
       );
       const existingRoles = roleResponse.data;
       const adminRole = existingRoles.find(

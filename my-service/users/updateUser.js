@@ -7,44 +7,39 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
 module.exports.updateUser = async (event) => {
+  console.log("Lambda function invoked");
   try {
     await connectDB();
+    console.log("Connected to the database");
+    console.log("Event:", JSON.stringify(event));
     const userId = event.pathParameters.id;
-    const data = JSON.parse(event.body);
-    const { name, surname, username, email, password, role, tasks, projects } =
-      data;
+    console.log("User ID:", userId);
 
-    if (
-      !name ||
-      !surname ||
-      !username ||
-      !email ||
-      !password ||
-      !role ||
-      !tasks
-    ) {
+    const data = event.body;
+    const { name, surname, username, email, role, tasks, projects } =
+      JSON.parse(data);
+
+    if (!name || !surname || !username || !email || !role || !tasks) {
+      console.log(
+        "Fields are all required name, surname, username, email, role, tasks, projects"
+      );
       return {
-        statusCode: 404,
+        statusCode: 400,
         headers: {
-        "Access-Control-Allow-Origin": "http://my-service-todoapp-bucket.s3-website-us-west-2.amazonaws.com",
-        "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
-        "Access-Control-Allow-Headers": "Content-Type, Authorization",
-        "Access-Control-Allow-Credentials": true,
-      },
-        body: JSON.stringify({ message: "All fields are required" }),
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
+          "Access-Control-Allow-Headers": "Content-Type, Authorization",
+          "Access-Control-Allow-Credentials": true,
+        },
+        body: JSON.stringify({ error: "All fields are required" }),
       };
     }
 
     const nameRegex = /^[A-Za-z\s]+$/;
     if (!nameRegex.test(name)) {
+      console.log("Invalid name format");
       return {
-        statusCode: 404,
-        headers: {
-        "Access-Control-Allow-Origin": "http://my-service-todoapp-bucket.s3-website-us-west-2.amazonaws.com",
-        "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
-        "Access-Control-Allow-Headers": "Content-Type, Authorization",
-        "Access-Control-Allow-Credentials": true,
-      },
+        statusCode: 400,
         body: JSON.stringify({
           error:
             "Invalid name format! Name should only contain letters and spaces.",
@@ -54,14 +49,9 @@ module.exports.updateUser = async (event) => {
 
     const surnameRegex = /^[A-Za-z\s]+$/;
     if (!surnameRegex.test(name)) {
+      console.log("Invalid surname format");
       return {
-        statusCode: 404,
-        headers: {
-        "Access-Control-Allow-Origin": "http://my-service-todoapp-bucket.s3-website-us-west-2.amazonaws.com",
-        "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
-        "Access-Control-Allow-Headers": "Content-Type, Authorization",
-        "Access-Control-Allow-Credentials": true,
-      },
+        statusCode: 400,
         body: JSON.stringify({
           error:
             "Invalid surname format! Surname should only contain letters and spaces.",
@@ -71,64 +61,31 @@ module.exports.updateUser = async (event) => {
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
+      console.log("Invalid email format");
       return {
-        statusCode: 404,
-        headers: {
-        "Access-Control-Allow-Origin": "http://my-service-todoapp-bucket.s3-website-us-west-2.amazonaws.com",
-        "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
-        "Access-Control-Allow-Headers": "Content-Type, Authorization",
-        "Access-Control-Allow-Credentials": true,
-      },
+        statusCode: 400,
         body: JSON.stringify({ error: "Invalid email format!" }),
-      };
-    }
-
-    const passwordRegex =
-      /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
-    if (!passwordRegex.test(password)) {
-      return {
-        statusCode: 404,
-        headers: {
-        "Access-Control-Allow-Origin": "http://my-service-todoapp-bucket.s3-website-us-west-2.amazonaws.com",
-        "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
-        "Access-Control-Allow-Headers": "Content-Type, Authorization",
-        "Access-Control-Allow-Credentials": true,
-      },
-        body: JSON.stringify({
-          message:
-            "Invalid password format! Password must be at least 8 characters long and should contain at least one number, one letter and one symbol.",
-        }),
       };
     }
 
     const existingUsername = await User.findOne({ username });
     if (existingUsername && existingUsername._id.toString() !== userId) {
+      console.log("Username already exists");
       return {
-        statusCode: 404,
-        headers: {
-        "Access-Control-Allow-Origin": "http://my-service-todoapp-bucket.s3-website-us-west-2.amazonaws.com",
-        "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
-        "Access-Control-Allow-Headers": "Content-Type, Authorization",
-        "Access-Control-Allow-Credentials": true,
-      },
+        statusCode: 400,
         body: JSON.stringify({
-          message: "Username already exists! Try a different one.",
+          error: "Username already exists! Try a different one.",
         }),
       };
     }
 
     const existingEmail = await User.findOne({ email });
     if (existingEmail) {
+      console.log("Email already exists");
       return {
-        statusCode: 404,
-        headers: {
-        "Access-Control-Allow-Origin": "http://my-service-todoapp-bucket.s3-website-us-west-2.amazonaws.com",
-        "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
-        "Access-Control-Allow-Headers": "Content-Type, Authorization",
-        "Access-Control-Allow-Credentials": true,
-      },
+        statusCode: 400,
         body: JSON.stringify({
-          message:
+          error:
             "Email already exists! Try a different one or try to login to your account.",
         }),
       };
@@ -136,32 +93,22 @@ module.exports.updateUser = async (event) => {
 
     const existingRole = await Role.findById(role);
     if (!existingRole) {
+      console.log("Role does not exists");
       return {
         statusCode: 404,
-        headers: {
-        "Access-Control-Allow-Origin": "http://my-service-todoapp-bucket.s3-website-us-west-2.amazonaws.com",
-        "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
-        "Access-Control-Allow-Headers": "Content-Type, Authorization",
-        "Access-Control-Allow-Credentials": true,
-      },
         body: JSON.stringify({
-          message: "Invalid role ID! Role does not exists.",
+          error: "Invalid role ID! Role does not exists.",
         }),
       };
     }
 
     const existingTasks = await Tasks.find({ _id: { $in: tasks } });
     if (existingTasks.length !== tasks.length) {
+      console.log("Task does not exists");
       return {
         statusCode: 404,
-        headers: {
-        "Access-Control-Allow-Origin": "http://my-service-todoapp-bucket.s3-website-us-west-2.amazonaws.com",
-        "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
-        "Access-Control-Allow-Headers": "Content-Type, Authorization",
-        "Access-Control-Allow-Credentials": true,
-      },
         body: JSON.stringify({
-          message: "Invalid task ID! Task does not exists",
+          error: "Invalid task ID! Task does not exists",
         }),
       };
     }
@@ -173,7 +120,6 @@ module.exports.updateUser = async (event) => {
         surname,
         username,
         email,
-        password,
         role,
         tasks,
         projects,
@@ -184,31 +130,30 @@ module.exports.updateUser = async (event) => {
       .populate("projects", "name description");
 
     if (!updatedUser) {
+      console.log("User is not found");
       return {
         statusCode: 404,
-        headers: {
-        "Access-Control-Allow-Origin": "http://my-service-todoapp-bucket.s3-website-us-west-2.amazonaws.com",
+        body: JSON.stringify({ error: "User not found" }),
+      };
+    }
+
+    console.log("use updated successfully");
+
+    return {
+      statusCode: 200,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
         "Access-Control-Allow-Headers": "Content-Type, Authorization",
         "Access-Control-Allow-Credentials": true,
       },
-        body: JSON.stringify({ message: "User not found" }),
-      };
-    }
-
-    return {
-      statusCode: 200,
       body: JSON.stringify(updatedUser),
     };
   } catch (error) {
-    console.log(error);
+    console.log("An error happened", error);
     return {
       statusCode: 500,
-      headers: {
-        "Access-Control-Allow-Origin": "http://my-service-todoapp-bucket.s3-website-us-west-2.amazonaws.com",
-        "Access-Control-Allow-Credentials": true,
-      },
-      body: JSON.stringify({ message: "An error occurred." }),
+      body: JSON.stringify({ error: "An error occurred." }),
     };
   }
 };

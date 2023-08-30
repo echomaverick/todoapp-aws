@@ -5,59 +5,45 @@ const Projects = require("../models/projectModel");
 const Role = require("../models/roleModel");
 
 module.exports.createTask = async (event) => {
+  console.log("Lambda function invoked");
   try {
+
     await connectDB();
-    // let removeByteOrderMark = (a) => (a[0] === "\ufeff" ? a.slice(1) : a);
-    // const data = JSON.parse(removeByteOrderMark(event.body));
+    console.log("Connected to the database");
+
     const data = event.body;
     const { title, description, assignedTo, projects, dueDate } = JSON.parse(data);
     console.log("Event body", event.body);
 
     if (!title || !description || !assignedTo) {
+      console.log("Title, description, and assignedTo are required fields");
       return {
-        statusCode: 404,
-        headers: {
-          "Access-Control-Allow-Origin":
-            "*",
-          "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
-          "Access-Control-Allow-Headers": "Content-Type",
-          "Access-Control-Allow-Credentials": true,
-        },
+        statusCode: 400,
         body: JSON.stringify({
-          message: "Title, description and assignedTo are required fields",
+          error: "Title, description and assignedTo are required fields",
         }),
       };
     }
 
     if (!dueDate || new Date(dueDate) < new Date()) {
+      console.log(
+        "Date validation failed: The date of the task should not be in the past"
+      );
       return {
-        statusCode: 404,
-        headers: {
-          "Access-Control-Allow-Origin":
-            "*",
-          "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
-          "Access-Control-Allow-Headers": "Content-Type",
-          "Access-Control-Allow-Credentials": true,
-        },
+        statusCode: 400,
         body: JSON.stringify({
-          message: "The date of the task should not be in the past",
+          error: "The date of the task should not be in the past",
         }),
       };
     }
 
     const titleRegex = /^[A-Za-z\s]+$/;
     if (!titleRegex.test(title)) {
+      console.log("Invalid title format");
       return {
-        statusCode: 404,
-        headers: {
-          "Access-Control-Allow-Origin":
-            "*",
-          "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
-          "Access-Control-Allow-Headers": "Content-Type",
-          "Access-Control-Allow-Credentials": true,
-        },
+        statusCode: 400,
         body: JSON.stringify({
-          message:
+          error:
             "Invalid title format! Title should only contain letters and spaces",
         }),
       };
@@ -65,17 +51,11 @@ module.exports.createTask = async (event) => {
 
     const descriptionRegex = /^[A-Za-z\s]+$/;
     if (!descriptionRegex.test(description)) {
+      console.log("Invalid description format");
       return {
-        statusCode: 404,
-        headers: {
-          "Access-Control-Allow-Origin":
-            "*",
-          "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
-          "Access-Control-Allow-Headers": "Content-Type",
-          "Access-Control-Allow-Credentials": true,
-        },
+        statusCode: 400,
         body: JSON.stringify({
-          message:
+          error:
             "Invalid description format! Description should only contain letter and spaces",
         }),
       };
@@ -83,15 +63,9 @@ module.exports.createTask = async (event) => {
 
     const existingUser = await User.findById(assignedTo);
     if (!existingUser) {
+      console.log("Invalid user ID! User does not exist.");
       return {
         statusCode: 404,
-        headers: {
-          "Access-Control-Allow-Origin":
-            "*",
-          "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
-          "Access-Control-Allow-Headers": "Content-Type",
-          "Access-Control-Allow-Credentials": true,
-        },
         body: JSON.stringify({
           message: "Invalid user ID! User does not exists.",
         }),
@@ -117,11 +91,11 @@ module.exports.createTask = async (event) => {
       { $push: { tasks: newTask._id } }
     );
 
+    console.log("Task created successfully.");
     return {
       statusCode: 200,
       headers: {
-        "Access-Control-Allow-Origin":
-          "*",
+        "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
         "Access-Control-Allow-Headers": "Content-Type",
         "Access-Control-Allow-Credentials": true,
@@ -129,16 +103,9 @@ module.exports.createTask = async (event) => {
       body: JSON.stringify(newTask),
     };
   } catch (error) {
-    console.log(error);
+    console.log("An error occurred while creating the task:", error);
     return {
       statusCode: 500,
-      headers: {
-        "Access-Control-Allow-Origin":
-          "*",
-        "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
-        "Access-Control-Allow-Headers": "Content-Type",
-        "Access-Control-Allow-Credentials": true,
-      },
       body: JSON.stringify({
         message: "An error occurred while creating the task",
       }),

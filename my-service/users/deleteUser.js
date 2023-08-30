@@ -7,12 +7,19 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
 module.exports.deleteUser = async (event) => {
+  console.log("Lambda function invoked");
+
   try {
     await connectDB();
+    console.log("Connected to the database");
+
     const userId = event.pathParameters.id;
+    console.log("User ID", userId);
+
     const deletedUser = await User.findByIdAndRemove(userId);
 
     if (!deletedUser) {
+      console.log("User not found");
       return {
         statusCode: 404,
         body: JSON.stringify({ message: "User not found" }),
@@ -26,10 +33,12 @@ module.exports.deleteUser = async (event) => {
 
     await Projects.updateMany({ users: userId }, { $pull: { users: userId } });
 
+    console.log("User deleted successfully");
+
     return {
       statusCode: 200,
       headers: {
-        "Access-Control-Allow-Origin": "http://my-service-todoapp-bucket.s3-website-us-west-2.amazonaws.com",
+        "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
         "Access-Control-Allow-Headers": "Content-Type, Authorization",
         "Access-Control-Allow-Credentials": true,
@@ -37,11 +46,11 @@ module.exports.deleteUser = async (event) => {
       body: JSON.stringify({ message: "User deleted successfully." }),
     };
   } catch (error) {
-    console.log(error);
+    console.log("An error happened", error);
     return {
       statusCode: 500,
       body: JSON.stringify({
-        message: "An error occurred while deleting the user",
+        error: "An error occurred while deleting the user",
       }),
     };
   }

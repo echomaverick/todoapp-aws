@@ -106,7 +106,7 @@ const UserTasks = ({ match }) => {
     const fetchUserTasks = async () => {
       try {
         const response = await axios.get(
-          `https://0a6quki7nk.execute-api.us-west-2.amazonaws.com/dev/user/${username}/tasks`
+          `https://3bivlllof3.execute-api.us-west-2.amazonaws.com/dev/user/${username}/tasks`
         );
         setTasks(response.data);
         setLoading(false);
@@ -122,7 +122,7 @@ const UserTasks = ({ match }) => {
   const onDeleteTask = async (taskId) => {
     try {
       await axios.delete(
-        `https://0a6quki7nk.execute-api.us-west-2.amazonaws.com/dev/tasks/${taskId}`
+        `https://3bivlllof3.execute-api.us-west-2.amazonaws.com/dev/tasks/${taskId}`
       );
       setTasks((prevTasks) => prevTasks.filter((task) => task._id !== taskId));
     } catch (error) {
@@ -133,7 +133,7 @@ const UserTasks = ({ match }) => {
   const markTaskAsCompleted = async (taskId) => {
     try {
       await axios.put(
-        `https://0a6quki7nk.execute-api.us-west-2.amazonaws.com/dev/tasks/${taskId}/completed`,
+        `https://3bivlllof3.execute-api.us-west-2.amazonaws.com/dev/tasks/${taskId}/completed`,
         {
           completed: true,
           dueDate: new Date(),

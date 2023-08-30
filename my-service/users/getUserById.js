@@ -5,26 +5,31 @@ const Projects = require("../models/projectModel");
 const Role = require("../models/roleModel");
 
 module.exports.getUserById = async (event) => {
+  console.log("Lmabda function is invoked");
+
   try {
     const id = event.pathParameters.id;
+    console.log("User ID", id);
     await connectDB();
+    console.log("Connected to database");
+
     const user = await User.findById(id)
       .populate("tasks", "title description")
       .populate("projects", "name description");
+
     if (!user) {
+      console.log("User not found");
       return {
         statusCode: 404,
-        headers: {
-          "Access-Control-Allow-Origin": "http://my-service-todoapp-bucket.s3-website-us-west-2.amazonaws.com",
-          "Access-Control-Allow-Credentials": true,
-        },
-        body: JSON.stringify({ message: "User not found" }),
+        body: JSON.stringify({ error: "User not found" }),
       };
     }
+
+    console.log("User retrieved successfully");
     return {
       statusCode: 200,
       headers: {
-        "Access-Control-Allow-Origin": "http://my-service-todoapp-bucket.s3-website-us-west-2.amazonaws.com",
+        "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
         "Access-Control-Allow-Headers": "Content-Type, Authorization",
         "Access-Control-Allow-Credentials": true,
@@ -32,17 +37,11 @@ module.exports.getUserById = async (event) => {
       body: JSON.stringify(user),
     };
   } catch (error) {
-    console.log(error);
+    console.log("An error happened", error);
     return {
       statusCode: 500,
-      headers: {
-        "Access-Control-Allow-Origin": "http://my-service-todoapp-bucket.s3-website-us-west-2.amazonaws.com",
-        "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
-        "Access-Control-Allow-Headers": "Content-Type, Authorization",
-        "Access-Control-Allow-Credentials": true,
-      },
       body: JSON.stringify({
-        message: "An error occurred while retreiving the user",
+        error: "An error occurred while retreiving the user",
       }),
     };
   }

@@ -5,22 +5,19 @@ const Projects = require("../models/projectModel");
 const Role = require("../models/roleModel");
 
 module.exports.getAllTasks = async (event) => {
+  console.log("Lambda function invoked");
+
   try {
     await connectDB();
+    console.log("Connected to the database");
+
+    console.log("Fetching all tasks from the database...");
     const tasks = await Tasks.find({})
       .populate("assignedTo", "name surname username email")
-      .populate("projects", "name description");
+      .populate("projects", "name description")
+      .exec();
 
-    function replacer(key, value) {
-      if (typeof value === "object" && value !== null && value.constructor) {
-        if (value.constructor.name === "MongoClient") {
-          return undefined;
-        }
-      }
-      return value;
-    }
-    const jsonString = JSON.stringify(tasks, replacer);
-
+    console.log("Tasks retrieved successfully.");
     return {
       statusCode: 200,
       headers: {
@@ -32,17 +29,11 @@ module.exports.getAllTasks = async (event) => {
       body: jsonString,
     };
   } catch (error) {
-    console.log(error);
+    console.log("An error occurred:", error);
     return {
       statusCode: 500,
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
-        "Access-Control-Allow-Headers": "Content-Type, Authorization",
-        "Access-Control-Allow-Credentials": true,
-      },
       body: JSON.stringify({
-        message:
+        error:
           "An error occurred while retreiving the tasks from the server.",
       }),
     };

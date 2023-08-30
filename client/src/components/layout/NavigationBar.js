@@ -18,7 +18,7 @@ const NavigationBar = () => {
 
   const handleUpdateProfile = async () => {
     try {
-      const apiUrl = `https://0a6quki7nk.execute-api.us-west-2.amazonaws.com/dev/users/${user._id}`;
+      const apiUrl = `https://3bivlllof3.execute-api.us-west-2.amazonaws.com/dev/users/${user._id}`;
       const response = await axios.get(apiUrl, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -44,7 +44,7 @@ const NavigationBar = () => {
     const fetchUserData = async () => {
       if (user) {
         try {
-          const apiUrl = `https://0a6quki7nk.execute-api.us-west-2.amazonaws.com/dev/users/${user._id}`;
+          const apiUrl = `https://3bivlllof3.execute-api.us-west-2.amazonaws.com/dev/users/${user._id}`;
           const response = await axios.get(apiUrl);
           if (response.status === 200) {
             setLoading(false);
@@ -63,7 +63,7 @@ const NavigationBar = () => {
       if (user) {
         try {
           const response = await axios.get(
-            `https://0a6quki7nk.execute-api.us-west-2.amazonaws.com/dev/user/${user.username}/tasks`
+            `https://3bivlllof3.execute-api.us-west-2.amazonaws.com/dev/user/${user.username}/tasks`
           );
           setUserTasks(response.data);
         } catch (error) {
@@ -76,7 +76,7 @@ const NavigationBar = () => {
       if (user) {
         try {
           const response = await axios.get(
-            `https://0a6quki7nk.execute-api.us-west-2.amazonaws.com/dev/user/${user.username}/projects`
+            `https://3bivlllof3.execute-api.us-west-2.amazonaws.com/dev/user/${user.username}/projects`
           );
           setUserProjects(response.data);
         } catch (error) {

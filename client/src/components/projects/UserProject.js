@@ -108,7 +108,7 @@ const UserProject = ({ match }) => {
     const fetchUserProjects = async () => {
       try {
         const response = await axios.get(
-          `https://0a6quki7nk.execute-api.us-west-2.amazonaws.com/dev/user/${username}/projects`
+          `https://3bivlllof3.execute-api.us-west-2.amazonaws.com/dev/user/${username}/projects`
         );
         setProjects(response.data);
         setLoading(false);
@@ -122,8 +122,9 @@ const UserProject = ({ match }) => {
 
   const oneDeleteProject = async (projectId) => {
     try {
+      console.log(projectId);
       const response = await axios.delete(
-        `https://0a6quki7nk.execute-api.us-west-2.amazonaws.com/dev/projects/${projectId}`
+        `https://3bivlllof3.execute-api.us-west-2.amazonaws.com/dev/projects/${projectId}`
       );
       console.log("Delete response:", response.data); // Log the response
       setProjects((prevProjects) =>
@@ -137,7 +138,7 @@ const UserProject = ({ match }) => {
   const markProjectAsCompleted = async (projectId) => {
     try {
       await axios.put(
-        `https://0a6quki7nk.execute-api.us-west-2.amazonaws.com/dev/projects/${[
+        `https://3bivlllof3.execute-api.us-west-2.amazonaws.com/dev/projects/${[
           projectId,
         ]}/completed`,
         {
