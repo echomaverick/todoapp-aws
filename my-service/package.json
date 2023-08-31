@@ -19,6 +19,7 @@
     "mongoose": "^7.4.5",
     "nodemailer": "^6.9.4",
     "nodemon": "^3.0.1",
+    "serverless-plugin-optimize": "^4.2.1-rc.1",
     "serverless-webpack": "^5.13.0",
     "webpack": "^5.88.2"
   }

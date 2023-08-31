@@ -155,3 +155,12 @@ functions:
           cors: true
 plugins: 
   - serverless-webpack
+  - serverless-plugin-optimize
+
+custom:
+  optimizer: 
+    memorySize: 500
+
+package:
+  individually: true
+  excludeDevDependencies: false
