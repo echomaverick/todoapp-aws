@@ -1,4 +1,3 @@
-// handler.js
 const mongoose = require('mongoose');
 const connectDB = require('../config/dbConfig');
 const User = require('../models/userModel');
