@@ -1,96 +1,218 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
+// import React, { useContext, useEffect, useState } from "react";
+// import { Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
+// import { Link, useHistory } from "react-router-dom";
+// import axios from "axios";
+// import { AuthContext } from "../layout/Auth";
+
+// const NavigationBar = () => {
+//   const { user, logout, token, updateUser } = useContext(AuthContext);
+//   const history = useHistory();
+//   const [loading, setLoading] = useState(true);
+//   const [userTasks, setUserTasks] = useState([]);
+//   const [userProjects, setUserProjects] = useState([]);
+
+//   const handleLogout = () => {
+//     logout();
+//     history.push("/");
+//   };
+
+//   const handleUpdateProfile = async () => {
+//     try {
+//       const apiUrl = `https://3bivlllof3.execute-api.us-west-2.amazonaws.com/dev/users/${user._id}`;
+//       const response = await axios.get(apiUrl, {
+//         headers: {
+//           Authorization: `Bearer ${token}`,
+//         },
+//       });
+
+//       if (response.status === 200) {
+//         updateUser(response.data);
+//         console.log("User data updated:", response.data);
+//         history.push({
+//           pathname: `/users/edit/${user._id}`,
+//           state: { userData: response.data },
+//         });
+//       } else {
+//         console.error("Failed to fetch user data.");
+//       }
+//     } catch (error) {
+//       console.error("Error fetching user data:", error);
+//     }
+//   };
+
+//   useEffect(() => {
+//     const fetchUserData = async () => {
+//       if (user) {
+//         try {
+//           const apiUrl = `https://3bivlllof3.execute-api.us-west-2.amazonaws.com/dev/users/${user._id}`;
+//           const response = await axios.get(apiUrl);
+//           if (response.status === 200) {
+//             setLoading(false);
+//           } else {
+//             console.error("Failed to fetch user data.");
+//             setLoading(false);
+//           }
+//         } catch (error) {
+//           console.error("Error fetching user data:", error);
+//           setLoading(false);
+//         }
+//       }
+//     };
+
+//     const fetchUserTasks = async () => {
+//       if (user) {
+//         try {
+//           const response = await axios.get(
+//             `https://3bivlllof3.execute-api.us-west-2.amazonaws.com/dev/user/${user.username}/tasks`
+//           );
+//           setUserTasks(response.data);
+//         } catch (error) {
+//           console.error("Error fetching user tasks:", error);
+//         }
+//       }
+//     };
+
+//     const fetchUserProjects = async () => {
+//       if (user) {
+//         try {
+//           const response = await axios.get(
+//             `https://3bivlllof3.execute-api.us-west-2.amazonaws.com/dev/user/${user.username}/projects`
+//           );
+//           setUserProjects(response.data);
+//         } catch (error) {
+//           console.error("Error fetching user projects:", error);
+//         }
+//       }
+//     };
+
+//     fetchUserData();
+//     fetchUserTasks();
+//     fetchUserProjects();
+//   }, [user]);
+
+//   console.log("Rendering NavigationBar with user:", user);
+
+//   return (
+//     <Navbar
+//       collapseOnSelect
+//       expand="lg"
+//       className="bg-body-tertiary"
+//       sticky="top"
+//     >
+//       <Container>
+//         <Navbar.Brand as={Link} to="/">
+//           Proventus Nexus
+//         </Navbar.Brand>
+//         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+//         <Navbar.Collapse id="responsive-navbar-nav">
+//           <Nav className="me-auto">
+//             <Nav.Link as={Link} to="/">
+//               Home
+//             </Nav.Link>
+//             <Nav.Link as={Link} to="/about">
+//               About
+//             </Nav.Link>
+//           </Nav>
+//           <Nav className="ms-auto">
+//             {user && (
+//               <NavDropdown
+//                 title={`Welcome, ${user.username}`}
+//                 id="user-dropdown"
+//               >
+//                 <NavDropdown.Item as={Link} to={`/user/${user.username}/tasks`}>
+//                   Tasks
+//                 </NavDropdown.Item>
+//                 <NavDropdown.Item
+//                   as={Link}
+//                   to={`/user/${user.username}/projects`}
+//                 >
+//                   Projects
+//                 </NavDropdown.Item>
+//                 <NavDropdown.Item onClick={handleUpdateProfile}>
+//                   Update your profile
+//                 </NavDropdown.Item>
+//                 <NavDropdown.Item onClick={handleLogout}>
+//                   Logout
+//                 </NavDropdown.Item>
+//               </NavDropdown>
+//             )}
+//             {!user ? (
+//               <>
+//                 <Nav.Link as={Link} to="/login">
+//                   Login
+//                 </Nav.Link>
+//                 <Nav.Link as={Link} to="/signup">
+//                   Signup
+//                 </Nav.Link>
+//               </>
+//             ) : null}
+//           </Nav>
+//         </Navbar.Collapse>
+//       </Container>
+//     </Navbar>
+//   );
+// };
+
+// export default NavigationBar;
+
+import React, { useEffect, useState } from "react";
+import { Container, Nav, NavDropdown, Navbar } from "react-bootstrap";
 import { Link, useHistory } from "react-router-dom";
+import { Auth } from "aws-amplify";
 import axios from "axios";
-import { AuthContext } from "../layout/Auth";
 
 const NavigationBar = () => {
-  const { user, logout, token, updateUser } = useContext(AuthContext);
   const history = useHistory();
   const [loading, setLoading] = useState(true);
-  const [userTasks, setUserTasks] = useState([]);
-  const [userProjects, setUserProjects] = useState([]);
+  const [user, setUser] = useState(null);
 
-  const handleLogout = () => {
-    logout();
-    history.push("/");
+  const fetchUserData = async () => {
+    try {
+      const userData = await Auth.currentAuthenticatedUser();
+      setUser(userData);
+      setLoading(false);
+    } catch (error) {
+      console.log("Error fetching the user data", error);
+      setLoading(false);
+    }
   };
 
-  const handleUpdateProfile = async () => {
+  const updateProfile = async (updatedUserData) => {
     try {
-      const apiUrl = `https://3bivlllof3.execute-api.us-west-2.amazonaws.com/dev/users/${user._id}`;
-      const response = await axios.get(apiUrl, {
+      const user = await Auth.currentAuthenticatedUser();
+      const userId = user.attributes.sub;
+  
+      const apiUrl = `https://3bivlllof3.execute-api.us-west-2.amazonaws.com/dev/users/update/${userId}`;
+  
+      const response = await axios.put(apiUrl, updatedUserData, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token}`, // You need to provide the 'token' variable
         },
       });
-
+  
       if (response.status === 200) {
-        updateUser(response.data);
-        console.log("User data updated:", response.data);
-        history.push({
-          pathname: `/users/edit/${user._id}`,
-          state: { userData: response.data },
-        });
+        console.log("User profile updated successfully", response.data);
+        fetchUserData();
       } else {
-        console.error("Failed to fetch user data.");
+        console.log("Failed to update user profile");
       }
     } catch (error) {
-      console.error("Error fetching user data:", error);
+      console.log("Error updating the user profile", error);
     }
   };
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      if (user) {
-        try {
-          const apiUrl = `https://3bivlllof3.execute-api.us-west-2.amazonaws.com/dev/users/${user._id}`;
-          const response = await axios.get(apiUrl);
-          if (response.status === 200) {
-            setLoading(false);
-          } else {
-            console.error("Failed to fetch user data.");
-            setLoading(false);
-          }
-        } catch (error) {
-          console.error("Error fetching user data:", error);
-          setLoading(false);
-        }
-      }
-    };
-
-    const fetchUserTasks = async () => {
-      if (user) {
-        try {
-          const response = await axios.get(
-            `https://3bivlllof3.execute-api.us-west-2.amazonaws.com/dev/user/${user.username}/tasks`
-          );
-          setUserTasks(response.data);
-        } catch (error) {
-          console.error("Error fetching user tasks:", error);
-        }
-      }
-    };
-
-    const fetchUserProjects = async () => {
-      if (user) {
-        try {
-          const response = await axios.get(
-            `https://3bivlllof3.execute-api.us-west-2.amazonaws.com/dev/user/${user.username}/projects`
-          );
-          setUserProjects(response.data);
-        } catch (error) {
-          console.error("Error fetching user projects:", error);
-        }
-      }
-    };
-
     fetchUserData();
-    fetchUserTasks();
-    fetchUserProjects();
-  }, [user]);
+  }, []);
 
-  console.log("Rendering NavigationBar with user:", user);
+  const handleLogout = async () => {
+    try {
+      await Auth.signOut();
+      history.push("/");
+    } catch (error) {
+      console.log("Error logging out", error);
+    }
+  };
 
   return (
     <Navbar
@@ -128,7 +250,8 @@ const NavigationBar = () => {
                 >
                   Projects
                 </NavDropdown.Item>
-                <NavDropdown.Item onClick={handleUpdateProfile}>
+                {/* Add the "Update your profile" link here */}
+                <NavDropdown.Item onClick={updateProfile}>
                   Update your profile
                 </NavDropdown.Item>
                 <NavDropdown.Item onClick={handleLogout}>
