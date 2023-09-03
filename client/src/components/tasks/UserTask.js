@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import '../styles/userTasks.css';
 
 const TaskCard = ({ task, onDelete, markTaskAsCompleted }) => {
   const [showConfirmation, setShowConfirmation] = useState(false);
@@ -19,7 +20,7 @@ const TaskCard = ({ task, onDelete, markTaskAsCompleted }) => {
   };
 
   return (
-    <div className="card shadow-sm">
+    <div className="user-task-card">
       <div className="card-body">
         <div className="task-title">
           <h5 className="card-title">
@@ -57,9 +58,9 @@ const TaskCard = ({ task, onDelete, markTaskAsCompleted }) => {
             </div>
           </div>
         ) : (
-          <div className="btn-group">
+          <div className="buttons-group">
             <Link
-              className={`btn btn-primary btn-rounded ${
+              className={`view-task-button ${
                 task.completed ? "disabled" : ""
               }`}
               to={`/tasks/${task._id}`}
@@ -68,7 +69,7 @@ const TaskCard = ({ task, onDelete, markTaskAsCompleted }) => {
               View
             </Link>
             <Link
-              className={`btn btn-primary btn-rounded ${
+              className={`edit-task-button ${
                 task.completed ? "disabled" : ""
               }`}
               to={`/tasks/edit/${task._id}`}
@@ -77,13 +78,13 @@ const TaskCard = ({ task, onDelete, markTaskAsCompleted }) => {
               Edit
             </Link>
             <button
-              className="btn btn-danger btn-rounded ml-2"
+              className="delete-task-button"
               onClick={handleDelete}
             >
               Delete
             </button>
             <button
-              className="btn btn-success btn-rouned ml-2"
+              className="completed-task-button"
               onClick={() => markTaskAsCompleted(task._id)}
               disabled={task.completed}
             >
@@ -153,8 +154,8 @@ const UserTasks = ({ match }) => {
   return (
     <div className="container">
       <div className="d-flex justify-content-between align-items-center mb-3">
-        <h2 className="mb-0">Tasks for {username}</h2>
-        <Link className="btn btn-success" to="/tasks">
+        <h2 className="user-task">Tasks for {username}</h2>
+        <Link className="add-task-button" to="/tasks">
           Add Task
         </Link>
       </div>
