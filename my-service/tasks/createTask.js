@@ -7,20 +7,19 @@ const Role = require("../models/roleModel");
 module.exports.createTask = async (event) => {
   console.log("Lambda function invoked");
   try {
-
     await connectDB();
     console.log("Connected to the database");
 
-    const data = event.body;
-    const { title, description, assignedTo, projects, dueDate } = JSON.parse(data);
+    const data = JSON.parse(event.body);
+    const { title, description, assignedTo, projects, dueDate } = data;
     console.log("Event body", event.body);
 
-    if (!title || !description || !assignedTo) {
-      console.log("Title, description, and assignedTo are required fields");
+    if (!title || !description) {
+      console.log("Title and description are required fields");
       return {
         statusCode: 400,
         body: JSON.stringify({
-          error: "Title, description and assignedTo are required fields",
+          error: "Title and description are required fields",
         }),
       };
     }
@@ -37,7 +36,7 @@ module.exports.createTask = async (event) => {
       };
     }
 
-    const titleRegex = /^[A-Za-z\s]+$/;
+    const titleRegex = /^[A-Za-z0-9\s]+$/;
     if (!titleRegex.test(title)) {
       console.log("Invalid title format");
       return {
@@ -49,25 +48,25 @@ module.exports.createTask = async (event) => {
       };
     }
 
-    const descriptionRegex = /^[A-Za-z\s]+$/;
+    const descriptionRegex = /^[A-Za-z0-9\s]+$/;
     if (!descriptionRegex.test(description)) {
       console.log("Invalid description format");
       return {
         statusCode: 400,
         body: JSON.stringify({
           error:
-            "Invalid description format! Description should only contain letter and spaces",
+            "Invalid description format! Description should only contain letters and spaces",
         }),
       };
     }
 
-    const existingUser = await User.findById(assignedTo);
+    const existingUser = await User.findOne({ username: assignedTo });
     if (!existingUser) {
-      console.log("Invalid user ID! User does not exist.");
+      console.log("Invalid user! User does not exist.");
       return {
         statusCode: 404,
         body: JSON.stringify({
-          message: "Invalid user ID! User does not exists.",
+          message: "Invalid user! User does not exist.",
         }),
       };
     }
@@ -75,14 +74,14 @@ module.exports.createTask = async (event) => {
     const newTask = new Tasks({
       title,
       description,
-      assignedTo,
+      assignedTo: [existingUser._id], // Assign the user based on their username
       projects,
-      duDate: new Date(dueDate),
+      dueDate: new Date(dueDate),
     });
     await newTask.save();
 
     await User.updateMany(
-      { _id: { $in: assignedTo } },
+      { _id: { $in: [existingUser._id] } },
       { $push: { tasks: newTask._id } }
     );
 

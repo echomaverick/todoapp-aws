@@ -1,5 +1,11 @@
 import React, { useState } from "react";
 import ReactLoading from "react-loading";
+import "../styles/home.css";
+import Logo from "../images/logoi.webp";
+import {BsInstagram} from 'react-icons/bs';
+import {BsTwitter} from 'react-icons/bs';
+import {BsFacebook} from 'react-icons/bs';
+import {BsLinkedin} from 'react-icons/bs';
 
 const Home = () => {
   const [email, setEmail] = useState("");
@@ -45,94 +51,106 @@ const Home = () => {
     setIsLoading(false);
   };
 
-  const containerStyle = {
-    position: "fixed",
-    width: "100%",
-    minHeight: "100%",
-    fontFamily: "Poppins, sans-serif",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    color: "#fff",
-    padding: "20px",
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-  };
-
-  const overlayStyle = {
-    content: "",
-    position: "absolute",
-    top: 0,
-    left: 0,
-    width: "100%",
-    height: "100%",
-    background: "rgba(0, 0, 0, 1)",
-    backdropFilter: "blur(20px)",
-    zIndex: -999,
-  };
-
-  const headerStyle = {
-    fontSize: "54px",
-    fontWeight: "bold",
-    marginBottom: "40px",
-    color: "#fff",
-  };
-
-  const subheaderStyle = {
-    fontSize: "24px",
-    marginBottom: "60px",
-    color: "#fff",
-  };
-
-  const inputContainerStyle = {
-    display: "flex",
-    alignItems: "center",
-  };
-
-  const inputStyle = {
-    border: "0 solid #0078d4",
-    borderRadius: "20px",
-    padding: "15px",
-    width: "300px",
-    fontSize: "18px",
-    marginRight: "-20px",
-  };
-
-  const buttonStyle = {
-    padding: "15px 30px",
-    borderRadius: "20px",
-    backgroundColor: "#0078d4",
-    color: "#fff",
-    textDecoration: "none",
-    fontSize: "18px",
-    fontWeight: "bold",
-    transition: "background-color 0.2s",
-    marginLeft: "30px",
-  };
-
   return (
-    <div style={containerStyle}>
-      <div style={overlayStyle}></div>
-      <h1 style={headerStyle}>Welcome to Proventus Nexus</h1>
-      <p style={subheaderStyle}>Discover amazing things.</p>
-      <div style={inputContainerStyle}>
+    <div className="big-home">
+      <div className="home">
+        <div className="home-container">
+          <h2>
+            Proventus Nexus brings <br /> all your tasks, projects,
+            <br /> and teams together in one.
+          </h2>
+        </div>
+        <div className="keep-container">
+          <p>Keep everything in the same place-even if your team isn't.</p>
+        </div>
         <input
           type="email"
-          placeholder="Enter your email"
+          className="email-input"
+          placeholder="Enter your email address"
           value={email}
-          onChange={handleEmailChange}
-          style={inputStyle}
         />
-        <button onClick={handleSubscribe} style={buttonStyle}>
-          {isLoading ? (
-            <ReactLoading type="bubbles" color="#fff" height={20} width={40} />
-          ) : (
-            "Subscribe"
-          )}
-        </button>
+        <div className="signup-container">
+          <a className="signup-button" href="/signup">
+            Subscribe - it's free
+          </a>
+        </div>
+
+        <div className="image">
+          <img src={Logo} alt="logo" />
+        </div>
       </div>
-      {message && <p>{message}</p>}
+
+      <div className="home2">
+        <p className="home-text2">Proventus 101</p>
+        <div className="home-container2">
+          <h2>Workflows for any project, big or small</h2>
+        </div>
+
+        <div className="card-carousel">
+          <div className="proventus-cards">
+            <div className="card-bar1"></div>
+            <h3> Project management</h3>
+            <p>
+              Keep tasks in order, deadlines on track, and team members aligned
+              with Trello.
+            </p>
+          </div>
+          <div className="proventus-cards">
+            <div className="card-bar2"></div>
+            <h3>Task management</h3>
+            <p>
+              Use Trello to track, manage, complete, and bring tasks together
+              like the pieces of a puzzle, and make your team’s projects a
+              cohesive success every time.
+            </p>
+          </div>
+          <div className="proventus-cards">
+            <div className="card-bar3"></div>
+            <h3>Brainstorming</h3>
+            <p>
+              Unleash your team’s creativity and keep ideas visible,
+              collaborative, and actionable.
+            </p>
+          </div>
+        </div>
+
+        <div className="our-use-case">
+          <h4>No need to start from scratch. Jump-start your workflow with a proven playbook <br/>designed for different teams. Customize it to make it yours.</h4>
+          <a href="/" className="use-case-button">Learn more</a>
+        </div>
+      </div>
+
+      <div className="footer">
+        <div className="footer-container">
+          <ul>
+            <li><a href="/privacy">Privacy</a></li>
+            <li><a href="/terms">Terms</a></li>
+            <li>Copyright © 2023<a href="/">Proventus Nexus</a></li>
+            <li>&nbsp;</li>
+            <li>&nbsp;</li>
+            <li>&nbsp;</li>
+            <li>&nbsp;</li>
+            <li>&nbsp;</li>
+            <li>&nbsp;</li>
+            <li>&nbsp;</li>
+            <li>&nbsp;</li>
+            <li>&nbsp;</li>
+            <li>
+             <a href="https://www.instagram.com/_samueldervishi_"> <BsInstagram /></a>
+            </li>
+            <li>
+            <a href="https://www.twitter.com/samueldervishii"> <BsTwitter /></a> 
+            </li>
+            <li>
+            <a href="https://www.facebook.com/samueldervishii"> <BsFacebook /></a>
+            </li>
+            <li>
+            <a href="https://www.linkedin.com/in/samueldervishi"> <BsLinkedin /></a>
+            </li>
+          </ul>
+          
+        </div>
+      </div>
     </div>
   );
 };

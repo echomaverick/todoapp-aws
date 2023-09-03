@@ -18,7 +18,7 @@ const AddTask = () => {
   const fetchAvailableData = async () => {
     try {
       const usersResponse = await axios.get(
-        "https://3bivlllof3.execute-api.us-west-2.amazonaws.com/dev/users"
+        "https://3pg6n3wy90.execute-api.us-west-2.amazonaws.com/dev/users"
       );
       setAvailableUsers(usersResponse.data);
     } catch (error) {
@@ -71,7 +71,7 @@ const AddTask = () => {
 
     try {
       await axios.post(
-        "https://3bivlllof3.execute-api.us-west-2.amazonaws.com/dev/tasks",
+        "https://3pg6n3wy90.execute-api.us-west-2.amazonaws.com/dev/tasks",
         taskData
       );
       setLoading(false);

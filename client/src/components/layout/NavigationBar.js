@@ -1,165 +1,9 @@
-// import React, { useContext, useEffect, useState } from "react";
-// import { Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
-// import { Link, useHistory } from "react-router-dom";
-// import axios from "axios";
-// import { AuthContext } from "../layout/Auth";
-
-// const NavigationBar = () => {
-//   const { user, logout, token, updateUser } = useContext(AuthContext);
-//   const history = useHistory();
-//   const [loading, setLoading] = useState(true);
-//   const [userTasks, setUserTasks] = useState([]);
-//   const [userProjects, setUserProjects] = useState([]);
-
-//   const handleLogout = () => {
-//     logout();
-//     history.push("/");
-//   };
-
-//   const handleUpdateProfile = async () => {
-//     try {
-//       const apiUrl = `https://3bivlllof3.execute-api.us-west-2.amazonaws.com/dev/users/${user._id}`;
-//       const response = await axios.get(apiUrl, {
-//         headers: {
-//           Authorization: `Bearer ${token}`,
-//         },
-//       });
-
-//       if (response.status === 200) {
-//         updateUser(response.data);
-//         console.log("User data updated:", response.data);
-//         history.push({
-//           pathname: `/users/edit/${user._id}`,
-//           state: { userData: response.data },
-//         });
-//       } else {
-//         console.error("Failed to fetch user data.");
-//       }
-//     } catch (error) {
-//       console.error("Error fetching user data:", error);
-//     }
-//   };
-
-//   useEffect(() => {
-//     const fetchUserData = async () => {
-//       if (user) {
-//         try {
-//           const apiUrl = `https://3bivlllof3.execute-api.us-west-2.amazonaws.com/dev/users/${user._id}`;
-//           const response = await axios.get(apiUrl);
-//           if (response.status === 200) {
-//             setLoading(false);
-//           } else {
-//             console.error("Failed to fetch user data.");
-//             setLoading(false);
-//           }
-//         } catch (error) {
-//           console.error("Error fetching user data:", error);
-//           setLoading(false);
-//         }
-//       }
-//     };
-
-//     const fetchUserTasks = async () => {
-//       if (user) {
-//         try {
-//           const response = await axios.get(
-//             `https://3bivlllof3.execute-api.us-west-2.amazonaws.com/dev/user/${user.username}/tasks`
-//           );
-//           setUserTasks(response.data);
-//         } catch (error) {
-//           console.error("Error fetching user tasks:", error);
-//         }
-//       }
-//     };
-
-//     const fetchUserProjects = async () => {
-//       if (user) {
-//         try {
-//           const response = await axios.get(
-//             `https://3bivlllof3.execute-api.us-west-2.amazonaws.com/dev/user/${user.username}/projects`
-//           );
-//           setUserProjects(response.data);
-//         } catch (error) {
-//           console.error("Error fetching user projects:", error);
-//         }
-//       }
-//     };
-
-//     fetchUserData();
-//     fetchUserTasks();
-//     fetchUserProjects();
-//   }, [user]);
-
-//   console.log("Rendering NavigationBar with user:", user);
-
-//   return (
-//     <Navbar
-//       collapseOnSelect
-//       expand="lg"
-//       className="bg-body-tertiary"
-//       sticky="top"
-//     >
-//       <Container>
-//         <Navbar.Brand as={Link} to="/">
-//           Proventus Nexus
-//         </Navbar.Brand>
-//         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-//         <Navbar.Collapse id="responsive-navbar-nav">
-//           <Nav className="me-auto">
-//             <Nav.Link as={Link} to="/">
-//               Home
-//             </Nav.Link>
-//             <Nav.Link as={Link} to="/about">
-//               About
-//             </Nav.Link>
-//           </Nav>
-//           <Nav className="ms-auto">
-//             {user && (
-//               <NavDropdown
-//                 title={`Welcome, ${user.username}`}
-//                 id="user-dropdown"
-//               >
-//                 <NavDropdown.Item as={Link} to={`/user/${user.username}/tasks`}>
-//                   Tasks
-//                 </NavDropdown.Item>
-//                 <NavDropdown.Item
-//                   as={Link}
-//                   to={`/user/${user.username}/projects`}
-//                 >
-//                   Projects
-//                 </NavDropdown.Item>
-//                 <NavDropdown.Item onClick={handleUpdateProfile}>
-//                   Update your profile
-//                 </NavDropdown.Item>
-//                 <NavDropdown.Item onClick={handleLogout}>
-//                   Logout
-//                 </NavDropdown.Item>
-//               </NavDropdown>
-//             )}
-//             {!user ? (
-//               <>
-//                 <Nav.Link as={Link} to="/login">
-//                   Login
-//                 </Nav.Link>
-//                 <Nav.Link as={Link} to="/signup">
-//                   Signup
-//                 </Nav.Link>
-//               </>
-//             ) : null}
-//           </Nav>
-//         </Navbar.Collapse>
-//       </Container>
-//     </Navbar>
-//   );
-// };
-
-// export default NavigationBar;
-
 import React, { useEffect, useState } from "react";
-import { Container, Nav, NavDropdown, Navbar } from "react-bootstrap";
+import { Container, Navbar, Nav } from "react-bootstrap";
 import { Link, useHistory } from "react-router-dom";
 import { Auth } from "aws-amplify";
 import axios from "axios";
+import '../styles/navbar.css';
 
 const NavigationBar = () => {
   const history = useHistory();
@@ -177,27 +21,13 @@ const NavigationBar = () => {
     }
   };
 
-  const updateProfile = async (updatedUserData) => {
+  const handleLogout = async () => {
     try {
-      const user = await Auth.currentAuthenticatedUser();
-      const userId = user.attributes.sub;
-  
-      const apiUrl = `https://3bivlllof3.execute-api.us-west-2.amazonaws.com/dev/users/update/${userId}`;
-  
-      const response = await axios.put(apiUrl, updatedUserData, {
-        headers: {
-          Authorization: `Bearer ${token}`, // You need to provide the 'token' variable
-        },
-      });
-  
-      if (response.status === 200) {
-        console.log("User profile updated successfully", response.data);
-        fetchUserData();
-      } else {
-        console.log("Failed to update user profile");
-      }
+      await Auth.signOut();
+      setUser(null);
+      history.push("/");
     } catch (error) {
-      console.log("Error updating the user profile", error);
+      console.log("Error logging out", error);
     }
   };
 
@@ -205,75 +35,51 @@ const NavigationBar = () => {
     fetchUserData();
   }, []);
 
-  const handleLogout = async () => {
-    try {
-      await Auth.signOut();
-      history.push("/");
-    } catch (error) {
-      console.log("Error logging out", error);
-    }
-  };
-
+  
   return (
-    <Navbar
-      collapseOnSelect
-      expand="lg"
-      className="bg-body-tertiary"
-      sticky="top"
-    >
-      <Container>
-        <Navbar.Brand as={Link} to="/">
-          Proventus Nexus
-        </Navbar.Brand>
-        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-        <Navbar.Collapse id="responsive-navbar-nav">
-          <Nav className="me-auto">
-            <Nav.Link as={Link} to="/">
-              Home
-            </Nav.Link>
-            <Nav.Link as={Link} to="/about">
-              About
-            </Nav.Link>
-          </Nav>
-          <Nav className="ms-auto">
-            {user && (
-              <NavDropdown
-                title={`Welcome, ${user.username}`}
-                id="user-dropdown"
-              >
-                <NavDropdown.Item as={Link} to={`/user/${user.username}/tasks`}>
-                  Tasks
-                </NavDropdown.Item>
-                <NavDropdown.Item
-                  as={Link}
-                  to={`/user/${user.username}/projects`}
-                >
-                  Projects
-                </NavDropdown.Item>
-                {/* Add the "Update your profile" link here */}
-                <NavDropdown.Item onClick={updateProfile}>
-                  Update your profile
-                </NavDropdown.Item>
-                <NavDropdown.Item onClick={handleLogout}>
-                  Logout
-                </NavDropdown.Item>
-              </NavDropdown>
-            )}
-            {!user ? (
-              <>
-                <Nav.Link as={Link} to="/login">
-                  Login
-                </Nav.Link>
-                <Nav.Link as={Link} to="/signup">
-                  Signup
-                </Nav.Link>
-              </>
-            ) : null}
-          </Nav>
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
-  );
+    <div className="navbar">
+      <div className="navbar__left">
+        <div className="navbar__logo">
+          <Link to="/" className="logo">
+            Proventus Nexus
+          </Link>
+        </div>
+      </div>
+      <div className="navbar__right">
+        <div className="navbar__rightItem">
+          {user && (
+            <div className="list">
+              <div className="listItem">
+                Welcome, {user.username}
+              </div>
+              <Link to={`/user/${user.username}/tasks`} className="listItem">
+                Tasks
+              </Link>
+              <Link to={`/user/${user.username}/projects`} className="listItem">
+                Projects
+              </Link>
+              <Link to={`/users/update/${user.attributes.sub}`} className="listItem">
+                Update your profile
+              </Link>
+              <button className="listItem button" onClick={handleLogout}>
+                Logout
+              </button>
+            </div>
+          )}
+          {!user ? (
+            <div className="list">
+              <Link to="/login" className="listItem">
+                Login
+              </Link>
+              <Link to="/signup" className="listItem">
+                Signup
+              </Link>
+            </div>
+          ) : null}
+        </div>
+      </div>
+    </div>
+  )
 };
 
 export default NavigationBar;

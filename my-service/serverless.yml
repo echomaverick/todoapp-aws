@@ -31,14 +31,14 @@ functions:
     handler: users/updateUser.updateUser
     events:
       - http:
-          path: /users/update/{id}
+          path: /users/update-profile/{username}
           method: PUT
           cors: true
   deleteUser:
     handler: users/deleteUser.deleteUser
     events:
       - http:
-          path: /users/{id}
+          path: /users/delete/{username}
           method: DELETE
           cors: true
   loginUser:
@@ -73,14 +73,14 @@ functions:
     handler: tasks/updateTask.updateTask
     events:
       - http:
-          path: /tasks/edit/{id}
+          path: /tasks/update/{id}
           method: PUT
           cors: true
   deleteTask:
     handler: tasks/deleteTask.deleteTask
     events:
       - http:
-          path: /tasks/{id}
+          path: /tasks/delete/{id}
           method: DELETE
           cors: true
   getTasksForUserByUsername:
@@ -115,7 +115,7 @@ functions:
     handler: projects/updateProject.updateProject
     events:
       - http:
-          path: /projects/edit/{id}
+          path: /projects/update/{id}
           method: PUT
           cors: true
   createProject:
@@ -129,7 +129,7 @@ functions:
     handler: projects/deleteProject.deleteProject
     events:
       - http:
-          path: /projects/{id}
+          path: /projects/delete/{id}
           method: DELETE
           cors: true
   getProjectsForUserByUsername:

@@ -11,8 +11,8 @@ module.exports.createProject = async (event) => {
     await connectDB();
     console.log("Connected to the database");
 
-    const data = event.body;
-    const { name, description, users, tasks, dueDate } = JSON.parse(data);
+    const data = JSON.parse(event.body);
+    const { name, description, users, tasks, dueDate } = data;
     console.log("Event body", event.body);
 
     if (!name || !description || !users) {
@@ -34,7 +34,7 @@ module.exports.createProject = async (event) => {
       };
     }
 
-    const nameRegex = /^[A-Za-z\s]+$/;
+    const nameRegex = /^[A-Za-z0-9\s]+$/;
     if (!nameRegex.test(name)) {
       console.log("Invalid name format");
       return {
@@ -46,7 +46,7 @@ module.exports.createProject = async (event) => {
       };
     }
 
-    const descriptionRegex = /^[A-Za-z\s]+$/;
+    const descriptionRegex = /^[A-Za-z0-9\s]+$/;
     if (!descriptionRegex.test(description)) {
       console.log("Invalid description format");
       return {

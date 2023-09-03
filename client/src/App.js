@@ -133,7 +133,6 @@ function App() {
                     <AdminRoute exact path="/alltasks" component={AllTasks} />
 
                     <Route exact path="/user/add" component={AddUser} />
-                    <Route exact path="/users/update/:id" component={EditUser} />
 
                     <Route
                       path="/confirm/:email"

@@ -1,4 +1,11 @@
 const AWS = require("aws-sdk");
+const mongoose = require('mongoose');
+const User = require("../models/userModel");
+const connectDB = require('../config/dbConfig');
+
+connectDB();
+console.log("Connected to the database");
+
 const cognito = new AWS.CognitoIdentityServiceProvider({
   apiVersion: '2016-04-18',
   region: 'us-west-2',
@@ -122,10 +129,22 @@ module.exports.createUser = async (event) => {
     };
     
     const signUpResponse = await cognito.signUp(params).promise();
+    console.log("Cognito Sign-Up Response", signUpResponse);
 
-    const loginPath = "/login";
+    const newUser = new User({
+      name,
+      surname,
+      username,
+      email,
+      password,
+      role,
+    });
+
+    await newUser.save();
+
+    const loginPath = "http://my-service-todoapp-bucket.s3-website-us-west-2.amazonaws.com/login";
     return {
-      statusCode: 200,
+      statusCode: 302,
       headers: {
         Location: loginPath,
       },

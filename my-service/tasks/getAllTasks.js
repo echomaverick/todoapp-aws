@@ -26,7 +26,7 @@ module.exports.getAllTasks = async (event) => {
         "Access-Control-Allow-Headers": "Content-Type, Authorization",
         "Access-Control-Allow-Credentials": true,
       },
-      body: jsonString,
+      body: JSON.stringify(tasks),
     };
   } catch (error) {
     console.log("An error occurred:", error);
