@@ -3,14 +3,16 @@ const mongoose = require('mongoose');
 const User = require("../models/userModel");
 const connectDB = require('../config/dbConfig');
 
+require('dotenv').config();
+
 connectDB();
 console.log("Connected to the database");
 
 const cognito = new AWS.CognitoIdentityServiceProvider({
   apiVersion: '2016-04-18',
-  region: 'us-west-2',
+  region: process.env.USER_REGION,
   params: {
-    UserPoolId: "us-west-2_tXvx728pX"
+    UserPoolId: process.env.USER_POOL_ID
   }
 });
 
@@ -101,7 +103,7 @@ module.exports.createUser = async (event) => {
     }
 
     const params = {
-      ClientId: '30qpp3s8qr32ielb83cupocdkc',
+      ClientId: process.env.CLIENT_ID,
       Username: username,
       Password: password,
       UserAttributes: [

@@ -3,6 +3,8 @@ const { CognitoIdentityServiceProvider } = AWS;
 const { connectDB } = require('../config/dbConfig');
 const User = require('../models/userModel');
 
+require('dotenv').config();
+
 exports.updateUser = async (event) => {
   console.log("Lambda function invoked");
 
@@ -47,7 +49,7 @@ exports.updateUser = async (event) => {
 
     const cognitoIdentityServiceProvider = new AWS.CognitoIdentityServiceProvider();
     const cognitoResponse = await cognitoIdentityServiceProvider.adminUpdateUserAttributes({
-      UserPoolId: 'us-west-2_tXvx728pX',
+      UserPoolId: process.env.USER_POOL_ID,
       Username: username,
       UserAttributes: [
         {

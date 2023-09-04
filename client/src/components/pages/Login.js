@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import { Auth } from "aws-amplify";
 import { Container, Form, Button, Alert, Card } from "react-bootstrap";
+import dotenv from 'dotenv';
+dotenv.config();
+
 
 Auth.configure({
-  region: "us-west-2",
-  userPoolId: "us-west-2_tXvx728pX",
-  userPoolWebClientId: "30qpp3s8qr32ielb83cupocdkc",
+  region: process.env.USER_REGION,
+  userPoolId: process.env.USER_POOL_ID,
+  userPoolWebClientId: process.env.CLIENT_ID,
 });
 
 const Login = () => {

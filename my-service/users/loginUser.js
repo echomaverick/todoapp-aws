@@ -1,6 +1,8 @@
 const AWS = require("aws-sdk");
 const cognito = new AWS.CognitoIdentityServiceProvider();
 
+require('dotenv').config();
+
 const headersComponent = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "OPTIONS, POST, GET, PUT, DELETE",
@@ -20,7 +22,7 @@ module.exports.loginUser = async (event) => {
 
     const authParams = {
       AuthFlow: "USER_PASSWORD_AUTH",
-      ClientId: "30qpp3s8qr32ielb83cupocdkc",
+      ClientId: process.env.CLIENT_ID,
       AuthParameters: {
         USERNAME: requestBody.username,
         PASSWORD: requestBody.password,
