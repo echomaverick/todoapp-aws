@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useHistory } from "react-router-dom";
 import "../styles/projectSearch.css";
+import '../styles/userProjects.css';
 
 const ProjectCard = ({ project, onDelete, onEdit, markProjectAsCompleted }) => {
   const [showConfirmation, setShowConfirmation] = useState(false);
@@ -24,7 +25,7 @@ const ProjectCard = ({ project, onDelete, onEdit, markProjectAsCompleted }) => {
   };
 
   return (
-    <div className="card shadow-sm">
+    <div className="user-project-card">
       <div className="card-body">
         <h5 className="card-title">Name: {project.name}</h5>
         <p className="card-text">Description: {project.description}</p>
@@ -56,7 +57,7 @@ const ProjectCard = ({ project, onDelete, onEdit, markProjectAsCompleted }) => {
         ) : (
           <div className="btn-group">
             <Link
-              className={`btn btn-primary btn-rounded ${
+              className={`view-project-button ${
                 project.completed ? "disabled" : ""
               }`}
               to={`/projects/${project._id}`}
@@ -65,7 +66,7 @@ const ProjectCard = ({ project, onDelete, onEdit, markProjectAsCompleted }) => {
               View
             </Link>
             <Link
-              className={`btn btn-primary btn-rounded ${
+              className={`edit-project-button ${
                 project.completed ? "disabled" : ""
               }`}
               to={`/projects/edit/${project._id}`}
@@ -74,13 +75,13 @@ const ProjectCard = ({ project, onDelete, onEdit, markProjectAsCompleted }) => {
               Edit
             </Link>
             <button
-              className="btn btn-danger btn-rounded ml-2"
+              className="delete-project-button"
               onClick={handleDelete}
             >
               Delete
             </button>
             <button
-              className="btn btn-success btn-rounded ml-2"
+              className="completed-project-button"
               onClick={() => markProjectAsCompleted(project._id)}
               disabled={project.completed}
             >
@@ -160,8 +161,8 @@ const UserProject = ({ match }) => {
   return (
     <div className="container">
       <div className="d-flex justify-content-between align-items-center mb-3">
-        <h2 className="mb-0">Projects for {username}</h2>
-        <Link className="btn btn-success" to="/projects">
+        <h2 className="user-project">Projects for {username}</h2>
+        <Link className="add-project-button" to="/projects">
           Add Project
         </Link>
       </div>

@@ -88,7 +88,6 @@ function App() {
 
                 {user ? (
                   <>
-                    {/* task routes */}
                     <Route exact path="/tasks" component={AddUserTask} />
                     <Route
                       exact
@@ -96,12 +95,9 @@ function App() {
                       component={UserTasks}
                     />
                     <Route exact path="/tasks/:id" component={Task} />
-                    {/* <Route exact path="/tasks" component={AllTasks} /> */}
-                    {/* <Route exact path="/tasks" component={AddTask} /> */}
                     <Route exact path="/tasks/edit/:id" component={EditTask} />
                     <Route exact path="/users/update/:id" component={EditUser} />
 
-                    {/* project routes*/}
                     <Route
                       exact
                       path="/projects"
@@ -113,17 +109,12 @@ function App() {
                       component={UserProject}
                     />
                     <Route exact path="/projects/:id" component={Projects} />
-                    {/* <Route exact path="/projects" component={AllProjects} /> */}
                     <Route
                       exact
                       path="/projects/edit/:id"
                       component={EditProject}
                     />
-                    {/* <Route exact path="/projects" component={AddProject} /> */}
-
-                    {/*user routes */}
                     <Route exact path="/users/:id" component={User} />
-                    {/* Admin-only routes */}
                     <AdminRoute
                       exact
                       path="/allprojects"
@@ -154,3 +145,10 @@ function App() {
 }
 
 export default App;
+
+
+
+
+
+
+
