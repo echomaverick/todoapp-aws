@@ -153,6 +153,13 @@ functions:
           path: /roles
           method: GET
           cors: true
+  getProjectsForTasks:
+    handler: tasks/getProjectsForTasks.getProjectsForTasks
+    events:
+      - http:
+          path: /task/{id}/projects
+          method: GET
+          cors: true
 plugins: 
   - serverless-webpack
   - serverless-plugin-optimize

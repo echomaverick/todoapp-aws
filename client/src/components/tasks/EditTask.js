@@ -1,436 +1,8 @@
-// import React, { useState, useEffect } from "react";
-// import axios from "axios";
-// import { useHistory, useParams, Link, Redirect } from "react-router-dom";
-// import "../styles/edittask.css";
-
-// const EditTask = () => {
-//   let history = useHistory();
-//   const { id } = useParams();
-//   const [task, setTask] = useState({
-//     title: "",
-//     description: "",
-//     assignedTo: [],
-//     projects: [],
-//   });
-//   const [users, setUsers] = useState([]);
-//   const [projects, setProjects] = useState([]);
-//   const [tasks, setTasks] = useState([]);
-//   const [loading, setLoading] = useState(false);
-//   const [errors, setErrors] = useState({
-//     title: "",
-//     description: "",
-//     assignedTo: "",
-//     projects: "",
-//   });
-//   const [notFound, setNotFound] = useState(false);
-//   const [isUserDropdownOpen, setUserDropdownOpen] = useState(false);
-//   const [isProjectDropdownOpen, setProjectDropdownOpen] = useState(false);
-
-//   const { title, description, assignedTo, projects: selectedProjects } = task;
-
-//   const loadTasksAndUsers = async () => {
-//     try {
-//       const [tasksResponse, usersResponse] = await Promise.all([
-//         axios.get(
-//           "https://3pg6n3wy90.execute-api.us-west-2.amazonaws.com/dev/tasks"
-//         ),
-//         axios.get(
-//           "https://3pg6n3wy90.execute-api.us-west-2.amazonaws.com/dev/users"
-//         ),
-//       ]);
-//       setTasks(tasksResponse.data);
-//       setUsers(usersResponse.data);
-//     } catch (error) {
-//       console.error("Error loading tasks and users:", error);
-//     }
-//   };
-
-//   useEffect(() => {
-//     loadTask();
-//     loadTasksAndUsers();
-//     loadProjects();
-//   }, []);
-
-//   const onInputChange = (e) => {
-//     const { name, value, type } = e.target;
-//     const newValue =
-//       type === "select-multiple"
-//         ? Array.from(e.target.selectedOptions).map((option) => option.value)
-//         : value;
-//     setTask((prevTask) => ({
-//       ...prevTask,
-//       [name]: newValue,
-//     }));
-//     setErrors((prevErrors) => ({
-//       ...prevErrors,
-//       [name]: "",
-//     }));
-//   };
-
-//   const isAtLeastOneSelected = (array) => {
-//     return array.length > 0;
-//   };
-
-//   const isEmpty = (value) => value.trim() === "";
-
-//   const isFormValid = () => {
-//     const errors = {
-//       title: isEmpty(title) ? "Task title is required." : "",
-//       description: isEmpty(description) ? "Task description is required." : "",
-//       assignedTo: isAtLeastOneSelected(assignedTo)
-//         ? ""
-//         : "At least one user should be selected.",
-//       projects: isAtLeastOneSelected(selectedProjects)
-//         ? ""
-//         : "At least one project should be selected.",
-//     };
-//     setErrors(errors);
-
-//     return Object.values(errors).every((error) => error === "");
-//   };
-
-//   const onSubmit = async (e) => {
-//     e.preventDefault();
-//     if (!isFormValid()) {
-//       return;
-//     }
-//     setLoading(true);
-
-//     try {
-//       await axios.put(
-//         `https://3pg6n3wy90.execute-api.us-west-2.amazonaws.com/dev/tasks/edit/${id}`,
-//         {
-//           ...task,
-//           assignedTo: task.assignedTo,
-//           projects: task.projects,
-//         }
-//       );
-
-//       setLoading(false);
-//       history.push("/");
-//     } catch (error) {
-//       setLoading(false);
-//       console.error("Error updating task:", error);
-//     }
-//   };
-
-//   const loadTask = async () => {
-//     const objectIdRegex = /^[0-9a-fA-F]{24}$/;
-
-//     if (!objectIdRegex.test(id)) {
-//       setNotFound(true);
-//       return;
-//     }
-
-//     try {
-//       const result = await axios.get(
-//         `https://3pg6n3wy90.execute-api.us-west-2.amazonaws.com/dev/tasks/${id}`
-//       );
-//       if (!result.data) {
-//         setNotFound(true);
-//         return;
-//       }
-
-//       const userIDs = result.data.assignedTo.map((user) => user._id.toString());
-//       const projectIDs = result.data.projects.map((project) =>
-//         project._id.toString()
-//       );
-//       setTask({
-//         title: result.data.title,
-//         description: result.data.description,
-//         assignedTo: userIDs,
-//         projects: projectIDs,
-//       });
-//     } catch (error) {
-//       console.error("Error loading task:", error);
-//       setNotFound(true);
-//     }
-//   };
-
-//   const loadProjects = async () => {
-//     try {
-//       const response = await axios.get(
-//         "https://3pg6n3wy90.execute-api.us-west-2.amazonaws.com/dev/projects"
-//       );
-//       setProjects(response.data);
-//     } catch (error) {
-//       console.error("Error loading projects:", error);
-//     }
-//   };
-
-//   const isAnyRequiredFieldEmpty = () => {
-//     return (
-//       isEmpty(title) ||
-//       isEmpty(description) ||
-//       !isAtLeastOneSelected(assignedTo) ||
-//       !isAtLeastOneSelected(selectedProjects)
-//     );
-//   };
-
-//   if (notFound) {
-//     return <Redirect to="/not-found" />;
-//   }
-
-//   const handleUserDropdownToggle = () => {
-//     setUserDropdownOpen(!isUserDropdownOpen);
-//   };
-
-//   const handleProjectDropdownToggle = () => {
-//     setProjectDropdownOpen(!isProjectDropdownOpen);
-//   };
-
-//   const handleSelectAll = (event) => {
-//     const { name, options } = event.target;
-//     const allValues = Array.from(options).map((option) => option.value);
-//     setTask((prevTask) => ({
-//       ...prevTask,
-//       [name]: allValues,
-//     }));
-//     setErrors((prevErrors) => ({
-//       ...prevErrors,
-//       [name]: "",
-//     }));
-//   };
-
-//   const handleUnselectAll = (event) => {
-//     const { name } = event.target;
-//     setTask((prevTask) => ({
-//       ...prevTask,
-//       [name]: [],
-//     }));
-//     setErrors((prevErrors) => ({
-//       ...prevErrors,
-//       [name]: "",
-//     }));
-//   };
-
-//   const handleCancel = () => {
-//     history.goBack();
-//   }
-
-//   return (
-//     <div className="container">
-//       <div className="shadow p-5">
-//         <h2 className="text-center mb-4">Edit Task</h2>
-//         <form onSubmit={onSubmit}>
-//           <div className="mb-3">
-//             <label htmlFor="title" className="form-label">
-//               Title:
-//             </label>
-//             <input
-//               type="text"
-//               className={`form-control ${errors.title ? "is-invalid" : ""}`}
-//               id="title"
-//               placeholder="Enter Task Title"
-//               name="title"
-//               value={title}
-//               onChange={onInputChange}
-//             />
-//             {errors.title && (
-//               <div className="invalid-feedback">{errors.title}</div>
-//             )}
-//           </div>
-//           <div className="mb-3">
-//             <label htmlFor="description" className="form-label">
-//               Description:
-//             </label>
-//             <textarea
-//               className={`form-control ${
-//                 errors.description ? "is-invalid" : ""
-//               }`}
-//               id="description"
-//               placeholder="Enter Task Description"
-//               name="description"
-//               value={description}
-//               onChange={onInputChange}
-//             />
-//             {errors.description && (
-//               <div className="invalid-feedback">{errors.description}</div>
-//             )}
-//           </div>
-//           <div className="mb-3">
-//             <label htmlFor="assignedTo" className="form-label">
-//               Assigned To:
-//             </label>
-//             <div className="custom-dropdown" style={{ marginBottom: "1rem" }}>
-//               <button
-//                 type="button"
-//                 className="btn btn-secondary custom-dropdown-toggle"
-//                 onClick={handleUserDropdownToggle}
-//                 style={{ width: "100%" }}
-//               >
-//                 {assignedTo.length === 0
-//                   ? "Select Users"
-//                   : `Selected Users (${assignedTo.length})`}{" "}
-//                 <i className="bi bi-caret-down-fill"></i>
-//               </button>
-//               {isUserDropdownOpen && (
-//                 <div className="card custom-dropdown-content">
-//                   <div className="card-body">
-//                     <div className="d-flex justify-content-center mb-2">
-//                       <button
-//                         type="button"
-//                         className="btn btn-primary btn-sm me-2"
-//                         onClick={handleSelectAll}
-//                       >
-//                         Select All
-//                       </button>
-//                       <button
-//                         type="button"
-//                         className="btn btn-primary btn-sm"
-//                         onClick={handleUnselectAll}
-//                       >
-//                         Unselect All
-//                       </button>
-//                     </div>
-//                     <div
-//                       className="custom-dropdown-user-list"
-//                       style={{ maxHeight: "200px", overflowY: "auto" }}
-//                     >
-//                       {users.map((user) => (
-//                         <div key={user._id} className="form-check">
-//                           <input
-//                             className="form-check-input"
-//                             type="checkbox"
-//                             value={user._id}
-//                             checked={assignedTo.includes(user._id)}
-//                             onChange={onInputChange}
-//                             name="assignedTo"
-//                           />
-//                           <label className="form-check-label custom-dropdown-label">
-//                             {user.name} {user.surname}
-//                           </label>
-//                         </div>
-//                       ))}
-//                     </div>
-//                   </div>
-//                 </div>
-//               )}
-//             </div>
-//             {errors.assignedTo && (
-//               <div className="text-danger">{errors.assignedTo}</div>
-//             )}
-//           </div>
-//           <div className="mb-3">
-//             <label htmlFor="projects" className="form-label">
-//               Projects:
-//             </label>
-//             <div className="custom-dropdown" style={{ marginBottom: "1rem" }}>
-//               <button
-//                 type="button"
-//                 className="btn btn-secondary custom-dropdown-toggle"
-//                 onClick={handleProjectDropdownToggle}
-//                 style={{ width: "100%" }}
-//               >
-//                 {selectedProjects.length === 0
-//                   ? "Select Projects"
-//                   : `Selected Projects (${selectedProjects.length})`}{" "}
-//                 <i className="bi bi-caret-down-fill"></i>
-//               </button>
-//               {isProjectDropdownOpen && (
-//                 <div className="card custom-dropdown-content">
-//                   <div className="card-body">
-//                     <div className="d-flex justify-content-center mb-2">
-//                       <button
-//                         type="button"
-//                         className="btn btn-primary btn-sm me-2"
-//                         onClick={handleSelectAll}
-//                       >
-//                         Select All
-//                       </button>
-//                       <button
-//                         type="button"
-//                         className="btn btn-primary btn-sm"
-//                         onClick={handleUnselectAll}
-//                       >
-//                         Unselect All
-//                       </button>
-//                     </div>
-//                     <div
-//                       className="custom-dropdown-user-list"
-//                       style={{ maxHeight: "200px", overflowY: "auto" }}
-//                     >
-//                       {projects.map((project) => (
-//                         <div key={project._id} className="form-check">
-//                           <input
-//                             className="form-check-input"
-//                             type="checkbox"
-//                             value={project._id}
-//                             checked={selectedProjects.includes(project._id)}
-//                             onChange={onInputChange}
-//                             name="projects"
-//                           />
-//                           <label className="form-check-label custom-dropdown-label">
-//                             {project.name}
-//                           </label>
-//                         </div>
-//                       ))}
-//                     </div>
-//                   </div>
-//                 </div>
-//               )}
-//             </div>
-//             {errors.projects && (
-//               <div className="text-danger">{errors.projects}</div>
-//             )}
-//           </div>
-//           <div className="d-flex justify-content-start">
-//             <button
-//               className="btn btn-primary"
-//               type="submit"
-//               disabled={loading || isAnyRequiredFieldEmpty()}
-//             >
-//               {loading ? "Updating..." : "Update Task"}
-//             </button>
-//             <button className="btn btn-primary" onClick={handleCancel}>
-//               Cancel
-//             </button>
-//           </div>
-//         </form>
-
-//         {loading && (
-//           <div className="loader-container">
-//             <div className="loader"></div>
-//           </div>
-//         )}
-//       </div>
-//       <style>
-//         {`
-//           /* Additional styles for mobile view */
-//           @media (max-width: 576px) {
-//             .btn {
-//               margin-top: 10px;
-//               pointer-events: ${isAnyRequiredFieldEmpty() ? "none" : "auto"};
-//             }
-
-//             /* Adjust the error message position */
-//             .invalid-feedback {
-//               display: block;
-//               margin-top: 4px;
-//               font-size: 12px;
-//             }
-//           }
-//         `}
-//       </style>
-//     </div>
-//   );
-// };
-
-// export default EditTask;
-
-
-
-
-
-
-
-
-
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useHistory, useParams, Redirect } from "react-router-dom";
 import "../styles/edittask.css";
-import { Auth } from "aws-amplify"; // Import the Auth module from AWS Amplify
+import { Auth } from "aws-amplify";
 
 const EditTask = () => {
   let history = useHistory();
@@ -438,6 +10,7 @@ const EditTask = () => {
   const [task, setTask] = useState({
     title: "",
     description: "",
+    assignedTo: "",
   });
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({
@@ -445,11 +18,14 @@ const EditTask = () => {
     description: "",
   });
   const [notFound, setNotFound] = useState(false);
+  const [taskProjects, setTaskProjects] = useState([]);
 
   const { title, description } = task;
 
   useEffect(() => {
     loadTask();
+    loadTaskProjects();
+    loadCurrentUser(); // Load task projects when the component mounts
   }, []);
 
   const onInputChange = (e) => {
@@ -484,15 +60,15 @@ const EditTask = () => {
     setLoading(true);
 
     try {
-      // Assuming the username is unique and can be used as an identifier
       const currentUser = await Auth.currentAuthenticatedUser();
       const username = currentUser.attributes.preferred_username;
+      console.log(currentUser);
 
       await axios.put(
         `https://3pg6n3wy90.execute-api.us-west-2.amazonaws.com/dev/tasks/update/${id}`,
         {
           ...task,
-          assignedTo: username, // Assign the logged-in user based on their username
+          assignedTo: username,
         }
       );
 
@@ -528,6 +104,31 @@ const EditTask = () => {
     } catch (error) {
       console.error("Error loading task:", error);
       setNotFound(true);
+    }
+  };
+
+  const loadTaskProjects = async () => {
+    try {
+      const result = await axios.get(
+        `https://3pg6n3wy90.execute-api.us-west-2.amazonaws.com/dev/task/${id}/projects`
+      );
+      setTaskProjects(result.data);
+      console.log("Task projects", result.data);
+    } catch (error) {
+      console.error("Error loading task projects:", error);
+    }
+  };
+
+  const loadCurrentUser = async () => {
+    try {
+      const currentUser = await Auth.currentAuthenticatedUser();
+      const username = currentUser.attributes.preferred_username;
+      setTask((prevTask) => ({
+        ...prevTask,
+        assignedTo: username,
+      }));
+    } catch (error) {
+      console.error("Error loading current user:", error);
     }
   };
 
@@ -579,6 +180,23 @@ const EditTask = () => {
               <div className="invalid-feedback">{errors.description}</div>
             )}
           </div>
+          <div className="mb-3">
+            <label htmlFor="projects" className="form-label">
+              Projects Assigned:
+            </label>
+            <div className="project-list">
+              {taskProjects.length === 0 ? (
+                <p>No projects assigned to this task.</p>
+              ) : (
+                <ul>
+                  {taskProjects.map((project) => (
+                    <li key={project._id}>{project.name}</li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </div>
+
           <div className="d-flex justify-content-start">
             <button
               className="btn btn-primary"
@@ -599,26 +217,6 @@ const EditTask = () => {
           </div>
         )}
       </div>
-      <style>
-        {`
-          /* Additional styles for mobile view */
-          @media (max-width: 576px) {
-            .btn {
-              margin-top: 10px;
-              pointer-events: ${isEmpty(title) || isEmpty(description)
-                ? "none"
-                : "auto"};
-            }
-
-            /* Adjust the error message position */
-            .invalid-feedback {
-              display: block;
-              margin-top: 4px;
-              font-size: 12px;
-            }
-          }
-        `}
-      </style>
     </div>
   );
 };

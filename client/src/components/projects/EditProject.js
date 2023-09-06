@@ -102,7 +102,7 @@ const EditProject = () => {
 
     try {
       await axios.put(
-        `https://3pg6n3wy90.execute-api.us-west-2.amazonaws.com/dev/projects/${id}`,
+        `https://3pg6n3wy90.execute-api.us-west-2.amazonaws.com/dev/projects/update/${id}`,
         {
           ...project,
           users: project.users,
@@ -111,7 +111,7 @@ const EditProject = () => {
       );
 
       setLoading(false);
-      history.push("/projects");
+      history.push("/");
     } catch (error) {
       setLoading(false);
       console.error("Error updating project:", error);

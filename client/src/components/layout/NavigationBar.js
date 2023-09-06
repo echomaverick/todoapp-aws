@@ -24,6 +24,8 @@ const NavigationBar = () => {
   const handleLogout = async () => {
     try {
       await Auth.signOut();
+      localStorage.removeItem("idToken");
+    localStorage.removeItem("accessToken");
       setUser(null);
       history.push("/");
     } catch (error) {
@@ -58,7 +60,7 @@ const NavigationBar = () => {
               <Link to={`/user/${user.username}/projects`} className="listItem">
                 Projects
               </Link>
-              <Link to={`/users/update/${user.attributes.sub}`} className="listItem">
+              <Link to={`/users/update-profile/${user.attributes.preferred_username}`} className="listItem">
                 Update your profile
               </Link>
               <button className="listItem button" onClick={handleLogout}>

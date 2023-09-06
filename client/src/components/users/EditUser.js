@@ -1,3 +1,162 @@
+// import React, { useState, useEffect } from "react";
+// import axios from "axios";
+// import { useHistory } from "react-router-dom";
+// import { Auth } from "aws-amplify";
+
+// const EditUser = () => {
+//   const history = useHistory();
+//   const [user, setUser] = useState({
+//     name: "",
+//     surname: "",
+//     username: "",
+//     email: "",
+//     role: "",
+//   });
+//   const [loading, setLoading] = useState(false);
+
+//   useEffect(() => {
+//     fetchUserData();
+//   }, []);
+
+//   const fetchUserData = async () => {
+//     try {
+//       const userData = await Auth.currentAuthenticatedUser();
+//       const attributes = userData.attributes;
+
+//       setUser({
+//         name: attributes.given_name || "",
+//         surname: attributes.family_name || "",
+//         username: attributes.preferred_username || "",
+//         email: attributes.email || "",
+//         role: attributes.role || "",
+//       });
+//     } catch (error) {
+//       console.error("Error fetching user data:", error);
+//     }
+//   };
+
+//   const onInputChange = (e) => {
+//     setUser({ ...user, [e.target.name]: e.target.value });
+//   };
+
+//   const onSubmit = async (e) => {
+//     e.preventDefault();
+//     setLoading(true);
+
+//     try {
+//       const username = user.username;
+
+//       const accessToken = localStorage.getItem("accessToken");
+
+//       const headers = {
+//         Authorization: `Bearer ${accessToken}`,
+//       };
+
+    
+//       const mongoResponse = await axios.put(
+//         `https://3pg6n3wy90.execute-api.us-west-2.amazonaws.com/dev/users/update-profile/${username}`,
+//         user,
+//         { headers }
+//       );
+
+//       await Auth.updateUserAttributes(Auth.currentAuthenticatedUser(), {
+//         given_name: user.name,
+//         family_name: user.surname,
+//         preferred_username: user.username,
+//         email: user.email,
+//       });
+
+//       if (mongoResponse.status === 200) {
+//         console.log("User profile updated successfully in MongoDB and Cognito");
+//         fetchUserData();
+//       } else {
+//         console.log("Failed to update user profile");
+//       }
+//     } catch (error) {
+//       setLoading(false);
+//       console.error("Error updating user:", error);
+//     }
+//   };
+
+//   return (
+//     <div className="container">
+//       <div className="w-75 mx-auto shadow p-5">
+//         <h2 className="text-center mb-4">Update your profile info</h2>
+//         <form onSubmit={onSubmit}>
+//           <div className="form-group mb-3">
+//             <input
+//               type="text"
+//               className="form-control form-control-lg"
+//               placeholder="Enter Your Name"
+//               name="name"
+//               value={user.name}
+//               onChange={onInputChange}
+//             />
+//           </div>
+//           <div className="form-group mb-3">
+//             <input
+//               type="text"
+//               className="form-control form-control-lg"
+//               placeholder="Enter Your Surname"
+//               name="surname"
+//               value={user.surname}
+//               onChange={onInputChange}
+//             />
+//           </div>
+//           <div className="form-group mb-3">
+//             <input
+//               type="text"
+//               className="form-control form-control-lg"
+//               placeholder="Enter Your Username"
+//               name="username"
+//               value={user.username}
+//               onChange={onInputChange}
+//             />
+//           </div>
+//           <div className="form-group mb-3">
+//             <input
+//               type="email"
+//               className="form-control form-control-lg"
+//               placeholder="Enter Your E-mail Address"
+//               name="email"
+//               value={user.email}
+//               onChange={onInputChange}
+//             />
+//           </div>
+//           <div className="form-group mb-3">
+//             <input
+//               type="text"
+//               className="form-control form-control-lg"
+//               value={user.role}
+//               disabled
+//               hidden
+//             />
+//           </div>
+//           <div className="d-flex justify-content-start">
+//             <button className="btn btn-primary me-2">Update info</button>
+//             <button
+//               className="btn btn-primary"
+//               onClick={() => history.push("/")}
+//             >
+//               Cancel
+//             </button>
+//           </div>
+//         </form>
+//         {loading && (
+//           <div className="loader-container">
+//             <div className="loader"></div>
+//           </div>
+//         )}
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default EditUser;
+
+
+
+
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
@@ -20,16 +179,26 @@ const EditUser = () => {
 
   const fetchUserData = async () => {
     try {
-      const userData = await Auth.currentAuthenticatedUser();
-      const attributes = userData.attributes;
+      // Authenticate the user if not already authenticated
+      const currentUser = await Auth.currentAuthenticatedUser();
 
-      setUser({
-        name: attributes.given_name || "",
-        surname: attributes.family_name || "",
-        username: attributes.preferred_username || "",
-        email: attributes.email || "",
-        role: attributes.role || "",
-      });
+      // Get the user's current session
+      const userSession = currentUser.getSignInUserSession();
+
+      // Check if the user is authenticated (has an active session)
+      if (userSession) {
+        const attributes = currentUser.attributes;
+
+        setUser({
+          name: attributes.given_name || "",
+          surname: attributes.family_name || "",
+          username: attributes.preferred_username || "",
+          email: attributes.email || "",
+          role: attributes.role || "",
+        });
+      } else {
+        console.log('User is not authenticated.');
+      }
     } catch (error) {
       console.error("Error fetching user data:", error);
     }
@@ -37,6 +206,36 @@ const EditUser = () => {
 
   const onInputChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
+  };
+
+  const updateUserAttributes = async () => {
+    try {
+      // Authenticate the user if not already authenticated
+      const currentUser = await Auth.currentAuthenticatedUser();
+
+      // Get the user's current session
+      const userSession = currentUser.getSignInUserSession();
+
+      // Check if the user is authenticated (has an active session)
+      if (userSession) {
+        const updatedAttributes = {
+          given_name: user.name,
+          family_name: user.surname,
+          preferred_username: user.username,
+          // Add other updated attributes here
+        };
+
+        // Update the user attributes
+        const updatedUser = await Auth.updateUserAttributes(currentUser, updatedAttributes);
+
+        console.log('User attributes updated successfully:', updatedUser);
+        // You can also add code to show a success message or redirect the user here
+      } else {
+        console.log('User is not authenticated.');
+      }
+    } catch (error) {
+      console.error('Error updating user attributes:', error);
+    }
   };
 
   const onSubmit = async (e) => {
@@ -52,23 +251,21 @@ const EditUser = () => {
         Authorization: `Bearer ${accessToken}`,
       };
 
-    
       const mongoResponse = await axios.put(
         `https://3pg6n3wy90.execute-api.us-west-2.amazonaws.com/dev/users/update-profile/${username}`,
         user,
         { headers }
       );
 
-      await Auth.updateUserAttributes(Auth.currentAuthenticatedUser(), {
-        given_name: user.name,
-        family_name: user.surname,
-        preferred_username: user.username,
-        email: user.email,
-      });
-
       if (mongoResponse.status === 200) {
-        console.log("User profile updated successfully in MongoDB and Cognito");
-        fetchUserData();
+        console.log("User profile updated successfully in MongoDB");
+        // Call the function to update user attributes
+        await updateUserAttributes();
+
+        // Fetch user data again to display updated attributes
+        await fetchUserData();
+
+        // You can also add code to show a success message or redirect the user here
       } else {
         console.log("Failed to update user profile");
       }
@@ -121,6 +318,7 @@ const EditUser = () => {
               name="email"
               value={user.email}
               onChange={onInputChange}
+              disabled
             />
           </div>
           <div className="form-group mb-3">
@@ -153,3 +351,4 @@ const EditUser = () => {
 };
 
 export default EditUser;
+

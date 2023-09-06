@@ -85,7 +85,7 @@ module.exports.createProject = async (event) => {
 
     await Tasks.updateMany(
       { _id: { $in: tasks } },
-      { $push: { tasks: newProject._id } }
+      { $push: { projects: newProject._id } }
     );
 
     console.log("Project created successfully");

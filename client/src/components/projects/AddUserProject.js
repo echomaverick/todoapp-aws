@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
+import { API, Auth } from "aws-amplify";
 
 const AddUserProject = () => {
   const [name, setName] = useState("");
@@ -19,6 +20,7 @@ const AddUserProject = () => {
 
   useEffect(() => {
     fetchAvailableData();
+    fetchUserTasks();
   }, []);
 
   const fetchAvailableData = async () => {
@@ -26,16 +28,25 @@ const AddUserProject = () => {
       const usersResponse = await axios.get(
         "https://3pg6n3wy90.execute-api.us-west-2.amazonaws.com/dev/users"
       );
-      const tasksResponse = await axios.get(
-        "https://3pg6n3wy90.execute-api.us-west-2.amazonaws.com/dev/tasks"
-      );
-
       setAvailableUsers(usersResponse.data);
-      setAvailableTasks(tasksResponse.data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
+
+  const fetchUserTasks = async() => {
+    try{
+      const user = await Auth.currentAuthenticatedUser();
+      const username = user.username;
+
+      const tasksReponse = await axios.get(`https://3pg6n3wy90.execute-api.us-west-2.amazonaws.com/dev/user/${username}/tasks`);
+      setAvailableTasks(tasksReponse.data);
+      console.log(tasksReponse.data)
+    }catch(error){
+      console.log("Error fetching user tasks:", error);
+
+    }
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();

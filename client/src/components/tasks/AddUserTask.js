@@ -51,7 +51,6 @@ const AddUserTask = () => {
     setLoading(true);
 
     try {
-      // Assuming the username is unique and can be used as an identifier
       const currentUser = await Auth.currentAuthenticatedUser();
       const username = currentUser.attributes.preferred_username;
       const tasksResponse = await axios.post(
@@ -59,7 +58,7 @@ const AddUserTask = () => {
         {
           title,
           description,
-          assignedTo: username, // Assign the logged-in user based on their username
+          assignedTo: username, 
           dueDate,
         }
       );

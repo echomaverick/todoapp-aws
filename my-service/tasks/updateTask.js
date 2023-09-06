@@ -37,53 +37,14 @@ module.exports.updateTask = async (event) => {
       };
     }
 
-    if (!title || !description || !projects || !assignedTo) {
-      console.log("All fields are required");
+    // Check if the assigned user exists
+    const existingUser = await User.findOne({ username: assignedTo });
+    if (!existingUser) {
+      console.log("Invalid user! User does not exist.");
       return {
-        statusCode: 400,
+        statusCode: 404,
         body: JSON.stringify({
-          error:
-            "All fields are required (title, description, projects, assignedTo)",
-        }),
-      };
-    }
-
-    const titleRegex = /^[A-Za-z\s]+$/;
-    if (!titleRegex.test(title)) {
-      console.log("Invalid title format");
-      return {
-        statusCode: 400,
-        body: JSON.stringify({
-          error:
-            "Invalid title format! Title should only contain alphanumeric characters and spaces.",
-        }),
-      };
-    }
-
-    const descriptionRegex = /^[A-Za-z\s]+$/;
-    if (!descriptionRegex.test(description)) {
-      console.log("Invalid description format");
-      return {
-        statusCode: 400,
-        body: JSON.stringify({
-          error:
-            "Invalid description format! Description should only contain alphanumeric characters and spaces.",
-        }),
-      };
-    }
-
-    if (
-      !Array.isArray(assignedTo) ||
-      !assignedTo.every((assignedToId) =>
-        mongoose.Types.ObjectId.isValid(assignedToId)
-      )
-    ) {
-      console.log("Invalid 'assignedTo' field:", assignedTo);
-      return {
-        statusCode: 400,
-        body: JSON.stringify({
-          error:
-            "Invalid 'assignedTo' field. It should be an array of valid ObjectId.",
+          error: "Invalid user! User does not exist.",
         }),
       };
     }
@@ -91,7 +52,7 @@ module.exports.updateTask = async (event) => {
     task.title = title;
     task.description = description;
     task.projects = projects;
-    task.assignedTo = assignedTo;
+    task.assignedTo = [existingUser._id];
     task.completed = completed;
 
     if (dueDate && new Date(dueDate) >= new Date()) {

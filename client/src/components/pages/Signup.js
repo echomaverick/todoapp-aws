@@ -87,8 +87,7 @@ const Signup = () => {
     }
 
     setErrors(newErrors);
-
-    //controls if there are any validation errors
+    
     if (Object.keys(newErrors).length > 0) {
       return;
     }

@@ -10,9 +10,9 @@ console.log("Connected to the database");
 
 const cognito = new AWS.CognitoIdentityServiceProvider({
   apiVersion: '2016-04-18',
-  region: process.env.USER_REGION,
+  region: 'us-west-2',
   params: {
-    UserPoolId: process.env.USER_POOL_ID
+    UserPoolId:'us-west-2_tXvx728pX'
   }
 });
 
@@ -103,7 +103,7 @@ module.exports.createUser = async (event) => {
     }
 
     const params = {
-      ClientId: process.env.CLIENT_ID,
+      ClientId: '30qpp3s8qr32ielb83cupocdkc',
       Username: username,
       Password: password,
       UserAttributes: [
