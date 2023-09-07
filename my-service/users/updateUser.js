@@ -127,8 +127,6 @@ exports.updateUser = async (event) => {
 
   try {
     console.log("Event:", JSON.stringify(event));
-
-    // Retrieve the username from the path parameters
     const username = event.pathParameters.username;
     console.log("Username:", username);
 

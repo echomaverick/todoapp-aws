@@ -179,13 +179,10 @@ const EditUser = () => {
 
   const fetchUserData = async () => {
     try {
-      // Authenticate the user if not already authenticated
       const currentUser = await Auth.currentAuthenticatedUser();
 
-      // Get the user's current session
       const userSession = currentUser.getSignInUserSession();
 
-      // Check if the user is authenticated (has an active session)
       if (userSession) {
         const attributes = currentUser.attributes;
 
@@ -210,26 +207,20 @@ const EditUser = () => {
 
   const updateUserAttributes = async () => {
     try {
-      // Authenticate the user if not already authenticated
       const currentUser = await Auth.currentAuthenticatedUser();
 
-      // Get the user's current session
       const userSession = currentUser.getSignInUserSession();
 
-      // Check if the user is authenticated (has an active session)
       if (userSession) {
         const updatedAttributes = {
           given_name: user.name,
           family_name: user.surname,
           preferred_username: user.username,
-          // Add other updated attributes here
         };
 
-        // Update the user attributes
         const updatedUser = await Auth.updateUserAttributes(currentUser, updatedAttributes);
 
         console.log('User attributes updated successfully:', updatedUser);
-        // You can also add code to show a success message or redirect the user here
       } else {
         console.log('User is not authenticated.');
       }
@@ -259,13 +250,9 @@ const EditUser = () => {
 
       if (mongoResponse.status === 200) {
         console.log("User profile updated successfully in MongoDB");
-        // Call the function to update user attributes
         await updateUserAttributes();
 
-        // Fetch user data again to display updated attributes
         await fetchUserData();
-
-        // You can also add code to show a success message or redirect the user here
       } else {
         console.log("Failed to update user profile");
       }
