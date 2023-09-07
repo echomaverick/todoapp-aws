@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useHistory, useParams, Link, Redirect } from "react-router-dom";
+import { Auth } from "aws-amplify";
 
 const EditProject = () => {
   let history = useHistory();
@@ -101,12 +102,18 @@ const EditProject = () => {
     setLoading(true);
 
     try {
+      const currentUser = await Auth.currentAuthenticatedUser();
+      const idToken = currentUser.signInUserSession.idToken.jwtToken;
       await axios.put(
         `https://3pg6n3wy90.execute-api.us-west-2.amazonaws.com/dev/projects/update/${id}`,
         {
           ...project,
           users: project.users,
           tasks: project.tasks,
+        },  {
+          headers: {
+            Authorization: idToken
+          }
         }
       );
 

@@ -10,6 +10,7 @@ const AddTask = () => {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [isDropdownOpen, setDropdownOpen] = useState(false);
+  const [user, setUser] = useState('');
 
   useEffect(() => {
     fetchAvailableData();
@@ -69,10 +70,16 @@ const AddTask = () => {
       assignedTo: selectedUsers,
     };
 
+    const idToken = user.signInUserSession.idToken.jwtToken;
+    console.log(idToken);
     try {
       await axios.post(
         "https://3pg6n3wy90.execute-api.us-west-2.amazonaws.com/dev/tasks",
-        taskData
+        taskData, {
+          headers: {
+            Authorization: idToken
+          }
+        }
       );
       setLoading(false);
       history.push("/tasks");

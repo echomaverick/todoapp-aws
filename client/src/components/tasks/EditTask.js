@@ -62,6 +62,7 @@ const EditTask = () => {
     try {
       const currentUser = await Auth.currentAuthenticatedUser();
       const username = currentUser.attributes.preferred_username;
+      const idToken = currentUser.signInUserSession.idToken.jwtToken;
       console.log(currentUser);
 
       await axios.put(
@@ -69,6 +70,10 @@ const EditTask = () => {
         {
           ...task,
           assignedTo: username,
+        }, {
+          headers: {
+            Authorization: idToken
+          }
         }
       );
 

@@ -3,6 +3,7 @@ import { useParams, Redirect, Link } from "react-router-dom";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { Auth } from "aws-amplify";
 const Task = () => {
   console.log("Task1");
   const [loading, setLoading] = useState(true);
@@ -30,6 +31,8 @@ const Task = () => {
     }
 
     try {
+      const currentUser = await Auth.currentAuthenticatedUser();
+      const idToken = currentUser.signInUserSession.idToken.jwtToken;
       console.log("Fetching task data...");
       const res = await axios.get(
         `https://3pg6n3wy90.execute-api.us-west-2.amazonaws.com/dev/tasks/${id}?_=${new Date().getTime()}`
@@ -42,7 +45,12 @@ const Task = () => {
           async (userId) => {
             console.log("User id", userId);
             const userRes = await axios.get(
-              `https://3pg6n3wy90.execute-api.us-west-2.amazonaws.com/dev/users/${userId["_id"]}`
+              `https://3pg6n3wy90.execute-api.us-west-2.amazonaws.com/dev/users/${userId["_id"]}`,
+              {
+                headers :{
+                  Authorization: idToken
+                }
+              }
             );
             return userRes.data;
           }

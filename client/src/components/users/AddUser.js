@@ -116,7 +116,6 @@ const AddUser = () => {
           surname,
           username,
           email,
-          password,
         }
       );
   

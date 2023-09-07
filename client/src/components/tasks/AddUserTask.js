@@ -10,6 +10,7 @@ const AddUserTask = () => {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const history = useHistory();
+  const[user, setUser] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -53,6 +54,8 @@ const AddUserTask = () => {
     try {
       const currentUser = await Auth.currentAuthenticatedUser();
       const username = currentUser.attributes.preferred_username;
+      const idToken = currentUser.signInUserSession.idToken.jwtToken;
+      console.log(idToken);
       const tasksResponse = await axios.post(
         "https://3pg6n3wy90.execute-api.us-west-2.amazonaws.com/dev/tasks",
         {
@@ -60,6 +63,10 @@ const AddUserTask = () => {
           description,
           assignedTo: username, 
           dueDate,
+        },{
+          headers:{
+            Authorization: idToken
+          }
         }
       );
       console.log("Task Response:", tasksResponse);

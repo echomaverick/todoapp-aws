@@ -3,6 +3,7 @@ import { Link, Redirect, useParams } from "react-router-dom";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { Auth } from "aws-amplify";
 
 const Projects = () => {
   const [projects, setProjects] = useState({
@@ -24,8 +25,14 @@ const Projects = () => {
 
   const loadProjects = async () => {
     try {
+      const currentUser = await Auth.currentAuthenticatedUser();
+      const idToken = currentUser.signInUserSession.idToken.jwtToken;
       const res = await axios.get(
-        "https://3pg6n3wy90.execute-api.us-west-2.amazonaws.com/dev/projects"
+        "https://3pg6n3wy90.execute-api.us-west-2.amazonaws.com/dev/projects",{
+          headers: {
+            Authorization: idToken
+          }
+        }
       );
       setProjects(res.data);
       setLoading(false);

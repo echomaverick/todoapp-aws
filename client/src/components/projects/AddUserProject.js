@@ -25,8 +25,15 @@ const AddUserProject = () => {
 
   const fetchAvailableData = async () => {
     try {
+      const currentUser = await Auth.currentAuthenticatedUser();
+      const idToken = currentUser.signInUserSession.idToken.jwtToken;
       const usersResponse = await axios.get(
-        "https://3pg6n3wy90.execute-api.us-west-2.amazonaws.com/dev/users"
+        "https://3pg6n3wy90.execute-api.us-west-2.amazonaws.com/dev/users",
+        {
+          headers: {
+            Authorization: idToken,
+          },
+        }
       );
       setAvailableUsers(usersResponse.data);
     } catch (error) {
@@ -34,19 +41,26 @@ const AddUserProject = () => {
     }
   };
 
-  const fetchUserTasks = async() => {
-    try{
-      const user = await Auth.currentAuthenticatedUser();
-      const username = user.username;
+  const fetchUserTasks = async () => {
+    try {
+      const currentUser = await Auth.currentAuthenticatedUser();
+      const username = currentUser.username;
+      const idToken = currentUser.signInUserSession.idToken.jwtToken;
 
-      const tasksReponse = await axios.get(`https://3pg6n3wy90.execute-api.us-west-2.amazonaws.com/dev/user/${username}/tasks`);
+      const tasksReponse = await axios.get(
+        `https://3pg6n3wy90.execute-api.us-west-2.amazonaws.com/dev/user/${username}/tasks`,
+        {
+          headers: {
+            Authorization: idToken,
+          },
+        }
+      );
       setAvailableTasks(tasksReponse.data);
-      console.log(tasksReponse.data)
-    }catch(error){
+      console.log(tasksReponse.data);
+    } catch (error) {
       console.log("Error fetching user tasks:", error);
-
     }
-  }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -103,11 +117,18 @@ const AddUserProject = () => {
     };
 
     try {
+      const currentUser = await Auth.currentAuthenticatedUser();
+      const idToken = currentUser.signInUserSession.idToken.jwtToken;
       const response = await axios.post(
         "https://3pg6n3wy90.execute-api.us-west-2.amazonaws.com/dev/projects",
-        projectData
+        projectData,
+        {
+          headers: {
+            Authorization: idToken,
+          },
+        }
       );
-      
+
       console.log("Project added successfully:", response.data);
       setLoading(false);
       history.push("/");
@@ -148,7 +169,6 @@ const AddUserProject = () => {
           ]
     );
   };
-  
 
   const handleDropdownToggle = () => {
     setIsDropdownOpen((prevState) => !prevState);

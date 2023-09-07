@@ -68,6 +68,7 @@ const Home = () => {
           className="email-input"
           placeholder="Enter your email address"
           value={email}
+          onChange={handleEmailChange}
         />
         <div className="signup-container">
           <a className="signup-button" href="/signup">

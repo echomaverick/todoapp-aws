@@ -146,7 +146,7 @@ exports.updateUser = async (event) => {
     await connectDB();
     console.log("Connected to the database");
 
-    const mongoResponse = await User.updateOne({ username }, {
+    const mongoResponse =  User.updateOne({ username }, {
       name: updatedUserData.name,
       surname: updatedUserData.surname,
       username: updatedUserData.username,

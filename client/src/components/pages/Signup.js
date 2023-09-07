@@ -128,11 +128,14 @@ const Signup = () => {
         "https://3pg6n3wy90.execute-api.us-west-2.amazonaws.com/dev/users",
         userData
       );
-      console.log("User added successfully:", response.data);
-      setFormSubmitting(false);
-      setShowSuccessModal(true);
-
-      history.push("/login");
+      if(response.status === 200){
+        console.log("User created successfully!", response.data);
+        setShowSuccessModal(true);
+        setFormSubmitting(false);
+        history.push("/login");
+      }else{
+        console.log("Unexpected status code:", response.data);
+      }
     } catch (error) {
       setFormSubmitting(false);
       console.error("Error adding user:", error);

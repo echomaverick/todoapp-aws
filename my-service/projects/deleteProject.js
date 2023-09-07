@@ -17,7 +17,7 @@ module.exports.deleteProject = async (event) => {
     console.log("Task ID:", projectId);
 
     const deletedProject = await Projects.findByIdAndDelete(projectId);
-    console.log("Deleted task:", deletedTask);
+    console.log("Deleted task:", deletedProject);
 
     if (!deletedProject) {
       console.log("Project not found");

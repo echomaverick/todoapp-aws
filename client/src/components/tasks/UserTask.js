@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import '../styles/userTasks.css';
+import { Auth } from "aws-amplify";
 
 const TaskCard = ({ task, onDelete, markTaskAsCompleted }) => {
   const [showConfirmation, setShowConfirmation] = useState(false);
@@ -80,6 +81,7 @@ const TaskCard = ({ task, onDelete, markTaskAsCompleted }) => {
             <button
               className="delete-task-button"
               onClick={handleDelete}
+              disabled
             >
               Delete
             </button>
@@ -106,8 +108,14 @@ const UserTasks = ({ match }) => {
   useEffect(() => {
     const fetchUserTasks = async () => {
       try {
+        const currentUser = await Auth.currentAuthenticatedUser();
+        const idToken = currentUser.signInUserSession.idToken.jwtToken;
         const response = await axios.get(
-          `https://3pg6n3wy90.execute-api.us-west-2.amazonaws.com/dev/user/${username}/tasks`
+          `https://3pg6n3wy90.execute-api.us-west-2.amazonaws.com/dev/user/${username}/tasks`, {
+            headers: {
+              Authorization: idToken
+            }
+          }
         );
         setTasks(response.data);
         setLoading(false);

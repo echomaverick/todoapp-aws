@@ -138,7 +138,6 @@ module.exports.createUser = async (event) => {
       surname,
       username,
       email,
-      password,
       role,
     });
 
