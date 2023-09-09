@@ -21,7 +21,7 @@ const Signup = () => {
     const fetchData = async () => {
       try {
         const usersResponse = await axios.get(
-          "https://3pg6n3wy90.execute-api.us-west-2.amazonaws.com/dev/users"
+          "https://b2eb3dkeq5.execute-api.us-west-2.amazonaws.com/dev/users"
         );
         const users = usersResponse.data;
         setExistingEmails(users.map((user) => user.email.toLowerCase()));
@@ -96,7 +96,7 @@ const Signup = () => {
 
     try {
       const roleResponse = await axios.get(
-        "https://3pg6n3wy90.execute-api.us-west-2.amazonaws.com/dev/roles"
+        "https://b2eb3dkeq5.execute-api.us-west-2.amazonaws.com/dev/roles"
       );
       const existingRoles = roleResponse.data;
       const adminRole = existingRoles.find(
@@ -125,7 +125,7 @@ const Signup = () => {
       };
 
       const response = await axios.post(
-        "https://3pg6n3wy90.execute-api.us-west-2.amazonaws.com/dev/users",
+        "https://b2eb3dkeq5.execute-api.us-west-2.amazonaws.com/dev/users",
         userData
       );
       if(response.status === 200){

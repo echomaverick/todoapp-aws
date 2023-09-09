@@ -12,7 +12,7 @@ const cognito = new AWS.CognitoIdentityServiceProvider({
   apiVersion: '2016-04-18',
   region: 'us-west-2',
   params: {
-    UserPoolId:'us-west-2_tXvx728pX'
+    UserPoolId:'us-west-2_BYntnqxvT'
   }
 });
 
@@ -103,7 +103,7 @@ module.exports.createUser = async (event) => {
     }
 
     const params = {
-      ClientId: '30qpp3s8qr32ielb83cupocdkc',
+      ClientId: '5mp2mohltu4kqr5uinmkotbm2p',
       Username: username,
       Password: password,
       UserAttributes: [

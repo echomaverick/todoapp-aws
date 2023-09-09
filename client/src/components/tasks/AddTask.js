@@ -19,7 +19,7 @@ const AddTask = () => {
   const fetchAvailableData = async () => {
     try {
       const usersResponse = await axios.get(
-        "https://3pg6n3wy90.execute-api.us-west-2.amazonaws.com/dev/users"
+        "https://b2eb3dkeq5.execute-api.us-west-2.amazonaws.com/dev/users"
       );
       setAvailableUsers(usersResponse.data);
     } catch (error) {
@@ -74,7 +74,7 @@ const AddTask = () => {
     console.log(idToken);
     try {
       await axios.post(
-        "https://3pg6n3wy90.execute-api.us-west-2.amazonaws.com/dev/tasks",
+        "https://b2eb3dkeq5.execute-api.us-west-2.amazonaws.com/dev/tasks",
         taskData, {
           headers: {
             Authorization: idToken

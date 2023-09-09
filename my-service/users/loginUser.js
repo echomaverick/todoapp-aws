@@ -20,7 +20,7 @@ module.exports.loginUser = async (event) => {
 
     const authParams = {
       AuthFlow: "USER_PASSWORD_AUTH",
-      ClientId: '30qpp3s8qr32ielb83cupocdkc',
+      ClientId: '5mp2mohltu4kqr5uinmkotbm2p',
       AuthParameters: {
         USERNAME: requestBody.username,
         PASSWORD: requestBody.password,

@@ -22,7 +22,7 @@ const AddUser = () => {
     const fetchData = async () => {
       try {
         const usersResponse = await axios.get(
-          "https://3pg6n3wy90.execute-api.us-west-2.amazonaws.com/dev/users"
+          "https://b2eb3dkeq5.execute-api.us-west-2.amazonaws.com/dev/users"
         );
         const users = usersResponse.data;
         setExistingEmails(users.map((user) => user.email.toLowerCase()));
@@ -109,7 +109,7 @@ const AddUser = () => {
       console.log("Signup response:", signupResponse);
   
       const response = await axios.post(
-        "https://3pg6n3wy90.execute-api.us-west-2.amazonaws.com/dev/users", 
+        "https://b2eb3dkeq5.execute-api.us-west-2.amazonaws.com/dev/users", 
         {
           cognitoUserId: signupResponse.userSub, 
           name,

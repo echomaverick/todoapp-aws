@@ -87,7 +87,7 @@
 //         const currentUser = await Auth.currentAuthenticatedUser();
 //         const idToken = currentUser.signInUserSession.idToken.jwtToken;
 //         const response = await axios.get(
-//           `https://3pg6n3wy90.execute-api.us-west-2.amazonaws.com/dev/user/${username}/projects`,
+//           `https://b2eb3dkeq5.execute-api.us-west-2.amazonaws.com/dev/user/${username}/projects`,
 //           {
 //             headers: {
 //               Authorization: idToken,
@@ -108,7 +108,7 @@
 //     try {
 //       console.log(projectId);
 //       const response = await axios.delete(
-//         `https://3pg6n3wy90.execute-api.us-west-2.amazonaws.com/dev/projects/${projectId}`
+//         `https://b2eb3dkeq5.execute-api.us-west-2.amazonaws.com/dev/projects/${projectId}`
 //       );
 //       console.log("Delete response:", response.data); // Log the response
 //       setProjects((prevProjects) =>
@@ -122,7 +122,7 @@
 //   const markProjectAsCompleted = async (projectId) => {
 //     try {
 //       await axios.put(
-//         `https://3pg6n3wy90.execute-api.us-west-2.amazonaws.com/dev/projects/${[
+//         `https://b2eb3dkeq5.execute-api.us-west-2.amazonaws.com/dev/projects/${[
 //           projectId,
 //         ]}/completed`,
 //         {
@@ -199,7 +199,7 @@ const ProjectCard = ({ project, onDelete, onEdit, markProjectAsCompleted }) => {
       const currentUser = await Auth.currentAuthenticatedUser();
       const idToken = currentUser.signInUserSession.idToken.jwtToken;
       await axios.delete(
-        `https://3pg6n3wy90.execute-api.us-west-2.amazonaws.com/dev/projects/delete/${project._id}`,
+        `https://b2eb3dkeq5.execute-api.us-west-2.amazonaws.com/dev/projects/delete/${project._id}`,
         {
           headers: {
             Authorization: idToken,
@@ -216,7 +216,7 @@ const ProjectCard = ({ project, onDelete, onEdit, markProjectAsCompleted }) => {
   const markAsCompleted = async () => {
     try {
       await axios.put(
-        `https://3pg6n3wy90.execute-api.us-west-2.amazonaws.com/dev/projects/${project._id}/completed`,
+        `https://b2eb3dkeq5.execute-api.us-west-2.amazonaws.com/dev/projects/${project._id}/completed`,
         {
           completed: true,
           dueDate: new Date(),
@@ -285,7 +285,7 @@ const UserProject = ({ match }) => {
         const currentUser = await Auth.currentAuthenticatedUser();
         const idToken = currentUser.signInUserSession.idToken.jwtToken;
         const response = await axios.get(
-          `https://3pg6n3wy90.execute-api.us-west-2.amazonaws.com/dev/user/${username}/projects`,
+          `https://b2eb3dkeq5.execute-api.us-west-2.amazonaws.com/dev/user/${username}/projects`,
           {
             headers: {
               Authorization: idToken,

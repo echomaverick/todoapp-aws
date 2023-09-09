@@ -36,7 +36,7 @@ const User = () => {
       console.log("Fetching user data...");
       console.log(id);
       const res = await axios.get(
-        `https://3pg6n3wy90.execute-api.us-west-2.amazonaws.com/dev/users/${id}`
+        `https://b2eb3dkeq5.execute-api.us-west-2.amazonaws.com/dev/users/${id}`
       );
 
       if (res.status === 200) {
@@ -47,7 +47,7 @@ const User = () => {
           try {
             console.log("Fetching role data...");
             const roleRes = await axios.get(
-              `https://3pg6n3wy90.execute-api.us-west-2.amazonaws.com/dev/roles/${res.data.role["$_id"]}`
+              `https://b2eb3dkeq5.execute-api.us-west-2.amazonaws.com/dev/roles/${res.data.role["$_id"]}`
             );
             console.log("Role data:", roleRes.data);
             setUser((prevState) => ({ ...prevState, role: roleRes.data.name }));

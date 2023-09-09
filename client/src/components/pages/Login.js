@@ -4,8 +4,8 @@ import { Container, Form, Button, Alert, Card } from "react-bootstrap";
 
 Auth.configure({
   region: "us-west-2",
-  userPoolId: "us-west-2_tXvx728pX",
-  userPoolWebClientId: "30qpp3s8qr32ielb83cupocdkc",
+  userPoolId: "us-west-2_BYntnqxvT",
+  userPoolWebClientId: "5mp2mohltu4kqr5uinmkotbm2p",
 });
 
 const Login = () => {
@@ -32,7 +32,7 @@ const Login = () => {
       localStorage.setItem("accessToken", accessToken);
   
       const response = await fetch(
-        "https://3pg6n3wy90.execute-api.us-west-2.amazonaws.com/dev/auth/login",
+        "https://b2eb3dkeq5.execute-api.us-west-2.amazonaws.com/dev/auth/login",
         {
           method: "POST",
           headers: {

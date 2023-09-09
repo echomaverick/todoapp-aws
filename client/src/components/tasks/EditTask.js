@@ -66,7 +66,7 @@ const EditTask = () => {
       console.log(currentUser);
 
       await axios.put(
-        `https://3pg6n3wy90.execute-api.us-west-2.amazonaws.com/dev/tasks/update/${id}`,
+        `https://b2eb3dkeq5.execute-api.us-west-2.amazonaws.com/dev/tasks/update/${id}`,
         {
           ...task,
           assignedTo: username,
@@ -95,7 +95,7 @@ const EditTask = () => {
 
     try {
       const result = await axios.get(
-        `https://3pg6n3wy90.execute-api.us-west-2.amazonaws.com/dev/tasks/${id}`
+        `https://b2eb3dkeq5.execute-api.us-west-2.amazonaws.com/dev/tasks/${id}`
       );
       if (!result.data) {
         setNotFound(true);
@@ -115,7 +115,7 @@ const EditTask = () => {
   const loadTaskProjects = async () => {
     try {
       const result = await axios.get(
-        `https://3pg6n3wy90.execute-api.us-west-2.amazonaws.com/dev/task/${id}/projects`
+        `https://b2eb3dkeq5.execute-api.us-west-2.amazonaws.com/dev/task/${id}/projects`
       );
       setTaskProjects(result.data);
       console.log("Task projects", result.data);

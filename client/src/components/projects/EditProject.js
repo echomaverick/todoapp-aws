@@ -36,10 +36,10 @@ const EditProject = () => {
     try {
       const [usersResponse, tasksResponse] = await Promise.all([
         axios.get(
-          "https://3pg6n3wy90.execute-api.us-west-2.amazonaws.com/dev/users"
+          "https://b2eb3dkeq5.execute-api.us-west-2.amazonaws.com/dev/users"
         ),
         axios.get(
-          "https://3pg6n3wy90.execute-api.us-west-2.amazonaws.com/dev/tasks"
+          "https://b2eb3dkeq5.execute-api.us-west-2.amazonaws.com/dev/tasks"
         ),
       ]);
       setUsers(usersResponse.data);
@@ -105,7 +105,7 @@ const EditProject = () => {
       const currentUser = await Auth.currentAuthenticatedUser();
       const idToken = currentUser.signInUserSession.idToken.jwtToken;
       await axios.put(
-        `https://3pg6n3wy90.execute-api.us-west-2.amazonaws.com/dev/projects/update/${id}`,
+        `https://b2eb3dkeq5.execute-api.us-west-2.amazonaws.com/dev/projects/update/${id}`,
         {
           ...project,
           users: project.users,
@@ -135,7 +135,7 @@ const EditProject = () => {
 
     try {
       const result = await axios.get(
-        `https://3pg6n3wy90.execute-api.us-west-2.amazonaws.com/dev/projects/${id}`
+        `https://b2eb3dkeq5.execute-api.us-west-2.amazonaws.com/dev/projects/${id}`
       );
       if (!result.data) {
         setNotFound(true);

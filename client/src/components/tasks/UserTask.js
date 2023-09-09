@@ -111,7 +111,7 @@ const UserTasks = ({ match }) => {
         const currentUser = await Auth.currentAuthenticatedUser();
         const idToken = currentUser.signInUserSession.idToken.jwtToken;
         const response = await axios.get(
-          `https://3pg6n3wy90.execute-api.us-west-2.amazonaws.com/dev/user/${username}/tasks`, {
+          `https://b2eb3dkeq5.execute-api.us-west-2.amazonaws.com/dev/user/${username}/tasks`, {
             headers: {
               Authorization: idToken
             }
@@ -131,7 +131,7 @@ const UserTasks = ({ match }) => {
   const onDeleteTask = async (taskId) => {
     try {
       await axios.delete(
-        `https://3pg6n3wy90.execute-api.us-west-2.amazonaws.com/dev/tasks/${taskId}`
+        `https://b2eb3dkeq5.execute-api.us-west-2.amazonaws.com/dev/tasks/${taskId}`
       );
       setTasks((prevTasks) => prevTasks.filter((task) => task._id !== taskId));
     } catch (error) {
@@ -142,7 +142,7 @@ const UserTasks = ({ match }) => {
   const markTaskAsCompleted = async (taskId) => {
     try {
       await axios.put(
-        `https://3pg6n3wy90.execute-api.us-west-2.amazonaws.com/dev/tasks/${taskId}/completed`,
+        `https://b2eb3dkeq5.execute-api.us-west-2.amazonaws.com/dev/tasks/${taskId}/completed`,
         {
           completed: true,
           dueDate: new Date(),
