@@ -34,12 +34,18 @@ const EditProject = () => {
 
   const loadUsersAndTasks = async () => {
     try {
+      const currentUser = await Auth.currentAuthenticatedUser();
+      const idToken = currentUser.signInUserSession.idToken.jwtToken;
+      const headers = {
+        Authorization: idToken
+      }
+
       const [usersResponse, tasksResponse] = await Promise.all([
         axios.get(
-          "https://b2eb3dkeq5.execute-api.us-west-2.amazonaws.com/dev/users"
+          "https://b2eb3dkeq5.execute-api.us-west-2.amazonaws.com/dev/users", {headers}
         ),
         axios.get(
-          "https://b2eb3dkeq5.execute-api.us-west-2.amazonaws.com/dev/tasks"
+          "https://b2eb3dkeq5.execute-api.us-west-2.amazonaws.com/dev/tasks", {headers}
         ),
       ]);
       setUsers(usersResponse.data);
@@ -134,6 +140,8 @@ const EditProject = () => {
     }
 
     try {
+      const currentUser = await Auth.currentAuthenticatedUser();
+      const idToken = currentUser.signInUserSession.idToken.jwtToken;
       const result = await axios.get(
         `https://b2eb3dkeq5.execute-api.us-west-2.amazonaws.com/dev/projects/${id}`
       );

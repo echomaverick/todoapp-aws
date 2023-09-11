@@ -94,8 +94,14 @@ const EditTask = () => {
     }
 
     try {
+      const currentUser = await Auth.currentAuthenticatedUser();
+      const idToken = currentUser.signInUserSession.idToken.jwtToken;
       const result = await axios.get(
-        `https://b2eb3dkeq5.execute-api.us-west-2.amazonaws.com/dev/tasks/${id}`
+        `https://b2eb3dkeq5.execute-api.us-west-2.amazonaws.com/dev/tasks/${id}`, {
+          headers: {
+            Authorization: idToken
+          }
+        }
       );
       if (!result.data) {
         setNotFound(true);
@@ -114,8 +120,14 @@ const EditTask = () => {
 
   const loadTaskProjects = async () => {
     try {
+      const currentUser = await Auth.currentAuthenticatedUser();
+      const idToken = currentUser.signInUserSession.idToken.jwtToken;
       const result = await axios.get(
-        `https://b2eb3dkeq5.execute-api.us-west-2.amazonaws.com/dev/task/${id}/projects`
+        `https://b2eb3dkeq5.execute-api.us-west-2.amazonaws.com/dev/task/${id}/projects`, {
+          headers: {
+            Authorization: idToken
+          }
+        }
       );
       setTaskProjects(result.data);
       console.log("Task projects", result.data);

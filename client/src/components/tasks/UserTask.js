@@ -7,17 +7,44 @@ import { Auth } from "aws-amplify";
 const TaskCard = ({ task, onDelete, markTaskAsCompleted }) => {
   const [showConfirmation, setShowConfirmation] = useState(false);
 
-  const handleDelete = () => {
-    setShowConfirmation(true);
+  const handleDelete = async() => {
+    try{
+      const currentUser = await Auth.currentAuthenticatedUser();
+      const idToken = currentUser.signInUserSession.idToken.jwtToken;
+      await axios.delete(
+        `https://b2eb3dkeq5.execute-api.us-west-2.amazonaws.com/dev/tasks/delete/${task._id}`, {
+          headers: {
+            Authorization: idToken
+          }
+        }
+      );
+      console.log("Task deleted", task._id);
+      onDelete(task._id);
+    }catch(error){
+      console.error("Error deleting task", error);
+    }
   };
 
-  const confirmDelete = () => {
-    onDelete(task._id);
-    setShowConfirmation(false);
-  };
 
-  const cancelDelete = () => {
-    setShowConfirmation(false);
+  const markAsCompleted = async () => {
+    try {
+      const currentUser = await Auth.currentAuthenticatedUser();
+      const idToken = currentUser.signInUserSession.idToken.jwtToken;
+      await axios.put(
+        `https://b2eb3dkeq5.execute-api.us-west-2.amazonaws.com/dev/tasks/${task._id}/completed`,
+        {
+          completed: true,
+          dueDate: new Date(),
+        }, {
+          headers: {
+            Authorization: idToken
+          }
+        }
+      );
+      console.log("Task marked as completed:", task._id);
+    } catch (error) {
+      console.error("Error marking task as completed:", error);
+    }
   };
 
   return (
@@ -35,30 +62,6 @@ const TaskCard = ({ task, onDelete, markTaskAsCompleted }) => {
         </div>
       </div>
       <div className="card-footer d-flex justify-content-between rounded-bottom">
-        {showConfirmation ? (
-          <div
-            className="popup bg-white rounded p-3 d-flex flex-column align-items-center justify-content-center"
-            style={{ width: "600px", minHeight: "200px" }}
-          >
-            <p className="confirmation-text" style={{ fontSize: "24px" }}>
-              Are you sure you want to delete?
-            </p>
-            <div className="btn-group d-flex align-items-center">
-              <button
-                className="btn1 btn-danger btn-rounded"
-                onClick={confirmDelete}
-              >
-                Delete
-              </button>
-              <button
-                className="btn1 btn-secondary btn-rounded ml-2"
-                onClick={cancelDelete}
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
-        ) : (
           <div className="buttons-group">
             <Link
               className={`view-task-button ${
@@ -81,19 +84,17 @@ const TaskCard = ({ task, onDelete, markTaskAsCompleted }) => {
             <button
               className="delete-task-button"
               onClick={handleDelete}
-              disabled
             >
               Delete
             </button>
             <button
               className="completed-task-button"
-              onClick={() => markTaskAsCompleted(task._id)}
+              onClick={markAsCompleted}
               disabled={task.completed}
             >
               Completed
             </button>
           </div>
-        )}
         {showConfirmation && <div className="popup-shadow"></div>}
       </div>
     </div>
@@ -128,35 +129,10 @@ const UserTasks = ({ match }) => {
     fetchUserTasks();
   }, [username]);
 
-  const onDeleteTask = async (taskId) => {
-    try {
-      await axios.delete(
-        `https://b2eb3dkeq5.execute-api.us-west-2.amazonaws.com/dev/tasks/${taskId}`
-      );
-      setTasks((prevTasks) => prevTasks.filter((task) => task._id !== taskId));
-    } catch (error) {
-      console.error("Error deleting task:", error);
-    }
-  };
-
-  const markTaskAsCompleted = async (taskId) => {
-    try {
-      await axios.put(
-        `https://b2eb3dkeq5.execute-api.us-west-2.amazonaws.com/dev/tasks/${taskId}/completed`,
-        {
-          completed: true,
-          dueDate: new Date(),
-        }
-      );
-      setTasks((prevTasks) =>
-        prevTasks.map((task) =>
-          task._id === taskId ? { ...task, completed: true } : task
-        )
-      );
-      console.log("Task is market as completed", taskId);
-    } catch (error) {
-      console.log("Error marking the task as completed", error);
-    }
+  const onDeleteTask = (taskId) => {
+    setTasks((prevTasks) =>
+      prevTasks.filter((task) => task._id !== taskId)
+    );
   };
 
   return (
@@ -173,7 +149,6 @@ const UserTasks = ({ match }) => {
             <TaskCard
               task={task}
               onDelete={onDeleteTask}
-              markTaskAsCompleted={markTaskAsCompleted}
             />
           </div>
         ))}
