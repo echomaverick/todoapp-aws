@@ -10,7 +10,7 @@ const ConfirmationPage = () => {
     async function confirmSubscription() {
       try {
         const response = await fetch(
-          ` https://yr6pccmc2d.execute-api.us-west-2.amazonaws.com/dev/api/emails/confirm/${encodeURIComponent(
+          ` https://your-api-id.execute-api.us-west-2.amazonaws.com/dev/api/emails/confirm/${encodeURIComponent(
             email
           )}`,
           {
