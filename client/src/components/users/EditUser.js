@@ -83,7 +83,7 @@ const EditUser = () => {
       };
 
       const mongoResponse = await axios.put(
-        `https://b2eb3dkeq5.execute-api.us-west-2.amazonaws.com/dev/users/update-profile/${username}`,
+        `https://your-api-id.execute-api.us-west-2.amazonaws.com/dev/users/update-profile/${username}`,
         user,
         { headers }
       );

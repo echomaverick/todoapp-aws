@@ -12,7 +12,7 @@ const TaskCard = ({ task, onDelete, markTaskAsCompleted }) => {
       const currentUser = await Auth.currentAuthenticatedUser();
       const idToken = currentUser.signInUserSession.idToken.jwtToken;
       await axios.delete(
-        `https://b2eb3dkeq5.execute-api.us-west-2.amazonaws.com/dev/tasks/delete/${task._id}`, {
+        `https://your-api-id.execute-api.us-west-2.amazonaws.com/dev/tasks/delete/${task._id}`, {
           headers: {
             Authorization: idToken
           }
@@ -31,7 +31,7 @@ const TaskCard = ({ task, onDelete, markTaskAsCompleted }) => {
       const currentUser = await Auth.currentAuthenticatedUser();
       const idToken = currentUser.signInUserSession.idToken.jwtToken;
       await axios.put(
-        `https://b2eb3dkeq5.execute-api.us-west-2.amazonaws.com/dev/tasks/${task._id}/completed`,
+        `https://your-api-id.execute-api.us-west-2.amazonaws.com/dev/tasks/${task._id}/completed`,
         {
           completed: true,
           dueDate: new Date(),
@@ -112,7 +112,7 @@ const UserTasks = ({ match }) => {
         const currentUser = await Auth.currentAuthenticatedUser();
         const idToken = currentUser.signInUserSession.idToken.jwtToken;
         const response = await axios.get(
-          `https://b2eb3dkeq5.execute-api.us-west-2.amazonaws.com/dev/user/${username}/tasks`, {
+          `https://your-api-id.execute-api.us-west-2.amazonaws.com/dev/user/${username}/tasks`, {
             headers: {
               Authorization: idToken
             }

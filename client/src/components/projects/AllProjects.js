@@ -105,7 +105,7 @@ const AllProjects = () => {
     try {
       setLoading(true);
       const response = await axios.get(
-        "https://b2eb3dkeq5.execute-api.us-west-2.amazonaws.com/dev/projects"
+        "https://your-api-id.execute-api.us-west-2.amazonaws.com/dev/projects"
       );
       setProjects(response.data);
       setLoading(false);
@@ -118,7 +118,7 @@ const AllProjects = () => {
   const deleteProject = async (project) => {
     try {
       await axios.delete(
-        `https://b2eb3dkeq5.execute-api.us-west-2.amazonaws.com/dev/projects${project._id}`
+        `https://your-api-id.execute-api.us-west-2.amazonaws.com/dev/projects${project._id}`
       );
       console.log(project);
       loadProjects();

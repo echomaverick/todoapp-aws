@@ -28,7 +28,7 @@ const AddUserProject = () => {
       const currentUser = await Auth.currentAuthenticatedUser();
       const idToken = currentUser.signInUserSession.idToken.jwtToken;
       const usersResponse = await axios.get(
-        "https://b2eb3dkeq5.execute-api.us-west-2.amazonaws.com/dev/users",
+        "https://your-api-id.execute-api.us-west-2.amazonaws.com/dev/users",
         {
           headers: {
             Authorization: idToken,
@@ -48,7 +48,7 @@ const AddUserProject = () => {
       const idToken = currentUser.signInUserSession.idToken.jwtToken;
 
       const tasksReponse = await axios.get(
-        `https://b2eb3dkeq5.execute-api.us-west-2.amazonaws.com/dev/user/${username}/tasks`,
+        `https://your-api-id.execute-api.us-west-2.amazonaws.com/dev/user/${username}/tasks`,
         {
           headers: {
             Authorization: idToken,
@@ -120,7 +120,7 @@ const AddUserProject = () => {
       const currentUser = await Auth.currentAuthenticatedUser();
       const idToken = currentUser.signInUserSession.idToken.jwtToken;
       const response = await axios.post(
-        "https://b2eb3dkeq5.execute-api.us-west-2.amazonaws.com/dev/projects",
+        "https://your-api-id.execute-api.us-west-2.amazonaws.com/dev/projects",
         projectData,
         {
           headers: {

@@ -15,7 +15,7 @@ const ProjectCard = ({ project, onDelete, onEdit }) => {
       const currentUser = await Auth.currentAuthenticatedUser();
       const idToken = currentUser.signInUserSession.idToken.jwtToken;
       await axios.delete(
-        `https://b2eb3dkeq5.execute-api.us-west-2.amazonaws.com/dev/projects/delete/${project._id}`,
+        `https://your-api-id.execute-api.us-west-2.amazonaws.com/dev/projects/delete/${project._id}`,
         {
           headers: {
             Authorization: idToken,
@@ -34,7 +34,7 @@ const ProjectCard = ({ project, onDelete, onEdit }) => {
       const currentUser = await Auth.currentAuthenticatedUser();
       const idToken = currentUser.signInUserSession.idToken.jwtToken;
       await axios.put(
-        `https://b2eb3dkeq5.execute-api.us-west-2.amazonaws.com/dev/projects/${project._id}/completed`,
+        `https://your-api-id.execute-api.us-west-2.amazonaws.com/dev/projects/${project._id}/completed`,
         {
           completed: true,
           dueDate: new Date(),
@@ -107,7 +107,7 @@ const UserProject = ({ match }) => {
         const currentUser = await Auth.currentAuthenticatedUser();
         const idToken = currentUser.signInUserSession.idToken.jwtToken;
         const response = await axios.get(
-          `https://b2eb3dkeq5.execute-api.us-west-2.amazonaws.com/dev/user/${username}/projects`,
+          `https://your-api-id.execute-api.us-west-2.amazonaws.com/dev/user/${username}/projects`,
           {
             headers: {
               Authorization: idToken,

@@ -35,7 +35,7 @@ const Task = () => {
       const idToken = currentUser.signInUserSession.idToken.jwtToken;
       console.log("Fetching task data...");
       const res = await axios.get(
-        `https://b2eb3dkeq5.execute-api.us-west-2.amazonaws.com/dev/tasks/${id}?_=${new Date().getTime()}`
+        `https://your-api-id.execute-api.us-west-2.amazonaws.com/dev/tasks/${id}?_=${new Date().getTime()}`
       );
       console.log("Task data:", res.data);
       setTask(res.data);
@@ -45,7 +45,7 @@ const Task = () => {
           async (userId) => {
             console.log("User id", userId);
             const userRes = await axios.get(
-              `https://b2eb3dkeq5.execute-api.us-west-2.amazonaws.com/dev/users/${userId["_id"]}`,
+              `https://your-api-id.execute-api.us-west-2.amazonaws.com/dev/users/${userId["_id"]}`,
               {
                 headers :{
                   Authorization: idToken
@@ -66,7 +66,7 @@ const Task = () => {
         const associatedProjectsPromises = res.data.projects.map(
           async (projectId) => {
             const projectRes = await axios.get(
-              `https://b2eb3dkeq5.execute-api.us-west-2.amazonaws.com/dev/projects/${projectId["_id"]}`
+              `https://your-api-id.execute-api.us-west-2.amazonaws.com/dev/projects/${projectId["_id"]}`
             );
             return projectRes.data;
           }

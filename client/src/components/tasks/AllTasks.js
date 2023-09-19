@@ -130,7 +130,7 @@ const AllTasks = () => {
     try {
       setLoading(true);
       const response = await axios.get(
-        "https://b2eb3dkeq5.execute-api.us-west-2.amazonaws.com/dev/tasks"
+        "https://your-api-id.execute-api.us-west-2.amazonaws.com/dev/tasks"
       );
       setTasks(response.data);
     } catch (error) {
@@ -143,7 +143,7 @@ const AllTasks = () => {
   const deleteTask = async (id) => {
     try {
       await axios.delete(
-        `https://b2eb3dkeq5.execute-api.us-west-2.amazonaws.com/dev/tasks/${id}`
+        `https://your-api-id.execute-api.us-west-2.amazonaws.com/dev/tasks/${id}`
       );
       loadTasks();
     } catch (error) {
@@ -181,7 +181,7 @@ const AllTasks = () => {
   const markTaskAsCompleted = async (taskId) => {
     try {
       await axios.put(
-        `https://b2eb3dkeq5.execute-api.us-west-2.amazonaws.com/dev/tasks/${taskId}/completed`,
+        `https://your-api-id.execute-api.us-west-2.amazonaws.com/dev/tasks/${taskId}/completed`,
         {
           completed: true,
           dueDate: new Date(),

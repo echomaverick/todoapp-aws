@@ -42,10 +42,10 @@ const EditProject = () => {
 
       const [usersResponse, tasksResponse] = await Promise.all([
         axios.get(
-          "https://b2eb3dkeq5.execute-api.us-west-2.amazonaws.com/dev/users", {headers}
+          "https://your-api-id.execute-api.us-west-2.amazonaws.com/dev/users", {headers}
         ),
         axios.get(
-          "https://b2eb3dkeq5.execute-api.us-west-2.amazonaws.com/dev/tasks", {headers}
+          "https://your-api-id.execute-api.us-west-2.amazonaws.com/dev/tasks", {headers}
         ),
       ]);
       setUsers(usersResponse.data);
@@ -111,7 +111,7 @@ const EditProject = () => {
       const currentUser = await Auth.currentAuthenticatedUser();
       const idToken = currentUser.signInUserSession.idToken.jwtToken;
       await axios.put(
-        `https://b2eb3dkeq5.execute-api.us-west-2.amazonaws.com/dev/projects/update/${id}`,
+        `https://your-api-id.execute-api.us-west-2.amazonaws.com/dev/projects/update/${id}`,
         {
           ...project,
           users: project.users,
@@ -143,7 +143,7 @@ const EditProject = () => {
       const currentUser = await Auth.currentAuthenticatedUser();
       const idToken = currentUser.signInUserSession.idToken.jwtToken;
       const result = await axios.get(
-        `https://b2eb3dkeq5.execute-api.us-west-2.amazonaws.com/dev/projects/${id}`
+        `https://your-api-id.execute-api.us-west-2.amazonaws.com/dev/projects/${id}`
       );
       if (!result.data) {
         setNotFound(true);

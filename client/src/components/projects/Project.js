@@ -28,7 +28,7 @@ const Projects = () => {
       const currentUser = await Auth.currentAuthenticatedUser();
       const idToken = currentUser.signInUserSession.idToken.jwtToken;
       const res = await axios.get(
-        "https://b2eb3dkeq5.execute-api.us-west-2.amazonaws.com/dev/projects",{
+        "https://your-api-id.execute-api.us-west-2.amazonaws.com/dev/projects",{
           headers: {
             Authorization: idToken
           }

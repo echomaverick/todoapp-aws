@@ -113,7 +113,7 @@ const AllUsers = () => {
       setError(null);
 
       const response = await axios.get(
-        "https://b2eb3dkeq5.execute-api.us-west-2.amazonaws.com/dev/users"
+        "https://your-api-id.execute-api.us-west-2.amazonaws.com/dev/users"
       );
       setUsers(response.data);
     } catch (error) {
@@ -130,7 +130,7 @@ const AllUsers = () => {
       setError(null);
 
       await axios.delete(
-        `https://b2eb3dkeq5.execute-api.us-west-2.amazonaws.com/dev/users/${id}`
+        `https://your-api-id.execute-api.us-west-2.amazonaws.com/dev/users/${id}`
       );
       setUsers((prevUsers) => prevUsers.filter((user) => user._id !== id));
     } catch (error) {

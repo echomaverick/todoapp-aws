@@ -66,7 +66,7 @@ const EditTask = () => {
       console.log(currentUser);
 
       await axios.put(
-        `https://b2eb3dkeq5.execute-api.us-west-2.amazonaws.com/dev/tasks/update/${id}`,
+        `https://your-api-id.execute-api.us-west-2.amazonaws.com/dev/tasks/update/${id}`,
         {
           ...task,
           assignedTo: username,
@@ -97,7 +97,7 @@ const EditTask = () => {
       const currentUser = await Auth.currentAuthenticatedUser();
       const idToken = currentUser.signInUserSession.idToken.jwtToken;
       const result = await axios.get(
-        `https://b2eb3dkeq5.execute-api.us-west-2.amazonaws.com/dev/tasks/${id}`, {
+        `https://your-api-id.execute-api.us-west-2.amazonaws.com/dev/tasks/${id}`, {
           headers: {
             Authorization: idToken
           }
@@ -123,7 +123,7 @@ const EditTask = () => {
       const currentUser = await Auth.currentAuthenticatedUser();
       const idToken = currentUser.signInUserSession.idToken.jwtToken;
       const result = await axios.get(
-        `https://b2eb3dkeq5.execute-api.us-west-2.amazonaws.com/dev/task/${id}/projects`, {
+        `https://your-api-id.execute-api.us-west-2.amazonaws.com/dev/task/${id}/projects`, {
           headers: {
             Authorization: idToken
           }
