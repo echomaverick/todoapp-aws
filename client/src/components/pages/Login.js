@@ -3,9 +3,9 @@ import { Auth } from "aws-amplify";
 import { Container, Form, Button, Alert, Card } from "react-bootstrap";
 
 Auth.configure({
-  region: "us-west-2",
-  userPoolId: "us-west-2_BYntnqxvT",
-  userPoolWebClientId: "5mp2mohltu4kqr5uinmkotbm2p",
+  region: "your-region",
+  userPoolId: "user-pool-id",
+  userPoolWebClientId: "user-pool-client-id",
 });
 
 const Login = () => {
@@ -32,7 +32,7 @@ const Login = () => {
       localStorage.setItem("accessToken", accessToken);
   
       const response = await fetch(
-        "https://b2eb3dkeq5.execute-api.us-west-2.amazonaws.com/dev/auth/login",
+        "https://your-api-id.execute-api.us-west-2.amazonaws.com/dev/auth/login",
         {
           method: "POST",
           headers: {
