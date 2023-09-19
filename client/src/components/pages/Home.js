@@ -26,7 +26,7 @@ const Home = () => {
 
     try {
       const response = await fetch(
-        " https://yr6pccmc2d.execute-api.us-west-2.amazonaws.com/dev/api/emails/subscribe",
+        " https://your-api-id.execute-api.us-west-2.amazonaws.com/dev/api/emails/subscribe",
         {
           method: "POST",
           headers: {
