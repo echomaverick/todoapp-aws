@@ -10,9 +10,9 @@ console.log("Connected to the database");
 
 const cognito = new AWS.CognitoIdentityServiceProvider({
   apiVersion: '2016-04-18',
-  region: 'us-west-2',
+  region: 'your-region',
   params: {
-    UserPoolId:'us-west-2_BYntnqxvT'
+    UserPoolId:'your-user-pool-id'
   }
 });
 
@@ -103,7 +103,7 @@ module.exports.createUser = async (event) => {
     }
 
     const params = {
-      ClientId: '5mp2mohltu4kqr5uinmkotbm2p',
+      ClientId: 'your-client-id',
       Username: username,
       Password: password,
       UserAttributes: [
@@ -143,7 +143,7 @@ module.exports.createUser = async (event) => {
 
     await newUser.save();
 
-    const loginPath = "http://my-service-todoapp-bucket.s3-website-us-west-2.amazonaws.com/login";
+    const loginPath = "http://your-bucket-name.s3-website-us-west-2.amazonaws.com/login";
     return {
       statusCode: 302,
       headers: {
