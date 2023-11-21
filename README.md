@@ -1,7 +1,7 @@
-# ToDoApp
+# Project Management Application
 
 ## Description
-ToDoApp is a task management application built with ReactJS and AWS Amplify. It uses AWS Cognito for user authentication and API Gateway for managing tasks and projects.
+Proventus Nexus is a project management application built with ReactJS and AWS Amplify. It uses AWS Cognito for user authentication and API Gateway for managing tasks and projects.
 
 ## Features
 - User authentication (login/signup) using AWS Cognito
