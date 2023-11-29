@@ -15,7 +15,7 @@ Proventus Nexus is a project management application built with ReactJS and AWS A
 
 ## Setup
 1. Install the Serverless Framework globally:     npm install -g serverless
-2. Clone the repository:      git clone https://github.com/SamuelDervish/aws-advanced.git
+2. Clone the repository:      git clone https://github.com/SamuelDervish/todoapp.git
 3. Install the dependencies:     npm install
 4. Deploy the Serverless service:   serverless deploy -v
 
